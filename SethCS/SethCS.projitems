@@ -9,6 +9,6 @@
     <Import_RootNamespace>SethCS</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)SemanticVersion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\SemanticVersion.cs" />
   </ItemGroup>
 </Project>
