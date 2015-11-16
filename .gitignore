@@ -1,0 +1,9 @@
+*.pfx
+.vs
+obj
+packages
+*.opensdf
+*.sdf
+bin
+Debug
+Release
