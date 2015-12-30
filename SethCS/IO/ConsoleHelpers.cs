@@ -4,6 +4,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -22,6 +23,17 @@ namespace IO
         /// when asking the user for information.
         /// </summary>
         internal const string DefaultCinMessage = "> ";
+
+        /// <summary>
+        /// The default message that is printed to the console
+        /// when asking the user for information.
+        /// </summary>
+        internal const string DefaultListPromptMessage = "Select a number and press enter:";
+
+        /// <summary>
+        /// Error message that appears when the user selects a prompt option not listed.
+        /// </summary>
+        internal const string ListPromptOutOfRangeMessage = "Option out of range.  Try again.";
 
         /// <summary>
         /// Error message that appears when the user does not provide a valid bool.
@@ -73,7 +85,7 @@ namespace IO
         /// </summary>
         internal const string ParseDecimalErrorMessage = "Error - Not given a decimal, try again.";
 
-        // -------- Console In Helpers --------
+        // -------- Functions --------
 
         // ---- Number Conversions ----
 
@@ -436,6 +448,105 @@ namespace IO
             }
             return returnValue;
         }
+
+        // ---- Prompt Helpers ----
+
+        /// <summary>
+        /// Displays a prompt of options to the user.  The user will then
+        /// provide a number of the option they want.  The user will keep
+        /// being prompted until they give a valid option, or EOF.
+        ///
+        /// If endWith0 is true, the result is this:
+        ///
+        /// firstMessage
+        /// 1. Option 1
+        /// 2. Option 2
+        /// ...
+        /// x. Option x
+        /// 0. Option 0
+        /// >
+        ///
+        /// Otherwise, its this:
+        ///
+        /// firstMessage
+        /// 0. Option 0
+        /// 1. Option 1
+        /// ...
+        /// x. Option x
+        /// >
+        /// </summary>
+        /// <param name="options">List of options to be shown.</param>
+        /// <param name="endWith0">Whether or not we end with option zero or start with option 0.</param>
+        /// <param name="firstMessage">The message to appear before the options are listed.</param>
+        /// <param name="cin">Console In.  If null, this becomes Console.In</param>
+        /// <param name="cout">Console Out.  If null, this becomes Console.Out</param>
+        /// <returns>The number the user selected.  Null if EOF.</returns>
+        public static int? ShowListPrompt(
+            IList<string> options,
+            bool endWith0,
+            string firstMessage = DefaultListPromptMessage,
+            TextReader cin = null,
+            TextWriter cout = null
+        )
+        {
+            // -- Function checks --
+            if ( options == null )
+            {
+                throw new ArgumentNullException( nameof ( options ) );
+            }
+            else if ( options.Count == 0 )
+            {
+                throw new ArgumentException(
+                    nameof( options ) + " must have at least one option.",
+                    nameof( options )
+                );
+            }
+
+            // -- Build Message --
+            string promptMessage = string.Empty;
+
+            for ( int i = 1; i < options.Count; ++i )
+            {
+                promptMessage += i + ".\t" + options[i] + Environment.NewLine;
+            }
+
+            if ( endWith0 )
+            {
+                // If we end with 0, append it to the end.
+                promptMessage += "0.\t" + options[0] + Environment.NewLine;
+            }
+            else
+            {
+                // Otherwise, prepend it.
+                promptMessage = "0.\t" + options[0] + Environment.NewLine + promptMessage;
+            }
+
+            promptMessage = firstMessage + Environment.NewLine + promptMessage + "> ";
+
+            // -- Get selection --
+            int selection = -1;
+
+            // Ensure our selection is valid.
+            while ( ( selection < 0 ) || ( selection >= options.Count ) )
+            {
+                int? userSelection = GetInt( promptMessage, cin, cout );
+
+                // Bail if we reached EOF.
+                if ( userSelection == null )
+                {
+                    return null;
+                }
+
+                selection = userSelection.Value;
+                if ( ( selection < 0 ) || ( selection >= options.Count ) )
+                {
+                    cout.WriteLine( ListPromptOutOfRangeMessage );
+                }
+            }
+            return selection;
+        }
+
+        // ---- Helper Functions ----
 
         /// <summary>
         /// Binds the given parameters to the console if they are null.

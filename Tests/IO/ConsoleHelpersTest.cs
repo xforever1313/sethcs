@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using SethCS.IO;
@@ -39,6 +40,8 @@ namespace IO
         }
 
         // -------- Tests --------
+
+        // ---- Number Conversion Tests ----
 
         [Test]
         public void ConsoleHelpersGetBoolTest()
@@ -721,6 +724,352 @@ namespace IO
              }
 
              Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+        }
+
+        // ---- ShowListPrompt Tests ----
+
+        [Test]
+        public void ArgumentCheckTest()
+        {
+            // Ensure we get an exception if we pass in null
+            // for the options parameter.
+            Assert.Throws<ArgumentNullException>(
+                delegate()
+                {
+                    ConsoleHelpers.ShowListPrompt(
+                        null,
+                        true
+                    );
+                }
+            );
+
+            // Ensure we get an exception if we pass a list
+            // if no options.
+            Assert.Throws<ArgumentException>(
+                delegate()
+                {
+                    ConsoleHelpers.ShowListPrompt(
+                        new List<string>(),
+                        true
+                    );
+                }
+            );
+        }
+
+        // -- Start With 0 tests --
+
+        [Test]
+        public void StartWithZeroOneOptionTest()
+        {
+            List<string> options = new List<string> { "Exit" };
+
+            string cin =
+                "derp" + Environment.NewLine + // 0: Fail
+                "1" + Environment.NewLine +    // 1: Fail (out of range)
+                "-1" + Environment.NewLine +   // 2: Fail (out of range)
+                "0" + Environment.NewLine;     // 3: Returns 0
+                                               // 4: Fail (EOF).
+
+            this.mockCin = new StringReader( cin );
+
+            string prompt =
+                ConsoleHelpers.DefaultListPromptMessage + Environment.NewLine +
+                "0.\t" + options[0] + Environment.NewLine +
+                ConsoleHelpers.DefaultCinMessage;
+
+            string expectedCout =
+                // Case 0
+                prompt +
+                ConsoleHelpers.ParseIntErrorMessage + Environment.NewLine +
+
+                // Case 1
+                prompt +
+                ConsoleHelpers.ListPromptOutOfRangeMessage + Environment.NewLine +
+
+                // Case 2
+                prompt +
+                ConsoleHelpers.ListPromptOutOfRangeMessage + Environment.NewLine +
+
+                // Case 3
+                prompt +
+
+                // Case 4
+                prompt;
+
+            {
+                int? case3 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    false,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.AreEqual( 0, case3.Value );
+            }
+
+           {
+                int? case4 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    false,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.IsNull( case4 );
+            }
+
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+        }
+
+        [Test]
+        public void StartWithZero5OptionTest()
+        {
+            List<string> options = new List<string> {
+                "Exit",
+                "Option 1",
+                "Option 2",
+                "Option 3",
+                "Option 4"
+            };
+
+            string cin =
+                "derp" + Environment.NewLine + // 0: Fail
+                "5" + Environment.NewLine +    // 1: Fail (out of range)
+                "-1" + Environment.NewLine +   // 2: Fail (out of range)
+                "4" + Environment.NewLine  +   // 3: Returns 4
+                "0" + Environment.NewLine;     // 4: Returns 0
+                                               // 5: Fail (EOF).
+
+            this.mockCin = new StringReader( cin );
+
+            string prompt =
+                ConsoleHelpers.DefaultListPromptMessage + Environment.NewLine +
+                "0.\t" + options[0] + Environment.NewLine +
+                "1.\t" + options[1] + Environment.NewLine +
+                "2.\t" + options[2] + Environment.NewLine +
+                "3.\t" + options[3] + Environment.NewLine +
+                "4.\t" + options[4] + Environment.NewLine +
+                ConsoleHelpers.DefaultCinMessage;
+
+            string expectedCout =
+                // Case 0
+                prompt +
+                ConsoleHelpers.ParseIntErrorMessage + Environment.NewLine +
+
+                // Case 1
+                prompt +
+                ConsoleHelpers.ListPromptOutOfRangeMessage + Environment.NewLine +
+
+                // Case 2
+                prompt +
+                ConsoleHelpers.ListPromptOutOfRangeMessage + Environment.NewLine +
+
+                // Case 3
+                prompt +
+
+                // Case 4
+                prompt +
+
+                // Case 5
+                prompt;
+
+            {
+                int? case3 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    false,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.AreEqual( 4, case3.Value );
+            }
+
+            {
+                int? case4 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    false,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.AreEqual( 0, case4.Value );
+            }
+
+            {
+                int? case5 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    false,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.IsNull( case5 );
+            }
+
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+        }
+
+        // -- End with zero tests --
+
+        [Test]
+        public void EndWithZeroOneOptionTest()
+        {
+            List<string> options = new List<string> { "Exit" };
+
+            string cin =
+                "derp" + Environment.NewLine + // 0: Fail
+                "1" + Environment.NewLine +    // 1: Fail (out of range)
+                "-1" + Environment.NewLine +   // 2: Fail (out of range)
+                "0" + Environment.NewLine;     // 3: Returns 0
+                                               // 4: Fail (EOF).
+
+            this.mockCin = new StringReader( cin );
+
+            string prompt =
+                ConsoleHelpers.DefaultListPromptMessage + Environment.NewLine +
+                "0.\t" + options[0] + Environment.NewLine +
+                ConsoleHelpers.DefaultCinMessage;
+
+            string expectedCout =
+                // Case 0
+                prompt +
+                ConsoleHelpers.ParseIntErrorMessage + Environment.NewLine +
+
+                // Case 1
+                prompt +
+                ConsoleHelpers.ListPromptOutOfRangeMessage + Environment.NewLine +
+
+                // Case 2
+                prompt +
+                ConsoleHelpers.ListPromptOutOfRangeMessage + Environment.NewLine +
+
+                // Case 3
+                prompt +
+
+                // Case 4
+                prompt;
+
+            {
+                int? case3 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    true,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.AreEqual( 0, case3.Value );
+            }
+
+           {
+                int? case4 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    true,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.IsNull( case4 );
+            }
+
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+        }
+
+        [Test]
+        public void EndWithZero5OptionTest()
+        {
+            List<string> options = new List<string> {
+                "Exit",
+                "Option 1",
+                "Option 2",
+                "Option 3",
+                "Option 4"
+            };
+
+            string cin =
+                "derp" + Environment.NewLine + // 0: Fail
+                "5" + Environment.NewLine +    // 1: Fail (out of range)
+                "-1" + Environment.NewLine +   // 2: Fail (out of range)
+                "4" + Environment.NewLine  +   // 3: Returns 4
+                "0" + Environment.NewLine;     // 4: Returns 0
+                                               // 5: Fail (EOF).
+
+            this.mockCin = new StringReader( cin );
+
+            string prompt =
+                ConsoleHelpers.DefaultListPromptMessage + Environment.NewLine +
+                "1.\t" + options[1] + Environment.NewLine +
+                "2.\t" + options[2] + Environment.NewLine +
+                "3.\t" + options[3] + Environment.NewLine +
+                "4.\t" + options[4] + Environment.NewLine +
+                "0.\t" + options[0] + Environment.NewLine +
+                ConsoleHelpers.DefaultCinMessage;
+
+            string expectedCout =
+                // Case 0
+                prompt +
+                ConsoleHelpers.ParseIntErrorMessage + Environment.NewLine +
+
+                // Case 1
+                prompt +
+                ConsoleHelpers.ListPromptOutOfRangeMessage + Environment.NewLine +
+
+                // Case 2
+                prompt +
+                ConsoleHelpers.ListPromptOutOfRangeMessage + Environment.NewLine +
+
+                // Case 3
+                prompt +
+
+                // Case 4
+                prompt +
+
+                // Case 5
+                prompt;
+
+            {
+                int? case3 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    true,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.AreEqual( 4, case3.Value );
+            }
+
+            {
+                int? case4 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    true,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.AreEqual( 0, case4.Value );
+            }
+
+            {
+                int? case5 = ConsoleHelpers.ShowListPrompt(
+                    options,
+                    true,
+                    ConsoleHelpers.DefaultListPromptMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+
+                Assert.IsNull( case5 );
+            }
+
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
     }
 }
