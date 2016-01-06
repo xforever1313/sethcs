@@ -10,9 +10,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 [assembly: InternalsVisibleTo( "TestsMono" )]
-namespace SethCS
-{
-namespace IO
+namespace SethCS.IO
 {
     public static class ConsoleHelpers
     {
@@ -106,12 +104,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            bool? returnValue  = null;
+            bool? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 bool parsedValue;
-                if ( bool.TryParse ( line, out parsedValue ) )
+                if ( bool.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -142,12 +140,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            short? returnValue  = null;
+            short? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 short parsedValue;
-                if ( short.TryParse ( line, out parsedValue ) )
+                if ( short.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -178,12 +176,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            ushort? returnValue  = null;
+            ushort? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 ushort parsedValue;
-                if ( ushort.TryParse ( line, out parsedValue ) )
+                if ( ushort.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -214,12 +212,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            int? returnValue  = null;
+            int? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 int parsedValue;
-                if ( int.TryParse ( line, out parsedValue ) )
+                if ( int.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -250,12 +248,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            uint? returnValue  = null;
+            uint? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 uint parsedValue;
-                if ( uint.TryParse ( line, out parsedValue ) )
+                if ( uint.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -286,12 +284,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            long? returnValue  = null;
+            long? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 long parsedValue;
-                if ( long.TryParse ( line, out parsedValue ) )
+                if ( long.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -322,12 +320,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            ulong? returnValue  = null;
+            ulong? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 ulong parsedValue;
-                if ( ulong.TryParse ( line, out parsedValue ) )
+                if ( ulong.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -358,12 +356,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            float? returnValue  = null;
+            float? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 float parsedValue;
-                if ( float.TryParse ( line, out parsedValue ) )
+                if ( float.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -394,12 +392,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            double? returnValue  = null;
+            double? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 double parsedValue;
-                if ( double.TryParse ( line, out parsedValue ) )
+                if ( double.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -430,12 +428,12 @@ namespace IO
 
             cout.Write( inputMessage );
 
-            decimal? returnValue  = null;
+            decimal? returnValue = null;
             string line = cin.ReadLine();
             while ( ( line != null ) && ( returnValue == null ) )
             {
                 decimal parsedValue;
-                if ( decimal.TryParse ( line, out parsedValue ) )
+                if ( decimal.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -492,7 +490,7 @@ namespace IO
             // -- Function checks --
             if ( options == null )
             {
-                throw new ArgumentNullException( nameof ( options ) );
+                throw new ArgumentNullException( nameof( options ) );
             }
             else if ( options.Count == 0 )
             {
@@ -556,6 +554,17 @@ namespace IO
         /// <param name="cout">Console Out.  If null, this becomes Console.Out</param>
         private static void BindConsole( ref TextReader cin, ref TextWriter cout )
         {
+            // If we are Windows Universal, bail.  Those platforms do not support Console In or Console Out.
+#if NETFX_CORE
+            if ( cin == null )
+            {
+                throw new PlatformNotSupportedException( "Windows Universal Apps do not support Console.In" );
+            }
+            if ( cout == null )
+            {
+                throw new PlatformNotSupportedException( "Windows Universal Apps do not support Console.Out" );
+            }
+#else
             if ( cin == null )
             {
                 cin = Console.In;
@@ -564,8 +573,8 @@ namespace IO
             {
                 cout = Console.Out;
             }
+#endif
         }
     }
-}
 }
 
