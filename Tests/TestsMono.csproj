@@ -39,6 +39,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\ArgumentCheckerTest.cs" />
     <Compile Include="SemanticVersionTest.cs" />
     <Compile Include="IO\ConsoleHelpersTest.cs" />
   </ItemGroup>
