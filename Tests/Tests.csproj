@@ -55,6 +55,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Exceptions\ArgumentCheckerTest.cs" />
+    <Compile Include="Exceptions\ReadOnlyExceptionTest.cs" />
     <Compile Include="IO\ConsoleHelpersTest.cs" />
     <Compile Include="SemanticVersionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

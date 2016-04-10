@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Basic\SemanticVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ArgumentChecker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ReadOnlyException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\ConsoleHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
