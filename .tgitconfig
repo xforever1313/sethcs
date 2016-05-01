@@ -1,5 +1,5 @@
 [bugtraq]
-	url = https://dev.meditationenthusiasts.org/mantis/view.php?id=%BUGID%
+	url = https://github.com/xforever1313/CowSayBot/issues/%BUGID%
 	label = Issue ID:
 	append = false
 	number = true
