@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Basic\EventExecutorTest.cs" />
     <Compile Include="Exceptions\ArgumentCheckerTest.cs" />
     <Compile Include="Exceptions\ReadOnlyExceptionTest.cs" />
     <Compile Include="IO\ConsoleHelpersTest.cs" />

@@ -9,6 +9,7 @@
     <Import_RootNamespace>SethCSMono</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\EventExecutor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\SemanticVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ArgumentChecker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ReadOnlyException.cs" />
