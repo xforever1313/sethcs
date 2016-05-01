@@ -1,5 +1,5 @@
 [bugtraq]
-	url = https://github.com/xforever1313/CowSayBot/issues/%BUGID%
+	url = https://github.com/xforever1313/sethcs/issues/%BUGID%
 	label = Issue ID:
 	append = false
 	number = true
