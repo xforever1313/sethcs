@@ -1,4 +1,10 @@
-﻿using System;
+﻿
+//          Copyright Seth Hendrick 2016.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace SethCS.OS.Windows
@@ -26,7 +32,7 @@ namespace SethCS.OS.Windows
         public WindowsCtrlCHandler() :
             base()
         {
-            if ( Environment.OSVersion.Platform == PlatformID.Unix )
+            if( Environment.OSVersion.Platform == PlatformID.Unix )
             {
                 throw new PlatformNotSupportedException(
                     "Unix does not support WindowsCtrlCHandler!"
@@ -52,6 +58,7 @@ namespace SethCS.OS.Windows
         /// <returns>Always true.</returns>
         private bool SignalHandler( int ctrl )
         {
+            Console.WriteLine( "Received Interrupt signal.  Terminating" );
             this.signalEvent.Set();
             return true;
         }

@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+//          Copyright Seth Hendrick 2016.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+using System;
 using System.Threading;
+
 #if __MonoCS__
 using Mono.Unix;
-using Mono.Native;
+using Mono.Unix.Native;
 #endif
 
 namespace SethCS.OS.Unix
 {
-#if __MonoCS__
+    #if __MonoCS__
 
     public class UnixCtrlCHandler : CtrlCHandler
     {
@@ -34,7 +39,7 @@ namespace SethCS.OS.Unix
         public UnixCtrlCHandler() :
             base()
         {
-            if ( Environment.OSVersion.Platform != PlatformID.Unix )
+            if( Environment.OSVersion.Platform != PlatformID.Unix )
             {
                 throw new PlatformNotSupportedException(
                     "Unix does not support WindowsCtrlCHandler!"
@@ -47,6 +52,7 @@ namespace SethCS.OS.Unix
                     try
                     {
                         UnixSignal.WaitAny( signalsToWatch );
+                        Console.WriteLine( "Received Interrupt signal.  Terminating" );
                         this.signalEvent.Set();
                     }
                     catch( ThreadAbortException )
@@ -65,7 +71,7 @@ namespace SethCS.OS.Unix
         /// </summary>
         protected override void CleanUp()
         {
-            if ( this.signalThread.IsAlive )
+            if( this.signalThread.IsAlive )
             {
                 this.signalThread.Abort();
                 this.signalThread.Join();
@@ -74,8 +80,8 @@ namespace SethCS.OS.Unix
 
     }
 
-#else
-
+    #else
+    
     public class UnixCtrlCHandler : CtrlCHandler
     {
         // -------- Constructor --------
