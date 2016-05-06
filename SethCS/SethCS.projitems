@@ -14,8 +14,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ArgumentChecker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ReadOnlyException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\ConsoleHelpers.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OS\CtrlCHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OS\Unix\UnixCtrlCHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OS\Windows\WindowsCtrlCHandler.cs" />
   </ItemGroup>
 </Project>
