@@ -1,8 +1,8 @@
 language: csharp
-solution: ./SethCsMono.sln
+solution: ./SethCS.sln
 install:
-  - nuget restore ./SethCsMono.sln
+  - nuget restore ./SethCS.sln
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
-  - xbuild /p:Configuration=Release ./SethCsMono.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Tests/bin/Release/TestsMono.dll
+  - xbuild /p:Configuration=Release ./SethCS.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Tests/bin/Release/Tests.dll
