@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo( "Tests" )]
 [assembly: InternalsVisibleTo( "TestsMono" )]
+
 namespace SethCS.IO
 {
     public static class ConsoleHelpers
@@ -106,10 +107,10 @@ namespace SethCS.IO
 
             bool? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 bool parsedValue;
-                if ( bool.TryParse( line, out parsedValue ) )
+                if( bool.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -142,10 +143,10 @@ namespace SethCS.IO
 
             short? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 short parsedValue;
-                if ( short.TryParse( line, out parsedValue ) )
+                if( short.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -178,10 +179,10 @@ namespace SethCS.IO
 
             ushort? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 ushort parsedValue;
-                if ( ushort.TryParse( line, out parsedValue ) )
+                if( ushort.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -214,10 +215,10 @@ namespace SethCS.IO
 
             int? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 int parsedValue;
-                if ( int.TryParse( line, out parsedValue ) )
+                if( int.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -250,10 +251,10 @@ namespace SethCS.IO
 
             uint? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 uint parsedValue;
-                if ( uint.TryParse( line, out parsedValue ) )
+                if( uint.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -286,10 +287,10 @@ namespace SethCS.IO
 
             long? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 long parsedValue;
-                if ( long.TryParse( line, out parsedValue ) )
+                if( long.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -322,10 +323,10 @@ namespace SethCS.IO
 
             ulong? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 ulong parsedValue;
-                if ( ulong.TryParse( line, out parsedValue ) )
+                if( ulong.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -358,10 +359,10 @@ namespace SethCS.IO
 
             float? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 float parsedValue;
-                if ( float.TryParse( line, out parsedValue ) )
+                if( float.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -394,10 +395,10 @@ namespace SethCS.IO
 
             double? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 double parsedValue;
-                if ( double.TryParse( line, out parsedValue ) )
+                if( double.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -430,10 +431,10 @@ namespace SethCS.IO
 
             decimal? returnValue = null;
             string line = cin.ReadLine();
-            while ( ( line != null ) && ( returnValue == null ) )
+            while( ( line != null ) && ( returnValue == null ) )
             {
                 decimal parsedValue;
-                if ( decimal.TryParse( line, out parsedValue ) )
+                if( decimal.TryParse( line, out parsedValue ) )
                 {
                     returnValue = parsedValue;
                 }
@@ -488,11 +489,11 @@ namespace SethCS.IO
         )
         {
             // -- Function checks --
-            if ( options == null )
+            if( options == null )
             {
                 throw new ArgumentNullException( nameof( options ) );
             }
-            else if ( options.Count == 0 )
+            else if( options.Count == 0 )
             {
                 throw new ArgumentException(
                     nameof( options ) + " must have at least one option.",
@@ -503,12 +504,12 @@ namespace SethCS.IO
             // -- Build Message --
             string promptMessage = string.Empty;
 
-            for ( int i = 1; i < options.Count; ++i )
+            for( int i = 1; i < options.Count; ++i )
             {
                 promptMessage += i + ".\t" + options[i] + Environment.NewLine;
             }
 
-            if ( endWith0 )
+            if( endWith0 )
             {
                 // If we end with 0, append it to the end.
                 promptMessage += "0.\t" + options[0] + Environment.NewLine;
@@ -525,18 +526,18 @@ namespace SethCS.IO
             int selection = -1;
 
             // Ensure our selection is valid.
-            while ( ( selection < 0 ) || ( selection >= options.Count ) )
+            while( ( selection < 0 ) || ( selection >= options.Count ) )
             {
                 int? userSelection = GetInt( promptMessage, cin, cout );
 
                 // Bail if we reached EOF.
-                if ( userSelection == null )
+                if( userSelection == null )
                 {
                     return null;
                 }
 
                 selection = userSelection.Value;
-                if ( ( selection < 0 ) || ( selection >= options.Count ) )
+                if( ( selection < 0 ) || ( selection >= options.Count ) )
                 {
                     cout.WriteLine( ListPromptOutOfRangeMessage );
                 }
@@ -565,11 +566,11 @@ namespace SethCS.IO
                 throw new PlatformNotSupportedException( "Windows Universal Apps do not support Console.Out" );
             }
 #else
-            if ( cin == null )
+            if( cin == null )
             {
                 cin = Console.In;
             }
-            if ( cout == null )
+            if( cout == null )
             {
                 cout = Console.Out;
             }
@@ -577,4 +578,3 @@ namespace SethCS.IO
         }
     }
 }
-

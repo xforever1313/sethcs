@@ -1,5 +1,4 @@
-﻿
-//          Copyright Seth Hendrick 2016.
+﻿//          Copyright Seth Hendrick 2016.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -23,7 +22,7 @@ namespace SethCS.Exceptions
         /// <exception cref="ArgumentNullException">Thrown if obj is null.</exception>
         public static void IsNotNull( object obj, string argumentName )
         {
-            if ( obj == null )
+            if( obj == null )
             {
                 throw new ArgumentNullException( argumentName );
             }
@@ -38,7 +37,7 @@ namespace SethCS.Exceptions
         /// <exception cref="ArgumentNullException">Thrown if obj is null.</exception>
         public static void StringIsNotNullOrEmpty( string str, string argumentName )
         {
-            if ( string.IsNullOrEmpty( str ) )
+            if( string.IsNullOrEmpty( str ) )
             {
                 throw new ArgumentNullException( argumentName );
             }

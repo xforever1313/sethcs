@@ -4,8 +4,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SethCS.Basic
@@ -80,7 +78,7 @@ namespace SethCS.Basic
         /// <returns>The parsed Semantic Verion Object.</returns>
         public static SemanticVersion Parse( string versionString )
         {
-            if ( versionString == null )
+            if( versionString == null )
             {
                 throw new ArgumentNullException(
                     "versionString"
@@ -88,7 +86,7 @@ namespace SethCS.Basic
             }
 
             Match match = Regex.Match( versionString, regexPattern );
-            if ( match.Success )
+            if( match.Success )
             {
                 SemanticVersion version = new SemanticVersion(
                     int.Parse( match.Groups["major"].Value as string ),
@@ -147,7 +145,7 @@ namespace SethCS.Basic
         public override bool Equals( object obj )
         {
             SemanticVersion other = obj as SemanticVersion;
-            if ( other == null )
+            if( other == null )
             {
                 return false;
             }
@@ -178,12 +176,12 @@ namespace SethCS.Basic
         public static bool operator <( SemanticVersion v1, SemanticVersion v2 )
         {
             // Null checks.
-            if ( v1 == null ) { throw new ArgumentNullException( "v1" ); }
-            if ( v2 == null ) { throw new ArgumentNullException( "v2" ); }
+            if( v1 == null ) { throw new ArgumentNullException( "v1" ); }
+            if( v2 == null ) { throw new ArgumentNullException( "v2" ); }
 
-            if ( v1.Major == v2.Major )
+            if( v1.Major == v2.Major )
             {
-                if ( v1.Minor == v2.Minor )
+                if( v1.Minor == v2.Minor )
                 {
                     return v1.Revision < v2.Revision;
                 }
@@ -210,12 +208,12 @@ namespace SethCS.Basic
         public static bool operator >( SemanticVersion v1, SemanticVersion v2 )
         {
             // Null checks.
-            if ( v1 == null ) { throw new ArgumentNullException( "v1" ); }
-            if ( v2 == null ) { throw new ArgumentNullException( "v2" ); }
+            if( v1 == null ) { throw new ArgumentNullException( "v1" ); }
+            if( v2 == null ) { throw new ArgumentNullException( "v2" ); }
 
-            if ( v1.Major == v2.Major )
+            if( v1.Major == v2.Major )
             {
-                if ( v1.Minor == v2.Minor )
+                if( v1.Minor == v2.Minor )
                 {
                     return v1.Revision > v2.Revision;
                 }
@@ -239,7 +237,7 @@ namespace SethCS.Basic
         /// <param name="v1">The first version to check.</param>
         /// <param name="v2">The second version to check.</param>
         /// <returns>True if v1 is an earlier version or matches v2.</returns>
-        public static bool operator<=( SemanticVersion v1, SemanticVersion v2 )
+        public static bool operator <=( SemanticVersion v1, SemanticVersion v2 )
         {
             return ( v1 < v2 ) || v1.Equals( v2 );
         }

@@ -1,12 +1,10 @@
-﻿
-//          Copyright Seth Hendrick 2016.
+﻿//          Copyright Seth Hendrick 2016.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace SethCS.Basic
@@ -62,7 +60,7 @@ namespace SethCS.Basic
         /// during Dispose().
         /// </param>
         /// <param name="errorAction">
-        /// Action to take if an unhandled exception occurs 
+        /// Action to take if an unhandled exception occurs
         /// Null for swallowing it and take no action.
         /// </param>
         public EventExecutor( bool executeIfDisposed = true, Action<Exception> errorAction = null )
@@ -90,14 +88,14 @@ namespace SethCS.Basic
         {
             get
             {
-                lock ( this.isRunningLock )
+                lock( this.isRunningLock )
                 {
                     return this.isRunning;
                 }
             }
             private set
             {
-                lock ( this.isRunningLock )
+                lock( this.isRunningLock )
                 {
                     this.isRunning = value;
                 }
@@ -131,7 +129,7 @@ namespace SethCS.Basic
         /// <param name="action">The action to add.</param>
         public void AddEvent( Action action )
         {
-            lock ( this.actionQueue )
+            lock( this.actionQueue )
             {
                 this.actionQueue.Enqueue( action );
             }
@@ -148,14 +146,14 @@ namespace SethCS.Basic
         {
             this.IsRunning = false;
             this.actionSemaphore.Release();
-            if ( this.runnerThread.IsAlive )
+            if( this.runnerThread.IsAlive )
             {
                 this.runnerThread.Join();
             }
 
-            if ( this.ExecuteWhenDisposed )
+            if( this.ExecuteWhenDisposed )
             {
-                while ( this.actionQueue.Count > 0 )
+                while( this.actionQueue.Count > 0 )
                 {
                     ExecuteEvent();
                 }
@@ -171,7 +169,7 @@ namespace SethCS.Basic
         /// </summary>
         private void Run()
         {
-            while ( this.IsRunning )
+            while( this.IsRunning )
             {
                 this.actionSemaphore.WaitOne();
                 ExecuteEvent();
@@ -188,9 +186,9 @@ namespace SethCS.Basic
                 Action action = null;
 
                 // Grab the latest action from the queue.
-                lock ( this.actionQueue )
+                lock( this.actionQueue )
                 {
-                    if ( this.actionQueue.Count > 0 )
+                    if( this.actionQueue.Count > 0 )
                     {
                         action = this.actionQueue.Dequeue();
                     }
@@ -198,14 +196,14 @@ namespace SethCS.Basic
 
                 // Only execute event if there was something in the queue.
                 // Its possible we ended up here due to the thread stopping.
-                if ( action != null )
+                if( action != null )
                 {
                     action();
                 }
             }
-            catch ( Exception e )
+            catch( Exception e )
             {
-                if ( errorAction != null )
+                if( errorAction != null )
                 {
                     errorAction( e );
                 }
