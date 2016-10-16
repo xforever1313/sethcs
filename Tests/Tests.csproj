@@ -51,4 +51,14 @@
       <Name>LibSethCS</Name>
     </ProjectReference>
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
+          <CSharpFormattingPolicy IndentSwitchBody="True" IndentBlocksInsideExpressions="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" ElseNewLinePlacement="NewLine" CatchNewLinePlacement="NewLine" FinallyNewLinePlacement="NewLine" WhileNewLinePlacement="DoNotCare" ArrayInitializerWrapping="DoNotChange" ArrayInitializerBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" WithinMethodDeclarationParentheses="True" BeforeMethodCallParentheses="False" WithinMethodCallParentheses="True" BeforeConstructorDeclarationParentheses="False" WithinConstructorDeclarationParentheses="True" NewLineBeforeConstructorInitializerColon="NewLine" NewLineAfterConstructorInitializerColon="SameLine" BeforeDelegateDeclarationParentheses="False" WithinDelegateDeclarationParentheses="True" NewParentheses="False" IfParentheses="False" WhileParentheses="False" ForParentheses="False" ForeachParentheses="False" CatchParentheses="False" SwitchParentheses="False" LockParentheses="False" UsingParentheses="False" WithinParentheses="True" WithinIfParentheses="True" WithinWhileParentheses="True" WithinForParentheses="True" WithinForEachParentheses="True" WithinCatchParentheses="True" WithinSwitchParentheses="True" WithinLockParentheses="True" WithinUsingParentheses="True" WithinSizeOfParentheses="True" WithinTypeOfParentheses="True" WithinNewParentheses="True" SpacesBeforeBrackets="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

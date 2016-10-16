@@ -15,5 +15,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ReadOnlyException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ValidationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\ConsoleHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DateTimeExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Extensions\" />
   </ItemGroup>
 </Project>
