@@ -7,7 +7,7 @@ using System;
 using NUnit.Framework;
 using SethCS.Basic;
 
-namespace Tests
+namespace Tests.Basic
 {
     [TestFixture]
     public class SemanticVersionTest

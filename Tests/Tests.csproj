@@ -43,7 +43,7 @@
     <Compile Include="Exceptions\ReadOnlyExceptionTest.cs" />
     <Compile Include="Exceptions\ValidationExceptionTest.cs" />
     <Compile Include="IO\ConsoleHelpersTest.cs" />
-    <Compile Include="SemanticVersionTest.cs" />
+    <Compile Include="Basic\SemanticVersionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibSethCS\LibSethCS.csproj">
