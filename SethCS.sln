@@ -1,32 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
+# Visual Studio 2012
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SethCS", "SethCS\SethCS.shproj", "{52089274-B9A2-4A47-A221-C321DEE1CE7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{480C3BA8-9F75-4825-AD3E-88D4695235A3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHelper", "TestHelper\TestHelper.csproj", "{296FE0A3-BAEA-4234-AE51-C01EC3F9C153}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SethCS\SethCS.projitems*{52089274-b9a2-4a47-a221-c321dee1ce7f}*SharedItemsImports = 13
-		SethCS\SethCS.projitems*{296fe0a3-baea-4234-ae51-c01ec3f9c153}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{480C3BA8-9F75-4825-AD3E-88D4695235A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{480C3BA8-9F75-4825-AD3E-88D4695235A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{480C3BA8-9F75-4825-AD3E-88D4695235A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{480C3BA8-9F75-4825-AD3E-88D4695235A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{296FE0A3-BAEA-4234-AE51-C01EC3F9C153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{296FE0A3-BAEA-4234-AE51-C01EC3F9C153}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{296FE0A3-BAEA-4234-AE51-C01EC3F9C153}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{296FE0A3-BAEA-4234-AE51-C01EC3F9C153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SethCS\SethCS.projitems*{52089274-b9a2-4a47-a221-c321dee1ce7f}*SharedItemsImports = 13
+		SethCS\SethCS.projitems*{296fe0a3-baea-4234-ae51-c01ec3f9c153}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
