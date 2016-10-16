@@ -46,9 +46,9 @@
     <Compile Include="SemanticVersionTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestHelper\TestHelper.csproj">
+    <ProjectReference Include="..\TestHelper\LibSethCS.csproj">
       <Project>{296FE0A3-BAEA-4234-AE51-C01EC3F9C153}</Project>
-      <Name>TestHelper</Name>
+      <Name>LibSethCS</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
