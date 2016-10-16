@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SethCS", "SethCS\SethCS.shproj", "{52089274-B9A2-4A47-A221-C321DEE1CE7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSethCS", "TestHelper\LibSethCS.csproj", "{296FE0A3-BAEA-4234-AE51-C01EC3F9C153}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSethCS", "LibSethCS\LibSethCS.csproj", "{296FE0A3-BAEA-4234-AE51-C01EC3F9C153}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}"
 EndProject
