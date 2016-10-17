@@ -16,6 +16,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ValidationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\ConsoleHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DateTimeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\EventScheduler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\RAIITimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Extensions\" />
