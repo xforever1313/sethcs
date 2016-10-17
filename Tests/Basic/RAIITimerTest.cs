@@ -1,7 +1,13 @@
-﻿using System;
+﻿
+//          Copyright Seth Hendrick 2015.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../../../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+using System;
+using System.Threading;
 using NUnit.Framework;
 using SethCS;
-using System.Threading;
 
 namespace Tests
 {
@@ -16,8 +22,6 @@ namespace Tests
         private const int defaultTimeout = 250;
 
         private bool triggered;
-
-        private RAIITimer uut;
 
         // -------- Setup / Teardown --------
 
