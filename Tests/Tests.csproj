@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Basic\EventExecutorTest.cs" />
+    <Compile Include="Basic\StaticLoggerTest.cs" />
     <Compile Include="Exceptions\ArgumentCheckerTest.cs" />
     <Compile Include="Exceptions\ReadOnlyExceptionTest.cs" />
     <Compile Include="Exceptions\ValidationExceptionTest.cs" />
@@ -52,6 +53,9 @@
       <Project>{296FE0A3-BAEA-4234-AE51-C01EC3F9C153}</Project>
       <Name>LibSethCS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
