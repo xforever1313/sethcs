@@ -139,7 +139,7 @@ namespace SethCS.Basic
             lock( onWriteLock )
             {
                 Action<string> action = e;
-                e?.Invoke( line + Environment.NewLine );
+                action?.Invoke( line + Environment.NewLine );
             }
         }
     }
