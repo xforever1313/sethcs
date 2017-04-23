@@ -44,6 +44,7 @@
     <Compile Include="Exceptions\ArgumentCheckerTest.cs" />
     <Compile Include="Exceptions\ReadOnlyExceptionTest.cs" />
     <Compile Include="Exceptions\ValidationExceptionTest.cs" />
+    <Compile Include="Extensions\StringExtensionsTest.cs" />
     <Compile Include="IO\ConsoleHelpersTest.cs" />
     <Compile Include="Basic\SemanticVersionTest.cs" />
     <Compile Include="Basic\EventSchedulerTest.cs" />
