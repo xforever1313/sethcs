@@ -1,7 +1,9 @@
-﻿//          Copyright Seth Hendrick 2016.
+﻿//
+//          Copyright Seth Hendrick 2016-2017.
 // Distributed under the Boost Software License, Version 1.0.
-//    (See accompanying file ../../LICENSE_1_0.txt or copy at
+//    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
+//
 
 using System;
 using System.Collections.Generic;
@@ -11,10 +13,26 @@ namespace SethCS.Basic
 {
     /// <summary>
     /// Executes one event at a time in a queue.
+    /// 
+    /// Any action added to the queue runs in the Event Executor's own SyncronizationContext.
+    /// Therefore, you can use async/await here.  Anything that comes after an await will get
+    /// enqueued to the event queue to be executed.
     /// </summary>
     public class EventExecutor : IDisposable
     {
-        // -------- Fields --------
+        // ---------------- Events ----------------
+
+        /// <summary>
+        /// Action to take if an unhandled exception is thrown.
+        /// </summary>
+        public event Action<Exception> OnError;
+
+        // ---------------- Fields ----------------
+
+        /// <summary>
+        /// Name of the event executor thread.
+        /// </summary>
+        public const string ThreadName = nameof( EventExecutor );
 
         /// <summary>
         /// Queue of actions to do.
@@ -42,12 +60,7 @@ namespace SethCS.Basic
         /// </summary>
         private object isRunningLock;
 
-        /// <summary>
-        /// Action to take if an unhandled exception is thrown.
-        /// </summary>
-        private Action<Exception> errorAction;
-
-        // -------- Constructor --------
+        // ---------------- Constructor ----------------
 
         /// <summary>
         /// Constructor
@@ -63,22 +76,22 @@ namespace SethCS.Basic
         /// Action to take if an unhandled exception occurs
         /// Null for swallowing it and take no action.
         /// </param>
-        public EventExecutor( bool executeIfDisposed = true, Action<Exception> errorAction = null )
+        public EventExecutor( bool executeIfDisposed = true )
         {
             this.actionQueue = new Queue<Action>();
             this.actionSemaphore = new Semaphore( 0, int.MaxValue );
             this.runnerThread = new Thread(
                 () => this.Run()
             );
+            this.runnerThread.Name = ThreadName;
 
             this.isRunningLock = new object();
             this.IsRunning = false;
 
-            this.errorAction = errorAction;
             this.ExecuteWhenDisposed = executeIfDisposed;
         }
 
-        // -------- Properties --------
+        // ---------------- Properties ----------------
 
         /// <summary>
         /// Checks to see if the executor is running or not.
@@ -108,10 +121,16 @@ namespace SethCS.Basic
         /// Set to true to ensure ALL events that were added will get run when Dispose() is called.
         /// Set to false, and any events that were not run will not be run
         /// during Dispose().
+        /// 
+        /// You should set this to true if it is important that all events that get enqueued
+        /// get run, including any worker threads that get spawned.
+        /// 
+        /// Set this to false if you don't care... however be warned... any tasks you add
+        /// to worker threads do to you calling async/await stuff will still be running.
         /// </summary>
         public bool ExecuteWhenDisposed { get; private set; }
 
-        // --------- Functions --------
+        // ----------------- Functions ----------------
 
         /// <summary>
         /// Starts the execution thread.
@@ -169,10 +188,24 @@ namespace SethCS.Basic
         /// </summary>
         private void Run()
         {
+            SyncContext context = new SyncContext( this );
+            SynchronizationContext.SetSynchronizationContext( context );
+
             while( this.IsRunning )
             {
                 this.actionSemaphore.WaitOne();
                 ExecuteEvent();
+            }
+
+            // If we still have things going on in the background,
+            // wait for those to finish before we terminate the synchronization context.
+            // Unless, of course, we don't care since we have ExecuteWhenDisposed set to false.
+            if( this.ExecuteWhenDisposed )
+            {
+                while( context.IsBusy )
+                {
+                    ExecuteEvent();
+                }
             }
         }
 
@@ -196,17 +229,134 @@ namespace SethCS.Basic
 
                 // Only execute event if there was something in the queue.
                 // Its possible we ended up here due to the thread stopping.
-                if( action != null )
-                {
-                    action();
-                }
+                action?.Invoke();
             }
             catch( Exception e )
             {
-                if( errorAction != null )
+                this.OnError?.Invoke( e );
+            }
+        }
+
+        // ---------------- Helper Classes ----------------
+
+        /// <summary>
+        /// SynchronizationContext so we can properly do async/awaits in the event executor.
+        /// How this works is what comes after the await gets re-enqueued the the event executor
+        /// as another event instead of running in a worker thread.
+        /// </summary>
+        private class SyncContext : SynchronizationContext
+        {
+            // ---------------- Fields ----------------
+
+            private EventExecutor exe;
+            private long asyncCount;
+
+            // ---------------- Constructor ----------------
+
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="exe">The event executor we are adding the context to.</param>
+            public SyncContext( EventExecutor exe )
+            {
+                this.exe = exe;
+                this.asyncCount = 0;
+            }
+
+            // ---------------- Properties ----------------
+
+            /// <summary>
+            /// This will be set to true while there is an operation going
+            /// on in a background thread.
+            /// </summary>
+            public bool IsBusy
+            {
+                get
                 {
-                    errorAction( e );
+                    return Interlocked.Read( ref this.asyncCount ) > 0;
                 }
+            }
+
+            // ---------------- Functions ----------------
+
+            /// <summary>
+            /// POST:
+            /// Post means we want to add an async event.  This therefore adds
+            /// an event to the event queue and returns.
+            /// 
+            /// Post is called after an await.  For example, if this delegate is added
+            /// to the event queue.
+            /// 
+            /// delegate()
+            /// {
+            ///     int something = SomeFunction();
+            ///     int somethingElse = await SomeOtherFunction( something );
+            ///     DoTheThing( somethingElse );
+            /// }
+            /// 
+            /// SomeFunction runs in the event queue.  SomeOtherFunction runs in a worker
+            /// thread.  DoTheThing then gets added via this function back on the event queue.
+            /// </summary>
+            public override void Post( SendOrPostCallback d, object state )
+            {
+                this.exe.AddEvent( () => d.Invoke( state ) );
+            }
+
+            /// <summary>
+            /// SEND:
+            /// Send is like invoke, it blocks.
+            /// This adds an event to the event queue and blocks until its done.
+            /// </summary>
+            public override void Send( SendOrPostCallback d, object state )
+            {
+                ManualResetEvent e = new ManualResetEvent( false );
+                this.exe.AddEvent(
+                    delegate ()
+                    {
+                        try
+                        {
+                            d.Invoke( state );
+                        }
+                        finally
+                        {
+                            e.Set();
+                        }
+                    }
+                );
+                e.WaitOne();
+            }
+
+            /// <summary>
+            /// Called when a worker thread starts.
+            /// </summary>
+            public override void OperationStarted()
+            {
+                Interlocked.Increment( ref this.asyncCount );
+                base.OperationStarted();
+            }
+
+            /// <summary>
+            /// Triggered when an operation is completed.
+            /// With async/await, this happens when everything after an await executes.
+            /// </summary>
+            public override void OperationCompleted()
+            {
+                try
+                {
+                    base.OperationCompleted();
+                }
+                finally
+                {
+                    Interlocked.Decrement( ref this.asyncCount );
+                }
+            }
+
+            /// <summary>
+            /// Honestly... have no idea what this does...
+            /// </summary>
+            public override int Wait( IntPtr[] waitHandles, bool waitAll, int millisecondsTimeout )
+            {
+                return base.Wait( waitHandles, waitAll, millisecondsTimeout );
             }
         }
     }
