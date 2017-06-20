@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
+using System;
 using System.Text.RegularExpressions;
 
 namespace SethCS.Extensions
@@ -32,6 +33,56 @@ namespace SethCS.Extensions
         {
             Regex regex = new Regex( @"\s+" );
             return regex.Replace( str, "" + replaceCharacter );
+        }
+
+        /// <summary>
+        /// Takes the string and splits it up by length.
+        /// For example, "12345" with a length of 2 will return an array
+        /// that contains "12", "34", "5".
+        /// </summary>
+        /// <param name="str">The string to split.</param>
+        /// <param name="maxLength">
+        /// The length to split the strings to.
+        /// 
+        /// Must be greater than 0.
+        /// </param>
+        /// <returns>An array of split strings by length.</returns>
+        public static string[] SplitByLength( this string str, int maxLength )
+        {
+            if( maxLength <= 0 )
+            {
+                throw new ArgumentException(
+                    "Length must be greater than 0.",
+                    nameof( maxLength )
+                );
+            }
+
+            if( string.IsNullOrEmpty( str ) )
+            {
+                return new string[] { string.Empty };
+            }
+
+            int arrayLength = ( str.Length / maxLength );
+
+            // If we are not divisable by the max length, we need one more slot
+            // for the left-overs.
+            if( ( str.Length % maxLength ) != 0 )
+            {
+                arrayLength += 1;
+            }
+
+            string[] array = new string[arrayLength];
+
+            int strIndex = 0;
+            int arrayIndex = 0;
+            for( ; strIndex < ( str.Length - maxLength); strIndex += maxLength )
+            {
+                array[arrayIndex] = str.Substring( strIndex, maxLength );
+                ++arrayIndex;
+            }
+            array[arrayIndex] = str.Substring( strIndex );
+
+            return array;
         }
     }
 }
