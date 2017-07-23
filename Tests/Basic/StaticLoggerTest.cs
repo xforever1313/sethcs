@@ -26,15 +26,15 @@ namespace Tests.Basic
         {
             this.writeLineLoggedMessages = new StringBuilder();
             this.errorWriteLineLoggedMessages = new StringBuilder();
-            StaticLogger.OnWriteLine += StaticLogger_OnWriteLine;
-            StaticLogger.OnErrorWriteLine += StaticLogger_OnErrorWriteLine;
+            StaticLogger.Log.OnWriteLine += StaticLogger_OnWriteLine;
+            StaticLogger.Log.OnErrorWriteLine += StaticLogger_OnErrorWriteLine;
         }
 
         [TearDown]
         public void TestTeardown()
         {
-            StaticLogger.OnWriteLine -= StaticLogger_OnWriteLine;
-            StaticLogger.OnErrorWriteLine -= StaticLogger_OnErrorWriteLine;
+            StaticLogger.Log.OnWriteLine -= StaticLogger_OnWriteLine;
+            StaticLogger.Log.OnErrorWriteLine -= StaticLogger_OnErrorWriteLine;
         }
 
         // ---------------- Tests ----------------
@@ -44,7 +44,7 @@ namespace Tests.Basic
         [Test]
         public void WriteEmptyLineTest()
         {
-            StaticLogger.WriteLine();
+            StaticLogger.Log.WriteLine();
             Assert.AreEqual( string.Empty + Environment.NewLine, this.writeLineLoggedMessages.ToString() );
             Assert.AreEqual( string.Empty, this.errorWriteLineLoggedMessages.ToString() );
         }
@@ -53,7 +53,7 @@ namespace Tests.Basic
         public void WriteLineTest()
         {
             const string expectedString = "Hello, World!";
-            StaticLogger.WriteLine( expectedString );
+            StaticLogger.Log.WriteLine( expectedString );
             Assert.AreEqual( expectedString + Environment.NewLine, this.writeLineLoggedMessages.ToString() );
             Assert.AreEqual( string.Empty, this.errorWriteLineLoggedMessages.ToString() );
         }
@@ -64,7 +64,7 @@ namespace Tests.Basic
             const string formatString = "{0} + {1} = {2}";
             string expectedString = "1 + 2 = 3" + Environment.NewLine;
 
-            StaticLogger.WriteLine( formatString, 1, 2, 3 );
+            StaticLogger.Log.WriteLine( formatString, 1, 2, 3 );
             Assert.AreEqual( expectedString, this.writeLineLoggedMessages.ToString() );
             Assert.AreEqual( string.Empty, this.errorWriteLineLoggedMessages.ToString() );
         }
@@ -74,7 +74,7 @@ namespace Tests.Basic
         [Test]
         public void ErrorWriteEmptyLineTest()
         {
-            StaticLogger.ErrorWriteLine();
+            StaticLogger.Log.ErrorWriteLine();
             Assert.AreEqual( string.Empty + Environment.NewLine, this.errorWriteLineLoggedMessages.ToString() );
             Assert.AreEqual( string.Empty, this.writeLineLoggedMessages.ToString() );
         }
@@ -83,7 +83,7 @@ namespace Tests.Basic
         public void ErrorWriteLineTest()
         {
             const string expectedString = "Hello, World!";
-            StaticLogger.ErrorWriteLine( expectedString );
+            StaticLogger.Log.ErrorWriteLine( expectedString );
             Assert.AreEqual( expectedString + Environment.NewLine, this.errorWriteLineLoggedMessages.ToString() );
             Assert.AreEqual( string.Empty, this.writeLineLoggedMessages.ToString() );
         }
@@ -94,7 +94,7 @@ namespace Tests.Basic
             const string formatString = "{0} + {1} = {2}";
             string expectedString = "1 + 2 = 3" + Environment.NewLine;
 
-            StaticLogger.ErrorWriteLine( formatString, 1, 2, 3 );
+            StaticLogger.Log.ErrorWriteLine( formatString, 1, 2, 3 );
             Assert.AreEqual( expectedString, this.errorWriteLineLoggedMessages.ToString() );
             Assert.AreEqual( string.Empty, this.writeLineLoggedMessages.ToString() );
         }

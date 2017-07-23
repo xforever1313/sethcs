@@ -1,18 +1,19 @@
-﻿
+﻿//
 //          Copyright Seth Hendrick 2017.
 // Distributed under the Boost Software License, Version 1.0.
-//    (See accompanying file ../../LICENSE_1_0.txt or copy at
+//    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
+//
 
 using System;
 
 namespace SethCS.Basic
 {
     /// <summary>
-    /// A Thread-Safe static logger that allows the user to add or remove events
+    /// A Thread-Safe generic logger that allows the user to add or remove events
     /// that should be logged somewhere.
     /// </summary>
-    public static class StaticLogger
+    public class GenericLogger
     {
         // ---------------- Fields ----------------
 
@@ -21,16 +22,23 @@ namespace SethCS.Basic
         /// 
         /// Does not need to be thread-safe, all functions in this class are.
         /// </summary>
-        public static event Action<string> OnWriteLine;
+        public event Action<string> OnWriteLine;
 
         /// <summary>
         /// Event that is triggered when ErrorWriteLine is called.
         /// 
         /// Does not need to be thread-safe, all functions in this class are.
         /// </summary>
-        public static event Action<string> OnErrorWriteLine;
+        public event Action<string> OnErrorWriteLine;
 
-        private static object onWriteLock = new object();
+        private object onWriteLock;
+
+        // ---------------- Constructor ----------------
+
+        public GenericLogger()
+        {
+            this.onWriteLock = new object();
+        }
 
         // ---------------- Functions ----------------
 
@@ -41,7 +49,7 @@ namespace SethCS.Basic
         /// 
         /// Thread-Safe.
         /// </summary>
-        public static void WriteLine()
+        public void WriteLine()
         {
             WriteLineInternal( OnWriteLine );
         }
@@ -51,7 +59,7 @@ namespace SethCS.Basic
         /// </summary>
         /// <param name="formatStr">The format string.</param>
         /// <param name="objects">The objects used to format the string.</param>
-        public static void WriteLine( string formatStr, params object[] objects )
+        public void WriteLine( string formatStr, params object[] objects )
         {
             WriteLineInternal( OnWriteLine, formatStr, objects );
         }
@@ -63,7 +71,7 @@ namespace SethCS.Basic
         /// Thread-Safe.
         /// </summary>
         /// <param name="line">The string to write.</param>
-        public static void WriteLine( string line )
+        public void WriteLine( string line )
         {
             WriteLineInternal( OnWriteLine, line );
         }
@@ -75,7 +83,7 @@ namespace SethCS.Basic
         /// 
         /// Thread-Safe.
         /// </summary>
-        public static void ErrorWriteLine()
+        public void ErrorWriteLine()
         {
             WriteLineInternal( OnErrorWriteLine );
         }
@@ -85,7 +93,7 @@ namespace SethCS.Basic
         /// </summary>
         /// <param name="formatStr">The format string.</param>
         /// <param name="objects">The objects used to format the string.</param>
-        public static void ErrorWriteLine( string formatStr, params object[] objects )
+        public void ErrorWriteLine( string formatStr, params object[] objects )
         {
             WriteLineInternal( OnErrorWriteLine, formatStr, objects );
         }
@@ -97,7 +105,7 @@ namespace SethCS.Basic
         /// Thread-Safe.
         /// </summary>
         /// <param name="line">The string to write.</param>
-        public static void ErrorWriteLine( string line )
+        public void ErrorWriteLine( string line )
         {
             WriteLineInternal( OnErrorWriteLine, line );
         }
@@ -110,7 +118,7 @@ namespace SethCS.Basic
         /// Thread-Safe.
         /// </summary>
         /// <param name="e">The event to pass the line into.</param>
-        private static void WriteLineInternal( Action<string> e )
+        private void WriteLineInternal( Action<string> e )
         {
             WriteLine( e, string.Empty );
         }
@@ -121,7 +129,7 @@ namespace SethCS.Basic
         /// <param name="e">The event to pass the line into.</param>
         /// <param name="formatStr">The format string.</param>
         /// <param name="objects">The objects used to format the string.</param>
-        private static void WriteLineInternal( Action<string> e, string formatStr, params object[] objects )
+        private void WriteLineInternal( Action<string> e, string formatStr, params object[] objects )
         {
             WriteLine( e, string.Format( formatStr, objects ) );
         }
@@ -134,7 +142,7 @@ namespace SethCS.Basic
         /// </summary>
         /// <param name="e">The event to pass the line into.</param>
         /// <param name="line">The string to write.</param>
-        private static void WriteLine( Action<string> e, string line )
+        private void WriteLine( Action<string> e, string line )
         {
             lock( onWriteLock )
             {
@@ -142,5 +150,22 @@ namespace SethCS.Basic
                 action?.Invoke( line + Environment.NewLine );
             }
         }
+    }
+
+    /// <summary>
+    /// A single, global instance of <see cref="GenericLogger"/>
+    /// </summary>
+    public static class StaticLogger
+    {
+        static StaticLogger()
+        {
+            Log = new GenericLogger();
+        }
+
+        /// <summary>
+        /// The global <see cref="GenericLogger"/>
+        /// instance.
+        /// </summary>
+        public static GenericLogger Log { get; private set; }
     }
 }
