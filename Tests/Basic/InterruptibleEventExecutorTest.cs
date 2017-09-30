@@ -110,5 +110,57 @@ namespace Tests.Basic
 
             Assert.IsNull( err );
         }
+
+        /// <summary>
+        /// Ensures that if no events have been added,
+        /// we DON'T abort.
+        /// </summary>
+        [Test]
+        public void NoEventsAddedTest()
+        {
+            Exception err = null;
+
+            using( InterruptibleEventExecutor uut = new InterruptibleEventExecutor( 2000 ) )
+            {
+                uut.OnError += delegate ( Exception e )
+                {
+                    err = e;
+                };
+
+                uut.Start();
+
+                Thread.Sleep( 6000 );
+            }
+
+            Assert.IsNull( err );
+        }
+
+
+        /// <summary>
+        /// Tests to ensure 1000 events are executed successfully.
+        /// </summary>
+        [Test]
+        public void ThousandEventTest()
+        {
+            using( InterruptibleEventExecutor executor = new InterruptibleEventExecutor( 5000 ) )
+            {
+                executor.Start();
+
+                EventClass[] events = new EventClass[1000];
+                for( int i = 0; i < 1000; ++i )
+                {
+                    EventClass ec = new EventClass();
+                    events[i] = ec;
+                    executor.AddEvent( () => ec.Execute() );
+                }
+
+                foreach( EventClass ec in events )
+                {
+                    // Wait for everything to complete before calling Asset.
+                    Assert.IsTrue( ec.Join( 30 * 1000 ) );
+                    Assert.IsTrue( ec.Executed );
+                }
+            }
+        }
     }
 }

@@ -124,7 +124,7 @@ namespace SethCS.Basic
         /// the action is added to the queue.
         /// </summary>
         /// <param name="action">The action to add.</param>
-        public void AddEvent( Action action )
+        public virtual void AddEvent( Action action )
         {
             lock( this.actionQueue )
             {
@@ -175,7 +175,7 @@ namespace SethCS.Basic
         /// <summary>
         /// Grabs the latest event from the queue and executes it.
         /// </summary>
-        protected virtual void ExecuteEvent()
+        protected void ExecuteEvent()
         {
             try
             {

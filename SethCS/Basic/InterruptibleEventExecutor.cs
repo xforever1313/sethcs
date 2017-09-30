@@ -23,6 +23,7 @@ namespace SethCS.Basic
         private int maxRunTime;
 
         private AutoResetEvent eventCompletedEvent;
+        private AutoResetEvent eventStartedEvent;
 
         /// <summary>
         /// This thread will interrupt events if they take to long to execute.
@@ -51,6 +52,7 @@ namespace SethCS.Basic
 
             this.maxRunTime = maxRunTime;
             this.eventCompletedEvent = new AutoResetEvent( false );
+            this.eventStartedEvent = new AutoResetEvent( false );
 
             this.isActive = false;
             this.isActiveLock = new object();
@@ -115,24 +117,34 @@ namespace SethCS.Basic
             this.runnerThread.Interrupt();
         }
 
-        protected override void ExecuteEvent()
+        /// <summary>
+        /// Add an event to the event queue.  This returns immediatly after
+        /// the action is added to the queue.
+        /// </summary>
+        /// <param name="action">The action to add.</param>
+        public override void AddEvent( Action action )
         {
             // If there's no maximum time, just execute the event normally.
             if( this.maxRunTime == int.MaxValue )
             {
-                base.ExecuteEvent();
+                base.AddEvent( action );
             }
             else
             {
-                try
+                Action theAction = delegate ()
                 {
-                    this.eventCompletedEvent.Reset();
-                    base.ExecuteEvent();
-                }
-                finally
-                {
-                    this.eventCompletedEvent.Set();
-                }
+                    try
+                    {
+                        this.eventStartedEvent.Set();
+                        action();
+                    }
+                    finally
+                    {
+                        this.eventCompletedEvent.Set();
+                    }
+                };
+
+                base.AddEvent( theAction );
             }
         }
 
@@ -151,7 +163,10 @@ namespace SethCS.Basic
             {
                 this.IsActive = false;
                 this.eventCompletedEvent.Set();
+                this.eventStartedEvent.Set();
                 this.eventWatcherThread?.Join();
+
+                this.eventStartedEvent.Dispose();
                 this.eventCompletedEvent.Dispose();
             }
         }
@@ -160,13 +175,21 @@ namespace SethCS.Basic
         {
             while( this.IsActive )
             {
-                // Wait for our AutoResetEvent to be set. If it is not, send an interrupt and wait
-                // for the event to be interrupted.
-                bool completed = this.eventCompletedEvent.WaitOne( this.maxRunTime );
-                if( ( completed == false ) && this.IsActive )
+                // Wait for an event to fire.
+                this.eventStartedEvent.WaitOne();
+
+                if( this.IsActive )
                 {
-                    this.runnerThread.Interrupt();
-                    this.eventCompletedEvent.WaitOne();
+                    // Wait for our AutoResetEvent to be set. If it is not, send an interrupt and wait
+                    // for the event to be interrupted.
+                    bool completed = this.eventCompletedEvent.WaitOne( this.maxRunTime );
+                    if( ( completed == false ) && this.IsActive )
+                    {
+                        this.runnerThread.Interrupt();
+
+                        // Wait to be interrupted.
+                        this.eventCompletedEvent.WaitOne();
+                    }
                 }
             }
         }
