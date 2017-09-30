@@ -65,22 +65,13 @@ namespace SethCS.Basic
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="executeIfDisposed">
-        /// Whether or not to execute events that were not executed
-        /// while the thread was running upon being disposed.
-        /// Set to true to ensure ALL events that were added will get run when Dispose() is called.
-        /// Set to false, and any events that were not run will not be run
-        /// during Dispose().
-        /// </param>
-        public EventExecutor( bool executeIfDisposed = true )
+        public EventExecutor()
         {
             this.actionQueue = new Queue<Action>();
             this.actionSemaphore = new Semaphore( 0, int.MaxValue );
 
             this.isRunningLock = new object();
             this.IsRunning = false;
-
-            this.ExecuteWhenDisposed = executeIfDisposed;
         }
 
         // ---------------- Properties ----------------
@@ -106,21 +97,6 @@ namespace SethCS.Basic
                 }
             }
         }
-
-        /// <summary>
-        /// Whether or not to execute events that were not executed
-        /// while the thread was running upon being disposed.
-        /// Set to true to ensure ALL events that were added will get run when Dispose() is called.
-        /// Set to false, and any events that were not run will not be run
-        /// during Dispose().
-        /// 
-        /// You should set this to true if it is important that all events that get enqueued
-        /// get run, including any worker threads that get spawned.
-        /// 
-        /// Set this to false if you don't care... however be warned... any tasks you add
-        /// to worker threads do to you calling async/await stuff will still be running.
-        /// </summary>
-        public bool ExecuteWhenDisposed { get; private set; }
 
         // ----------------- Functions ----------------
 
@@ -161,25 +137,17 @@ namespace SethCS.Basic
         /// <summary>
         /// Disposes the event executor.
         /// The event queue stops, and gracefully waits for the thread to join.
-        /// It will then execute any unran events if ExecuteIfDisposed is set to true.
+        /// 
+        /// Note that any unran events will NOT be run.  If you want to guarentee all events have 
+        /// been executed, you can add one more event to the event queue, and wait
+        /// for that event to execute before calling Dispose.
         /// </summary>
         public virtual void Dispose()
         {
             this.IsRunning = false;
             this.actionSemaphore.Release();
             this.runnerThread?.Join();
-
-            if( this.ExecuteWhenDisposed )
-            {
-                while( this.actionQueue.Count > 0 )
-                {
-                    ExecuteEvent();
-                }
-            }
-            else
-            {
-                this.actionQueue.Clear();
-            }
+            this.actionQueue.Clear();
         }
 
         /// <summary>
@@ -198,13 +166,9 @@ namespace SethCS.Basic
 
             // If we still have things going on in the background,
             // wait for those to finish before we terminate the synchronization context.
-            // Unless, of course, we don't care since we have ExecuteWhenDisposed set to false.
-            if( this.ExecuteWhenDisposed )
+            while( context.IsBusy )
             {
-                while( context.IsBusy )
-                {
-                    ExecuteEvent();
-                }
+                ExecuteEvent();
             }
         }
 

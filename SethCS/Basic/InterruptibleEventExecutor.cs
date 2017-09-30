@@ -37,22 +37,12 @@ namespace SethCS.Basic
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="executeIfDisposed">
-        /// Whether or not to execute events that were not executed
-        /// while the thread was running upon being disposed.
-        /// Set to true to ensure ALL events that were added will get run when Dispose() is called.
-        /// Set to false, and any events that were not run will not be run
-        /// during Dispose().
-        /// 
-        /// Note, events will STILL be interrupted during the dispose function if they take too long.
-        /// </param>
         /// <param name="maxRunTime">
         /// How long each event is allowed to run for before being interrupted in milliseconds.
         /// 
         /// Set to <see cref="int.MaxValue"/> for no time limit.
         /// </param>
-        public InterruptibleEventExecutor( bool executeIfDisposed = true, int maxRunTime = int.MaxValue ) :
-            base( executeIfDisposed )
+        public InterruptibleEventExecutor( int maxRunTime = int.MaxValue )
         {
             if( maxRunTime <= 0 )
             {
@@ -149,15 +139,7 @@ namespace SethCS.Basic
         /// <summary>
         /// Disposes the event executor.
         /// The event queue stops, and gracefully waits for the thread to join.
-        /// It will then execute any unran events if ExecuteIfDisposed is set to true.
-        /// 
-        /// Note that events will still be interrupted if ExecuteIfDisposed is set to true
-        /// and they take longer than the allowed time.
-        /// 
-        /// Note, that if Dispose() was called before start was called and
-        /// ExecuteIfDisposed is set to true, events
-        /// will be executed, but they will not be interrupted (timing thread
-        /// would not have been started).
+        /// Note that any events that were NOT run will not be executed when Dispose is called.
         /// </summary>
         public override void Dispose()
         {
