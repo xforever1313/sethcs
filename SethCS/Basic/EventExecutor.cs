@@ -48,7 +48,7 @@ namespace SethCS.Basic
         /// <summary>
         /// Thread that executes the events.
         /// </summary>
-        private Thread runnerThread;
+        protected Thread runnerThread;
 
         /// <summary>
         /// Whether or not this thing is running or not.
@@ -72,18 +72,10 @@ namespace SethCS.Basic
         /// Set to false, and any events that were not run will not be run
         /// during Dispose().
         /// </param>
-        /// <param name="errorAction">
-        /// Action to take if an unhandled exception occurs
-        /// Null for swallowing it and take no action.
-        /// </param>
         public EventExecutor( bool executeIfDisposed = true )
         {
             this.actionQueue = new Queue<Action>();
             this.actionSemaphore = new Semaphore( 0, int.MaxValue );
-            this.runnerThread = new Thread(
-                () => this.Run()
-            );
-            this.runnerThread.Name = ThreadName;
 
             this.isRunningLock = new object();
             this.IsRunning = false;
@@ -135,8 +127,18 @@ namespace SethCS.Basic
         /// <summary>
         /// Starts the execution thread.
         /// </summary>
-        public void Start()
+        public virtual void Start()
         {
+            if( this.runnerThread != null )
+            {
+                throw new InvalidOperationException( "Already started." );
+            }
+
+            this.runnerThread = new Thread(
+                () => this.Run()
+            );
+            this.runnerThread.Name = ThreadName;
+
             this.IsRunning = true;
             this.runnerThread.Start();
         }
@@ -161,14 +163,11 @@ namespace SethCS.Basic
         /// The event queue stops, and gracefully waits for the thread to join.
         /// It will then execute any unran events if ExecuteIfDisposed is set to true.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             this.IsRunning = false;
             this.actionSemaphore.Release();
-            if( this.runnerThread.IsAlive )
-            {
-                this.runnerThread.Join();
-            }
+            this.runnerThread?.Join();
 
             if( this.ExecuteWhenDisposed )
             {
@@ -212,7 +211,7 @@ namespace SethCS.Basic
         /// <summary>
         /// Grabs the latest event from the queue and executes it.
         /// </summary>
-        private void ExecuteEvent()
+        protected virtual void ExecuteEvent()
         {
             try
             {

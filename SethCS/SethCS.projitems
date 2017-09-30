@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Basic\EventExecutor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\InterruptibleEventExecutor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\SemanticVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\GenericLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ArgumentChecker.cs" />

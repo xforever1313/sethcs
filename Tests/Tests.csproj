@@ -39,7 +39,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Basic\EventClass.cs" />
     <Compile Include="Basic\EventExecutorTest.cs" />
+    <Compile Include="Basic\InterruptibleEventExecutorTest.cs" />
     <Compile Include="Basic\StaticLoggerTest.cs" />
     <Compile Include="Exceptions\ArgumentCheckerTest.cs" />
     <Compile Include="Exceptions\ReadOnlyExceptionTest.cs" />
