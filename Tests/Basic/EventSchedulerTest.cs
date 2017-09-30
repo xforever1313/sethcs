@@ -21,7 +21,7 @@ namespace Tests
         /// <summary>
         /// Default timeout in ms.
         /// </summary>
-        private const int defaultTimeout = 500;
+        private const int defaultTimeout = 2000;
 
         /// <summary>
         /// Unit under test.
