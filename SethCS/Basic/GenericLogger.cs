@@ -33,11 +33,49 @@ namespace SethCS.Basic
 
         private object onWriteLock;
 
+        private int verbosity;
+
+        private object verbosityLock;
+
         // ---------------- Constructor ----------------
 
-        public GenericLogger()
+        public GenericLogger( int verbosityLevel = 0 )
         {
             this.onWriteLock = new object();
+
+            this.verbosity = verbosityLevel;
+            this.verbosityLock = new object();
+        }
+
+        // ---------------- Properties ----------------
+
+        /// <summary>
+        /// What the verbosity level is set to.
+        /// Defaulted to 0.
+        /// 
+        /// If a Write function is called, but the passed in 
+        /// verbosity level is greater than this value, nothing
+        /// gets written.
+        /// 
+        /// If this is set to a negative number, NOTHING (Inclduing WriteLines that do not
+        /// take in a verbosity level) gets written.
+        /// </summary>
+        public int Verbosity
+        {
+            get
+            {
+                lock( this.verbosityLock )
+                {
+                    return this.verbosity;
+                }
+            }
+            set
+            {
+                lock( this.verbosityLock )
+                {
+                    this.verbosity = value;
+                }
+            }
         }
 
         // ---------------- Functions ----------------
@@ -46,12 +84,20 @@ namespace SethCS.Basic
 
         /// <summary>
         /// Writes an empty line to the listening <see cref="OnWriteLine"/> events.
-        /// 
-        /// Thread-Safe.
         /// </summary>
         public void WriteLine()
         {
-            WriteLineInternal( OnWriteLine );
+            this.WriteLine( 0 );
+        }
+
+        /// <summary>
+        /// Writes an empty line to the lisenting <see cref="OnWriteLine"/> events, but
+        /// only is <see cref="Verbosity"/> is greater than the passed in verbosity level.
+        /// </summary>
+        /// <param name="verbosityLevel">The verbosity level required to print this message.</param>
+        public void WriteLine( int verbosityLevel )
+        {
+            this.WriteLineInternal( verbosityLevel, OnWriteLine );
         }
 
         /// <summary>
@@ -61,53 +107,105 @@ namespace SethCS.Basic
         /// <param name="objects">The objects used to format the string.</param>
         public void WriteLine( string formatStr, params object[] objects )
         {
-            WriteLineInternal( OnWriteLine, formatStr, objects );
+            this.WriteLine( 0, formatStr, objects );
+        }
+
+        /// <summary>
+        /// Writes a formatted string to the listening <see cref="OnWriteLine"/> events, but
+        /// only is <see cref="Verbosity"/> is greater than the passed in verbosity level.
+        /// </summary>
+        /// <param name="verbosityLevel">The verbosity level required to print this message.</param>
+        /// <param name="formatStr">The format string.</param>
+        /// <param name="objects">The objects used to format the string.</param>
+        public void WriteLine( int verbosityLevel, string formatStr, params object[] objects )
+        {
+            this.WriteLineInternal( verbosityLevel, OnWriteLine, formatStr, objects );
         }
 
         /// <summary>
         /// Writes a string with a new line at the end
         /// to all <see cref="OnWriteLine"/> events.
-        /// 
-        /// Thread-Safe.
         /// </summary>
         /// <param name="line">The string to write.</param>
         public void WriteLine( string line )
         {
-            WriteLineInternal( OnWriteLine, line );
+            WriteLine( 0, line );
+        }
+
+        /// <summary>
+        /// Writes a string with a new line at the end
+        /// to all <see cref="OnWriteLine"/> events but
+        /// only is <see cref="Verbosity"/> is greater than the passed in verbosity level.
+        /// </summary>
+        /// <param name="verbosityLevel">The verbosity level required to print this message.</param>
+        /// <param name="line">The string to write.</param>
+        public void WriteLine( int verbosityLevel, string line )
+        {
+            WriteLineInternal( verbosityLevel, OnWriteLine, line );
         }
 
         // -------- ErrorWriteLine --------
 
         /// <summary>
         /// Writes an empty line to the listening <see cref="OnErrorWriteLine"/> events.
-        /// 
-        /// Thread-Safe.
         /// </summary>
         public void ErrorWriteLine()
         {
-            WriteLineInternal( OnErrorWriteLine );
+            ErrorWriteLine( 0 );
         }
 
         /// <summary>
-        /// Writes a formatted string to the listening <see cref="OnErrorWriteLine"/> events.
+        /// Writes an empty line to the listening <see cref="OnErrorWriteLine"/> events, but
+        /// only is <see cref="Verbosity"/> is greater than the passed in verbosity level.
+        /// </summary>
+        /// <param name="verbosityLevel">The verbosity level required to print this message.</param>
+        public void ErrorWriteLine( int verbosityLevel )
+        {
+            WriteLineInternal( verbosityLevel, OnErrorWriteLine );
+        }
+
+        /// <summary>
+        /// Writes a formatted string to the listening <see cref="OnErrorWriteLine"/> events
         /// </summary>
         /// <param name="formatStr">The format string.</param>
         /// <param name="objects">The objects used to format the string.</param>
         public void ErrorWriteLine( string formatStr, params object[] objects )
         {
-            WriteLineInternal( OnErrorWriteLine, formatStr, objects );
+            ErrorWriteLine( 0, formatStr, objects );
+        }
+
+        /// <summary>
+        /// Writes a formatted string to the listening <see cref="OnErrorWriteLine"/> events, but
+        /// only is <see cref="Verbosity"/> is greater than the passed in verbosity level.
+        /// </summary>
+        /// <param name="verbosityLevel">The verbosity level required to print this message.</param>
+        /// <param name="formatStr">The format string.</param>
+        /// <param name="objects">The objects used to format the string.</param>
+        public void ErrorWriteLine( int verbosityLevel, string formatStr, params object[] objects )
+        {
+            WriteLineInternal( verbosityLevel, OnErrorWriteLine, formatStr, objects );
         }
 
         /// <summary>
         /// Writes a string with a new line at the end
         /// to all <see cref="OnErrorWriteLine"/> events.
-        /// 
-        /// Thread-Safe.
         /// </summary>
         /// <param name="line">The string to write.</param>
         public void ErrorWriteLine( string line )
         {
-            WriteLineInternal( OnErrorWriteLine, line );
+            ErrorWriteLine( 0, line );
+        }
+
+        /// <summary>
+        /// Writes a string with a new line at the end
+        /// to all <see cref="OnErrorWriteLine"/> events, but
+        /// only is <see cref="Verbosity"/> is greater than the passed in verbosity level.
+        /// </summary>
+        /// <param name="verbosityLevel">The verbosity level required to print this message.</param>
+        /// <param name="line">The string to write.</param>
+        public void ErrorWriteLine( int verbosityLevel, string line )
+        {
+            WriteLineInternal( verbosityLevel, OnErrorWriteLine, line );
         }
 
         // -------- Internal Functions --------
@@ -118,9 +216,9 @@ namespace SethCS.Basic
         /// Thread-Safe.
         /// </summary>
         /// <param name="e">The event to pass the line into.</param>
-        private void WriteLineInternal( Action<string> e )
+        private void WriteLineInternal( int verbosityLevel, Action<string> e )
         {
-            WriteLine( e, string.Empty );
+            WriteLineInternal( verbosityLevel, e, string.Empty );
         }
 
         /// <summary>
@@ -129,9 +227,9 @@ namespace SethCS.Basic
         /// <param name="e">The event to pass the line into.</param>
         /// <param name="formatStr">The format string.</param>
         /// <param name="objects">The objects used to format the string.</param>
-        private void WriteLineInternal( Action<string> e, string formatStr, params object[] objects )
+        private void WriteLineInternal( int verbosityLevel, Action<string> e, string formatStr, params object[] objects )
         {
-            WriteLine( e, string.Format( formatStr, objects ) );
+            WriteLineInternal( verbosityLevel, e, string.Format( formatStr, objects ) );
         }
 
         /// <summary>
@@ -140,14 +238,23 @@ namespace SethCS.Basic
         /// 
         /// Thread-Safe.
         /// </summary>
+        /// <param name="verbosityLevel">
+        /// The Verbosity level required to print this message.
+        /// If <see cref="Verbosity"/> is less than this number, the message is ignored.
+        /// </param>
         /// <param name="e">The event to pass the line into.</param>
         /// <param name="line">The string to write.</param>
-        private void WriteLine( Action<string> e, string line )
+        private void WriteLineInternal( int verbosityLevel, Action<string> e, string line )
         {
-            lock( onWriteLock )
+            int verbosity = this.Verbosity;
+
+            if( verbosityLevel <= verbosity )
             {
-                Action<string> action = e;
-                action?.Invoke( line + Environment.NewLine );
+                lock( onWriteLock )
+                {
+                    Action<string> action = e;
+                    action?.Invoke( line + Environment.NewLine );
+                }
             }
         }
     }
@@ -159,7 +266,7 @@ namespace SethCS.Basic
     {
         static StaticLogger()
         {
-            Log = new GenericLogger();
+            Log = new GenericLogger( 0 );
         }
 
         /// <summary>

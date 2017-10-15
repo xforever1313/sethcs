@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Basic\EventClass.cs" />
     <Compile Include="Basic\EventExecutorTest.cs" />
+    <Compile Include="Basic\GenericLoggerTest.cs" />
     <Compile Include="Basic\InterruptibleEventExecutorTest.cs" />
     <Compile Include="Basic\StaticLoggerTest.cs" />
     <Compile Include="Exceptions\ArgumentCheckerTest.cs" />
