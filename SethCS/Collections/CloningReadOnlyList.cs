@@ -21,6 +21,11 @@ namespace SethCS.Collections
     {
         // ---------------- Fields ----------------
 
+        /// <summary>
+        /// The wrapped list.
+        /// This is also used as the lock for this class (and can be used by any base classes that 
+        /// inherit this class).
+        /// </summary>
         protected IList<T> list;
 
         // ---------------- Constructor ----------------
@@ -41,7 +46,10 @@ namespace SethCS.Collections
         {
             get
             {
-                return this.CloneInstructions( this.list[index] );
+                lock( this.list )
+                {
+                    return this.CloneInstructions( this.list[index] );
+                }
             }
         }
 
@@ -49,7 +57,10 @@ namespace SethCS.Collections
         {
             get
             {
-                return this.list.Count;
+                lock( this.list )
+                {
+                    return this.list.Count;
+                }
             }
         }
 
@@ -64,75 +75,40 @@ namespace SethCS.Collections
 
         // -------- IEnumerable Implementation --------
 
+        /// <summary>
+        /// Creates an enumerator whose elements are clones of the items in this
+        /// list.  Any changes made to this enumerator will not impact
+        /// the elements saved in this list.
+        /// 
+        /// This function:
+        /// 1. Creates a new List{T}.
+        /// 2. Locks this class's list
+        /// 3. Adds the elements to this class's list to the new List{T} as CLONES.
+        /// 4. Returns the new List's enumerator.
+        /// </summary>
+        /// <remarks>
+        /// Foreach depends on the fact that a collection will not change.
+        /// Therefore, we'll just return a new list that contains copies of the elements
+        /// in this class.
+        /// </remarks>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return new CloningReadOnlyListEnumerator( this );
+            List<T> cloneList = new List<T>();
+            lock( this.list )
+            {
+                foreach( T t in this.list )
+                {
+                    cloneList.Add( this.CloneInstructions( t ) );
+                }
+            }
+
+            return cloneList.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
-        }
-
-        // ---------------- Helper Classes ----------------
-
-        private class CloningReadOnlyListEnumerator : IEnumerator<T>
-        {
-            // ---------------- Fields ----------------
-
-            private BaseCloningReadOnlyList<T> cloningList;
-            int position;
-
-            // ---------------- Constructor ----------------
-
-            public CloningReadOnlyListEnumerator( BaseCloningReadOnlyList<T> cloningList )
-            {
-                this.cloningList = cloningList;
-
-                // Enumerators are positioned before the first element
-                // until the first MoveNext() call.
-                this.position = -1;
-            }
-
-            // ---------------- Properties ----------------
-
-            // -------- IEnumerator Implementation --------
-
-            public T Current
-            {
-                get
-                {
-                    return this.cloningList.CloneInstructions( this.cloningList.list[this.position] );
-                }
-            }
-
-            object IEnumerator.Current
-            {
-                get
-                {
-                    return this.Current;
-                }
-            }
-
-            // ---------------- Functions ----------------
-
-            // -------- IEnumerator Implementation --------
-
-            public void Dispose()
-            {
-                // Nothing to do.
-            }
-
-            public bool MoveNext()
-            {
-                ++this.position;
-                return this.position < this.cloningList.list.Count;
-            }
-
-            public void Reset()
-            {
-                this.position = -1;
-            }
         }
     }
 
