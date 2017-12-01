@@ -6,8 +6,6 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using SethCS.Collections;
 
@@ -28,19 +26,6 @@ namespace Tests.Collections
         }
     }
 
-    public class CloneList : BaseCloningReadOnlyList<CloneableClass>
-    {
-        public void Add( CloneableClass value )
-        {
-            this.list.Add( value );
-        }
-
-        protected override CloneableClass CloneInstructions( CloneableClass original )
-        {
-            return original.Clone();
-        }
-    }
-
     [TestFixture]
     public class CloningReadOnlyListTests
     {
@@ -50,7 +35,9 @@ namespace Tests.Collections
         private CloneableClass obj2;
         private CloneableClass obj3;
 
-        private CloneList uut;
+        CloneableClass[] originals;
+
+        private CloningReadOnlyList<CloneableClass> uut;
 
         // ---------------- Setup / Teardown ----------------
 
@@ -61,11 +48,9 @@ namespace Tests.Collections
             this.obj2 = new CloneableClass( 2 );
             this.obj3 = new CloneableClass( 3 );
 
-            this.uut = new CloneList();
+            this.originals = new CloneableClass[] { obj1, obj2, obj3 };
 
-            this.uut.Add( obj1 );
-            this.uut.Add( obj2 );
-            this.uut.Add( obj3 );
+            this.uut = new CloningReadOnlyList<CloneableClass>( c => { return c.Clone(); }, originals );
         }
 
         [OneTimeTearDown]

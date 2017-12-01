@@ -21,13 +21,13 @@ namespace SethCS.Collections
     {
         // ---------------- Fields ----------------
 
-        protected List<T> list;
+        protected IList<T> list;
 
         // ---------------- Constructor ----------------
 
-        protected BaseCloningReadOnlyList()
+        protected BaseCloningReadOnlyList( IList<T> wrappedList )
         {
-            this.list = new List<T>();
+            this.list = wrappedList;
         }
 
         // ---------------- Properties ----------------
@@ -149,7 +149,17 @@ namespace SethCS.Collections
 
         // ---------------- Constructor ----------------
 
-        public CloningReadOnlyList( Func<T, T> cloningAction )
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="cloningAction">
+        /// The action to take while cloning an object in the list.
+        /// The action should return a copy of the passed in object that is equal,
+        /// but not the same reference.
+        /// </param>
+        /// <param name="wrappedList">The list to wrap.</param>
+        public CloningReadOnlyList( Func<T, T> cloningAction, IList<T> wrappedList ) :
+            base( wrappedList )
         {
             this.cloningAction = cloningAction;
         }
