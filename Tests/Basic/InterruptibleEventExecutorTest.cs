@@ -135,6 +135,30 @@ namespace Tests.Basic
             Assert.IsNull( err );
         }
 
+        /// <summary>
+        /// Ensures that if no events have been added, and we interrupt,
+        /// we block until we are in an interrupting state.
+        /// </summary>
+        [Test]
+        public void NoEventAndInterruptTest()
+        {
+            Exception err = null;
+
+            using( InterruptibleEventExecutor uut = new InterruptibleEventExecutor( 2000 ) )
+            {
+                uut.OnError += delegate ( Exception e )
+                {
+                    err = e;
+                };
+
+                uut.Start();
+
+                Thread.Sleep( 2000 );
+                Assert.IsFalse( uut.Interrupt( 1000 ) );
+            }
+
+            Assert.IsNull( err );
+        }
 
         /// <summary>
         /// Tests to ensure 1000 events are executed successfully.
