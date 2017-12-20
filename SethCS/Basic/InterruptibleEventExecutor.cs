@@ -24,6 +24,7 @@ namespace SethCS.Basic
 
         private AutoResetEvent eventCompletedEvent;
         private AutoResetEvent eventStartedEvent;
+        private ManualResetEvent ableToInterrupt;
 
         /// <summary>
         /// This thread will interrupt events if they take to long to execute.
@@ -53,6 +54,7 @@ namespace SethCS.Basic
             this.maxRunTime = maxRunTime;
             this.eventCompletedEvent = new AutoResetEvent( false );
             this.eventStartedEvent = new AutoResetEvent( false );
+            this.ableToInterrupt = new ManualResetEvent( false );
 
             this.isActive = false;
             this.isActiveLock = new object();
@@ -107,14 +109,26 @@ namespace SethCS.Basic
 
         /// <summary>
         /// Interrupts the event runner thread.
+        /// Blocks until the running thread is in an interruptable state
+        /// (an event is actively being run).  This means that if no
+        /// events are on the queue, this will block forever.
+        /// This is why there is a supplied timeout.
         /// </summary>
-        public void Interrupt()
+        /// <param name="timeout">How long to wait before interrupting</param>
+        /// <returns>True if interrupt was sent to the runner thread, else false.</returns>
+        public bool Interrupt( int timeout = Timeout.Infinite )
         {
             if( this.runnerThread == null )
             {
                 throw new InvalidOperationException( "Not Started.  Call Start() first." );
             }
-            this.runnerThread.Interrupt();
+            bool waitForInterrupt = this.ableToInterrupt.WaitOne( timeout );
+            if( waitForInterrupt )
+            {
+                this.runnerThread.Interrupt();
+            }
+
+            return waitForInterrupt;
         }
 
         /// <summary>
@@ -136,10 +150,13 @@ namespace SethCS.Basic
                     try
                     {
                         this.eventStartedEvent.Set();
+                        this.ableToInterrupt.Set();
                         action();
+                        this.ableToInterrupt.Reset();
                     }
                     finally
                     {
+                        this.ableToInterrupt.Reset();
                         this.eventCompletedEvent.Set();
                     }
                 };
@@ -166,6 +183,7 @@ namespace SethCS.Basic
                 this.eventStartedEvent.Set();
                 this.eventWatcherThread?.Join();
 
+                this.ableToInterrupt.Dispose();
                 this.eventStartedEvent.Dispose();
                 this.eventCompletedEvent.Dispose();
             }

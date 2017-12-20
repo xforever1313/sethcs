@@ -160,15 +160,29 @@ namespace SethCS.Basic
 
             while( this.IsRunning )
             {
-                this.actionSemaphore.WaitOne();
-                ExecuteEvent();
+                try
+                {
+                    this.actionSemaphore.WaitOne();
+                    ExecuteEvent();
+                }
+                catch( Exception e )
+                {
+                    this.OnError?.Invoke( e );
+                }
             }
 
             // If we still have things going on in the background,
             // wait for those to finish before we terminate the synchronization context.
             while( context.IsBusy )
             {
-                ExecuteEvent();
+                try
+                {
+                    ExecuteEvent();
+                }
+                catch( Exception e )
+                {
+                    this.OnError?.Invoke( e );
+                }
             }
         }
 
@@ -177,27 +191,20 @@ namespace SethCS.Basic
         /// </summary>
         protected void ExecuteEvent()
         {
-            try
-            {
-                Action action = null;
+            Action action = null;
 
-                // Grab the latest action from the queue.
-                lock( this.actionQueue )
+            // Grab the latest action from the queue.
+            lock( this.actionQueue )
+            {
+                if( this.actionQueue.Count > 0 )
                 {
-                    if( this.actionQueue.Count > 0 )
-                    {
-                        action = this.actionQueue.Dequeue();
-                    }
+                    action = this.actionQueue.Dequeue();
                 }
+            }
 
-                // Only execute event if there was something in the queue.
-                // Its possible we ended up here due to the thread stopping.
-                action?.Invoke();
-            }
-            catch( Exception e )
-            {
-                this.OnError?.Invoke( e );
-            }
+            // Only execute event if there was something in the queue.
+            // Its possible we ended up here due to the thread stopping.
+            action?.Invoke();
         }
 
         // ---------------- Helper Classes ----------------
