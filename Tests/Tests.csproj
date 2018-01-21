@@ -42,6 +42,7 @@
     <Compile Include="Basic\GenericLoggerTest.cs" />
     <Compile Include="Basic\InterruptibleEventExecutorTest.cs" />
     <Compile Include="Basic\StaticLoggerTest.cs" />
+    <Compile Include="Basic\WatchDogTimerTests.cs" />
     <Compile Include="Collections\CloningReadOnlyListTests.cs" />
     <Compile Include="Exceptions\ArgumentCheckerTest.cs" />
     <Compile Include="Exceptions\ReadOnlyExceptionTest.cs" />
