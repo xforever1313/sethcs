@@ -1,5 +1,5 @@
 ﻿//
-//          Copyright Seth Hendrick 2016-2017.
+//          Copyright Seth Hendrick 2016-2018.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -7,6 +7,7 @@
 
 using System;
 using System.Threading;
+using SethCS.Exceptions;
 
 namespace SethCS.Basic
 {
@@ -19,6 +20,8 @@ namespace SethCS.Basic
     public class InterruptibleEventExecutor : EventExecutor
     {
         // ----------------- Fields -----------------
+
+        public new const string DefaultThreadName = nameof( InterruptibleEventExecutor );
 
         private int maxRunTime;
 
@@ -33,6 +36,7 @@ namespace SethCS.Basic
 
         private bool isActive;
         private object isActiveLock;
+        private string name;
 
         // ----------------- Constructor -----------------
 
@@ -44,12 +48,17 @@ namespace SethCS.Basic
         /// 
         /// Set to <see cref="int.MaxValue"/> for no time limit.
         /// </param>
-        public InterruptibleEventExecutor( int maxRunTime = int.MaxValue )
+        /// <param name="name">
+        /// What to name the event executor's thread.  Null for default value.
+        /// </param>
+        public InterruptibleEventExecutor( int maxRunTime = int.MaxValue, string name = DefaultThreadName )
         {
             if( maxRunTime <= 0 )
             {
                 throw new ArgumentException( "Must be greater than 0.", nameof( maxRunTime ) );
             }
+
+            ArgumentChecker.IsNotNull( name, nameof( name ) );
 
             this.maxRunTime = maxRunTime;
             this.eventCompletedEvent = new AutoResetEvent( false );
@@ -58,6 +67,7 @@ namespace SethCS.Basic
 
             this.isActive = false;
             this.isActiveLock = new object();
+            this.name = name;
         }
 
         // ----------------- Properties -----------------
@@ -100,6 +110,7 @@ namespace SethCS.Basic
                 this.eventWatcherThread = new Thread(
                     this.WatcherThreadRun
                 );
+                this.eventWatcherThread.Name = this.name;
 
                 this.eventWatcherThread.Start();
             }

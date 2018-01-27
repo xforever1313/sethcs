@@ -1,5 +1,5 @@
 ﻿//
-//          Copyright Seth Hendrick 2016-2017.
+//          Copyright Seth Hendrick 2016-2018.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using SethCS.Exceptions;
 
 namespace SethCS.Basic
 {
@@ -32,7 +33,7 @@ namespace SethCS.Basic
         /// <summary>
         /// Name of the event executor thread.
         /// </summary>
-        public const string ThreadName = nameof( EventExecutor );
+        public const string DefaultThreadName = nameof( EventExecutor );
 
         /// <summary>
         /// Queue of actions to do.
@@ -60,18 +61,25 @@ namespace SethCS.Basic
         /// </summary>
         private object isRunningLock;
 
+        private readonly string name;
+
         // ---------------- Constructor ----------------
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public EventExecutor()
+        /// <param name="name">What to name the EventExecutor's thread.</param>
+        public EventExecutor( string name = DefaultThreadName )
         {
+            ArgumentChecker.IsNotNull( name, nameof( name ) );
+
             this.actionQueue = new Queue<Action>();
             this.actionSemaphore = new Semaphore( 0, int.MaxValue );
 
             this.isRunningLock = new object();
             this.IsRunning = false;
+
+            this.name = name;
         }
 
         // ---------------- Properties ----------------
@@ -113,7 +121,7 @@ namespace SethCS.Basic
             this.runnerThread = new Thread(
                 () => this.Run()
             );
-            this.runnerThread.Name = ThreadName;
+            this.runnerThread.Name = this.name;
 
             this.IsRunning = true;
             this.runnerThread.Start();

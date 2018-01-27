@@ -158,7 +158,7 @@ namespace Tests.Basic
                 executor.AddEvent(
                     async delegate ()
                     {
-                        Assert.AreEqual( EventExecutor.ThreadName, Thread.CurrentThread.Name );
+                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
                         await e1.AsyncWaitAndExecute(
                             2 * 1000,
                             delegate()
@@ -169,7 +169,7 @@ namespace Tests.Basic
                                 }
                             }
                         );
-                        Assert.AreEqual( EventExecutor.ThreadName, Thread.CurrentThread.Name );
+                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
 
                     }
                 );
@@ -177,7 +177,7 @@ namespace Tests.Basic
                 executor.AddEvent(
                     async delegate ()
                     {
-                        Assert.AreEqual( EventExecutor.ThreadName, Thread.CurrentThread.Name );
+                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
                         await e2.AsyncWaitAndExecute(
                             3 * 1000,
                             delegate()
@@ -188,7 +188,7 @@ namespace Tests.Basic
                                 }
                             }
                         );
-                        Assert.AreEqual( EventExecutor.ThreadName, Thread.CurrentThread.Name );
+                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
                     }
                 );
 
@@ -196,7 +196,7 @@ namespace Tests.Basic
                 executor.AddEvent(
                     async delegate ()
                     {
-                        Assert.AreEqual( EventExecutor.ThreadName, Thread.CurrentThread.Name );
+                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
                         await e3.AsyncWaitAndExecute(
                             4 * 1000,
                             delegate()
@@ -207,14 +207,14 @@ namespace Tests.Basic
                                 }
                             }
                         );
-                        Assert.AreEqual( EventExecutor.ThreadName, Thread.CurrentThread.Name );
+                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
                     }
                 );
 
                 executor.AddEvent(
                     delegate ()
                     {
-                        Assert.AreEqual( EventExecutor.ThreadName, Thread.CurrentThread.Name );
+                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
                         syncClass.WaitAndExecute(
                             10 * 1000,
                             delegate ()
@@ -225,7 +225,7 @@ namespace Tests.Basic
                                 }
                             }
                         );
-                        Assert.AreEqual( EventExecutor.ThreadName, Thread.CurrentThread.Name );
+                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
                     }
                 );
 
