@@ -36,7 +36,6 @@ namespace SethCS.Basic
 
         private bool isActive;
         private object isActiveLock;
-        private string name;
 
         // ----------------- Constructor -----------------
 
@@ -51,7 +50,8 @@ namespace SethCS.Basic
         /// <param name="name">
         /// What to name the event executor's thread.  Null for default value.
         /// </param>
-        public InterruptibleEventExecutor( int maxRunTime = int.MaxValue, string name = DefaultThreadName )
+        public InterruptibleEventExecutor( int maxRunTime = int.MaxValue, string name = DefaultThreadName ) :
+            base( name )
         {
             if( maxRunTime <= 0 )
             {
@@ -67,7 +67,6 @@ namespace SethCS.Basic
 
             this.isActive = false;
             this.isActiveLock = new object();
-            this.name = name;
         }
 
         // ----------------- Properties -----------------
@@ -110,7 +109,7 @@ namespace SethCS.Basic
                 this.eventWatcherThread = new Thread(
                     this.WatcherThreadRun
                 );
-                this.eventWatcherThread.Name = this.name;
+                this.eventWatcherThread.Name = this.name + "'s event watcher";
 
                 this.eventWatcherThread.Start();
             }

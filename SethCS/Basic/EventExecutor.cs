@@ -61,7 +61,7 @@ namespace SethCS.Basic
         /// </summary>
         private object isRunningLock;
 
-        private readonly string name;
+        protected readonly string name;
 
         // ---------------- Constructor ----------------
 
