@@ -7,6 +7,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using SethCS.Exceptions;
 
 namespace SethCS.Extensions
 {
@@ -33,6 +34,13 @@ namespace SethCS.Extensions
         {
             Regex regex = new Regex( @"\s+" );
             return regex.Replace( str, "" + replaceCharacter );
+        }
+
+        public static bool EqualsIgnoreCase( this string str, string other )
+        {
+            ArgumentChecker.IsNotNull( str, nameof( str ) );
+
+            return str.Equals( other, StringComparison.InvariantCultureIgnoreCase );
         }
 
         /// <summary>
