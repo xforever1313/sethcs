@@ -25,6 +25,13 @@ namespace SethCS.Basic
         public event Action<string> OnWriteLine;
 
         /// <summary>
+        /// Event that is triggered when WarningWriteLine is called.
+        ///
+        /// Does not need to be thread-safe, all functions in this class are.
+        /// </summary>
+        public event Action<string> OnWarningWriteLine;
+
+        /// <summary>
         /// Event that is triggered when ErrorWriteLine is called.
         /// 
         /// Does not need to be thread-safe, all functions in this class are.
@@ -142,6 +149,70 @@ namespace SethCS.Basic
         public void WriteLine( int verbosityLevel, string line )
         {
             WriteLineInternal( verbosityLevel, OnWriteLine, line );
+        }
+
+        // -------- WarningWriteLine --------
+
+        /// <summary>
+        /// Writes an empty line to the listening <see cref="OnWarningWriteLine"/> events.
+        /// </summary>
+        public void WarningWriteLine()
+        {
+            this.WarningWriteLine( 0 );
+        }
+
+        /// <summary>
+        /// Writes an empty line to the lisenting <see cref="OnWarningWriteLine"/> events, but
+        /// only is <see cref="Verbosity"/> is greater than the passed in verbosity level.
+        /// </summary>
+        /// <param name="verbosityLevel">The verbosity level required to print this message.</param>
+        public void WarningWriteLine( int verbosityLevel )
+        {
+            this.WriteLineInternal( verbosityLevel, OnWarningWriteLine );
+        }
+
+        /// <summary>
+        /// Writes a formatted string to the listening <see cref="OnWarningWriteLine"/> events.
+        /// </summary>
+        /// <param name="formatStr">The format string.</param>
+        /// <param name="objects">The objects used to format the string.</param>
+        public void WarningWriteLine( string formatStr, params object[] objects )
+        {
+            this.WarningWriteLine( 0, formatStr, objects );
+        }
+
+        /// <summary>
+        /// Writes a formatted string to the listening <see cref="OnWarningWriteLine"/> events, but
+        /// only is <see cref="Verbosity"/> is greater than the passed in verbosity level.
+        /// </summary>
+        /// <param name="verbosityLevel">The verbosity level required to print this message.</param>
+        /// <param name="formatStr">The format string.</param>
+        /// <param name="objects">The objects used to format the string.</param>
+        public void WarningWriteLine( int verbosityLevel, string formatStr, params object[] objects )
+        {
+            this.WriteLineInternal( verbosityLevel, OnWarningWriteLine, formatStr, objects );
+        }
+
+        /// <summary>
+        /// Writes a string with a new line at the end
+        /// to all <see cref="OnWarningWriteLine"/> events.
+        /// </summary>
+        /// <param name="line">The string to write.</param>
+        public void WarningWriteLine( string line )
+        {
+            this.WarningWriteLine( 0, line );
+        }
+
+        /// <summary>
+        /// Writes a string with a new line at the end
+        /// to all <see cref="OnWarningWriteLine"/> events but
+        /// only is <see cref="Verbosity"/> is greater than the passed in verbosity level.
+        /// </summary>
+        /// <param name="verbosityLevel">The verbosity level required to print this message.</param>
+        /// <param name="line">The string to write.</param>
+        public void WarningWriteLine( int verbosityLevel, string line )
+        {
+            this.WriteLineInternal( verbosityLevel, OnWarningWriteLine, line );
         }
 
         // -------- ErrorWriteLine --------
