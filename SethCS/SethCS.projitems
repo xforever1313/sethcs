@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Basic\GenericLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\WatchdogTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\CloningReadOnlyList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IO\ConsoleColorResetter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ArgumentChecker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ReadOnlyException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ValidationException.cs" />

@@ -50,6 +50,7 @@
     <Compile Include="Exceptions\ValidationExceptionTest.cs" />
     <Compile Include="Extensions\PathTests.cs" />
     <Compile Include="Extensions\StringExtensionsTest.cs" />
+    <Compile Include="IO\ConsoleColorResetterTests.cs" />
     <Compile Include="IO\ConsoleHelpersTest.cs" />
     <Compile Include="Basic\SemanticVersionTest.cs" />
     <Compile Include="Basic\EventSchedulerTest.cs" />
