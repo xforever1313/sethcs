@@ -24,6 +24,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DateTimeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\EventScheduler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\RAIITimer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IO\HttpGetter.cs" />
   </ItemGroup>
 </Project>

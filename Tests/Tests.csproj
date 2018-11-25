@@ -54,7 +54,6 @@
     <Compile Include="Basic\SemanticVersionTest.cs" />
     <Compile Include="Basic\EventSchedulerTest.cs" />
     <Compile Include="Basic\RAIITimerTest.cs" />
-    <Compile Include="IO\HttpGetterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibSethCS\LibSethCS.csproj">
