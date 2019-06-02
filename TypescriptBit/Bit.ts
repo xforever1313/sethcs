@@ -127,10 +127,10 @@ class TestRunner {
                     try{
                         fix.DoTestSetup();
                         test.DoTest();
-                        results.AddPass(test.Name);
+                        results.AddPass(fix.FixtureName + "-> " + test.Name);
                     }
-                    catch(e){
-                        results.AddFail(test.Name + ": " + e);
+                    catch (e) {
+                        results.AddFail(fix.FixtureName + "-> " + test.Name + ": " + e);
                     }
                     finally{
                         fix.DoTestTeardown();
