@@ -141,8 +141,6 @@ namespace SethCS.Basic
         /// </summary>
         public void Dispose()
         {
-            CheckDisposed();
-
             this.Dispose( true );
             GC.SuppressFinalize( this );
         }
@@ -158,7 +156,12 @@ namespace SethCS.Basic
                 try
                 {
                     this.cleanupQueue.Add( cleanupThreadExitId );
-                    this.cleanupThread.Join();
+                    bool joined = this.cleanupThread.Join( 3000 );
+                    if ( joined == false )
+                    {
+                        this.cleanupThread.Abort();
+                        this.cleanupThread.Join( 3000 );
+                    }
 
                     if( disposing )
                     {
