@@ -6,6 +6,8 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 using SethCS.Exceptions;
 
@@ -91,6 +93,28 @@ namespace SethCS.Extensions
             array[arrayIndex] = str.Substring( strIndex );
 
             return array;
+        }
+
+        /// <summary>
+        /// Takes a string and replaces any character that is not a character
+        /// to its hex value ([0x01]). So a SOHHelloWorldEOT will turn into [0x01]HelloWorld[0x04]
+        /// </summary>
+        public static string EscapeNonCharacters( this IEnumerable<char> str )
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach ( char ch in str )
+            {
+                if ( char.IsControl( ch ) )
+                {
+                    builder.Append( "[0x" + Convert.ToInt32( ch ).ToString( "X4" ) + "]" );
+                }
+                else
+                {
+                    builder.Append( ch );
+                }
+            }
+
+            return builder.ToString();
         }
     }
 }
