@@ -5,36 +5,16 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
+using Cake.ArgumentBinder;
+
 // ---------------- Classes ----------------
 
-public class DeleteHelpers
+public class DeleteHelpersConfig
 {
-    // ---------------- Arguments ----------------
-
-    public const string DeleteDirArg = "deletion_directory";
-    public const string NumFilesToKeepArg = "num_to_keep";
-    public const string PatternArg = "deletion_pattern";
-
-    // ---------------- Fields ----------------
-
-    private const string defaultPattern = "*";
-
-    private readonly ICakeContext cakeContext;
-
     // ---------------- Constructor ----------------
 
-    public DeleteHelpers( ICakeContext cakeContext )
+    public DeleteHelpersConfig()
     {
-        this.cakeContext = cakeContext;
-        
-        string dir = cakeContext.Argument( DeleteHelpers.DeleteDirArg, string.Empty );
-        this.Directory = new DirectoryPath( dir );
-        this.NumberOfFilesToKeep = cakeContext.Argument<int>( DeleteHelpers.NumFilesToKeepArg, 0 );
-        if( this.NumberOfFilesToKeep < 0 )
-        {
-            this.NumberOfFilesToKeep = 0;
-        }
-        this.DeletionPattern = cakeContext.Argument( DeleteHelpers.PatternArg, DeleteHelpers.defaultPattern );
     }
 
     // ---------------- Properties ----------------
@@ -42,7 +22,12 @@ public class DeleteHelpers
     /// <summary>
     /// The directory to delete things from.
     /// </summary>
-    public DirectoryPath Directory { get; private set; }
+    [StringArgument(
+        "path",
+        Description = "The path to delete from.",
+        Required = true
+    )]
+    public string Directory { get; set; }
 
     /// <summary>
     /// The number of files or directories 
@@ -50,46 +35,87 @@ public class DeleteHelpers
     /// Defaulted to 0.
     /// Can not be negative.
     /// </summary>
-    public int NumberOfFilesToKeep { get; private set; }
+    [IntegerArgument(
+        "num_to_keep",
+        Description = "The number of the most recent files/directories to keep that match the pattern.",
+        DefaultValue = 0,
+        Min = 0,
+        Max = 255
+    )]
+    public int NumberOfFilesToKeep { get; set; }
 
     /// <summary>
     /// The glob of the deletion pattern to use.
     /// </summary>
-    public string DeletionPattern { get; private set; }
+    [StringArgument(
+        "pattern",
+        Description = "The glob pattern to delete files/directories from.",
+        DefaultValue = "*"
+    )]
+    public string DeletionPattern { get; set; }
+
+    [BooleanArgument(
+        "dry_run",
+        Description = "Set to 'true' to not delete any files, this will simply print what files will be deleted.",
+        DefaultValue = false
+    )]
+    public bool DryRun { get; set; }
+
+    public DirectoryPath FullDirectory
+    {
+        get
+        {
+            DirectoryPath baseDir = new DirectoryPath( this.Directory );
+            DirectoryPath globPath = new DirectoryPath( this.DeletionPattern );
+
+            return baseDir.Combine( globPath );
+        }
+    }
 
     // ---------------- Functions ----------------
+}
 
-    public void DeleteDirectories()
+public static class DeleteHelpers
+{
+    // ---------------- Functions ----------------
+
+    public static void DeleteDirectories( ICakeContext cakeContext, DeleteHelpersConfig config )
     {
-        DirectoryPathCollection dirs = this.cakeContext.GetDirectories( this.DeletionPattern );
+        DirectoryPathCollection dirs = cakeContext.GetDirectories( config.FullDirectory.ToString() );
         List<DirectoryPath> orderedDirs = dirs.OrderBy( f => System.IO.Directory.GetCreationTime( f.ToString() ) ).ToList();
         
-        while( orderedDirs.Count > this.NumberOfFilesToKeep )
+        while( orderedDirs.Count > config.NumberOfFilesToKeep )
         {
             DirectoryPath dir = orderedDirs[0];
-            this.cakeContext.Information( $"Deleting '{dir.ToString()}'" );
+            cakeContext.Information( $"Deleting '{dir.ToString()}'" );
 
-            DeleteDirectorySettings dirSettings = new DeleteDirectorySettings
+            if( config.DryRun == false )
             {
-                Force = true,
-                Recursive = true
-            };
-            
-            this.cakeContext.DeleteDirectory( dir, dirSettings );
+                DeleteDirectorySettings dirSettings = new DeleteDirectorySettings
+                {
+                    Force = true,
+                    Recursive = true
+                };
+                
+                cakeContext.DeleteDirectory( dir, dirSettings );
+            }
             orderedDirs.RemoveAt( 0 );
         }
     }
 
-    public void DeleteFiles()
+    public static void DeleteFiles( ICakeContext cakeContext, DeleteHelpersConfig config )
     {
-        FilePathCollection files = this.cakeContext.GetFiles( this.DeletionPattern );
+        FilePathCollection files = cakeContext.GetFiles( config.FullDirectory.ToString() );
         List<FilePath> orderedFiles = files.OrderBy( f => System.IO.File.GetCreationTime( f.ToString() ) ).ToList();
         
-        while( orderedFiles.Count > this.NumberOfFilesToKeep )
+        while( orderedFiles.Count > config.NumberOfFilesToKeep )
         {
             FilePath file = orderedFiles[0];
-            this.cakeContext.Information( $"Deleting '{file.ToString()}'" );
-            this.cakeContext.DeleteFile( file );
+            cakeContext.Information( $"Deleting '{file.ToString()}'" );
+            if( config.DryRun == false )
+            {
+                cakeContext.DeleteFile( file );
+            }
             orderedFiles.RemoveAt( 0 );
         }
     }
@@ -101,38 +127,18 @@ Task( "delete_files" )
 .Does(
     ( context ) =>
     {
-        DeleteHelpers helpers = new DeleteHelpers( context );
-        helpers.DeleteFiles();
+        DeleteHelpersConfig config = ArgumentBinder.FromArguments<DeleteHelpersConfig>( context );
+        DeleteHelpers.DeleteFiles( context, config );
     }
 )
-.Description(
-@"Deletes files within a specific directory.
-Arguments:
-    - " + $"{DeleteHelpers.DeleteDirArg}: The path to delete files from (required)." + @"
-    - " + $"{DeleteHelpers.NumFilesToKeepArg}: The number of the most recent files" + @"
-                                 to keep that match the pattern.
-                                 Defaulted to 0.  Can not be negative.
-    - " + $"{DeleteHelpers.PatternArg}: The glob pattern to delete files from." + @"
-                        Defaulted to '*'
-"
-);
+.Description( ArgumentBinder.GetDescription<DeleteHelpersConfig>( "Deletes specified files." ) );
 
 Task( "delete_dirs" )
 .Does(
     ( context ) =>
     {
-        DeleteHelpers helpers = new DeleteHelpers( context );
-        helpers.DeleteDirectories();
+        DeleteHelpersConfig config = ArgumentBinder.FromArguments<DeleteHelpersConfig>( context );
+        DeleteHelpers.DeleteDirectories( context, config );
     }
 )
-.Description(
-@"Deletes directories within a specific directory.
-Arguments:
-    - " + $"{DeleteHelpers.DeleteDirArg}: The path to delete directories from (required)." + @"
-    - " + $"{DeleteHelpers.NumFilesToKeepArg}: The number of the most recent files" + @"
-                                 to keep that match the pattern.
-                                 Defaulted to 0.  If negative, this becomes 0.
-    - " + $"{DeleteHelpers.PatternArg}: The glob pattern to delete files from." + @"
-                        Defaulted to '*'
-"
-);
+.Description( ArgumentBinder.GetDescription<DeleteHelpersConfig>( "Deletes specified directories." ) );
