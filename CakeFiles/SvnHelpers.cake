@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#load "./ArgumentHelpers.cake"
+#load "Includes.cake"
 
 public class SvnConfig
 {
@@ -32,11 +32,9 @@ Task( "SVN" )
 .Does(
     ( context ) =>
     {
-        SvnConfig config = ArgumentHelpers.FromArguments<SvnConfig>( context );
+        SvnConfig config = CreateFromArguments<SvnConfig>();
 
         Information( "EXE: " + config.SvnExeLocation );
         Information( "Root: " + config.SvnCheckoutRoot );
     }
-).Description( ArgumentHelpers.GetDescription<SvnConfig>( "Prints SVN stuff" ) );
-
-RunTarget("SVN");
+).Description( ArgumentBinder.GetDescription<SvnConfig>( "Prints SVN stuff" ) );
