@@ -20,7 +20,7 @@ namespace SethCS.CakeAddin.Msi
         /// <param name="szDatabasePath">Path to the MSI file</param>
         /// <param name="szPersist">How it the database should be opened.</param>
         /// <param name="phDatabase">
-        /// Pointer to the database.  This is a 32-bit pointer.  Should be closed with <see cref="MsiCloseHandle(IntPtr)"/>.
+        /// Pointer to the database.  This is a 32-bit pointer.  Should be closed with <see cref="NativeMsiCloseHandle(IntPtr)"/>.
         /// </param>
         uint NativeMsiOpenDatabase( string szDatabasePath, IntPtr szPersist, out IntPtr phDatabase );
 
@@ -33,7 +33,7 @@ namespace SethCS.CakeAddin.Msi
         /// Use <see cref="MsiCreateRecord"/> to create this handle.
         /// </param>
         /// <param name="szQuery">SQL query for querying the database.</param>
-        /// <param name="phView">Pointer to a handler to the view returned.  Should be cleaned up with <see cref="MsiCloseHandle"/></param>
+        /// <param name="phView">Pointer to a handler to the view returned.  Should be cleaned up with <see cref="NativeMsiCloseHandle"/></param>
         int NativeMsiDatabaseOpenViewW( IntPtr hDatabase, [MarshalAs( UnmanagedType.LPWStr )] string szQuery, out IntPtr phView );
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SethCS.CakeAddin.Msi
         /// Specifies the number of fields the record will have. The maximum number of fields in a record is limited to 65535.
         /// </param>
         /// <returns>
-        /// A handle that should be closed with <see cref="MsiCloseHandle(IntPtr)"/>
+        /// A handle that should be closed with <see cref="NativeMsiCloseHandle(IntPtr)"/>
         /// If this function fails, this returns null.
         /// </returns>
         IntPtr NativeMsiCreateRecord( uint cParams );
@@ -63,7 +63,7 @@ namespace SethCS.CakeAddin.Msi
         /// </summary>
         /// <seealso cref="https://docs.microsoft.com/en-us/windows/win32/api/msiquery/nf-msiquery-msiviewfetch"/>
         /// <param name="hView">Handle to view the fetch from.</param>
-        /// <param name="hRecord">Should be closed with <see cref="MsiCloseHandle(IntPtr)"/></param>
+        /// <param name="hRecord">Should be closed with <see cref="NativeMsiCloseHandle(IntPtr)"/></param>
         /// <returns></returns>
         uint NativeMsiViewFetch( IntPtr hView, out IntPtr hRecord );
 

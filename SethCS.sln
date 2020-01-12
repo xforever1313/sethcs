@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSethCS", "LibSethCS\LibS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SethCS.CakeAddin", "CakeAddin\SethCS.CakeAddin\SethCS.CakeAddin.csproj", "{85CA3F8E-349F-4B0A-B9F2-1B2B3BBDFC2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SethCS.CakeAddin", "CakeAddin\SethCS.CakeAddin.csproj", "{85CA3F8E-349F-4B0A-B9F2-1B2B3BBDFC2D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

@@ -5,14 +5,12 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <Import Project="..\..\SethCS\SethCS.projitems" Label="Shared" />
-
   <ItemGroup>
     <PackageReference Include="Cake.Core" Version="0.35.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\LibSethCS\LibSethCS.csproj" />
+    <ProjectReference Include="..\LibSethCS\LibSethCS.csproj" />
   </ItemGroup>
 
 </Project>
