@@ -10,3 +10,4 @@ Release
 *.userprefs
 CodeCoverage
 /CakeFiles/tools
+/tools
