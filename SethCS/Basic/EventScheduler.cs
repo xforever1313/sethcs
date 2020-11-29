@@ -83,8 +83,6 @@ namespace SethCS.Basic
             this.nextIdLock = new object();
 
             this.cleanupQueue = new BlockingCollection<int>();
-            this.cleanupThread = new Thread( this.CleanupThreadLoop );
-            this.cleanupThread.Start();
         }
 
         /// <summary>
@@ -136,6 +134,19 @@ namespace SethCS.Basic
 
         // -------- Functions --------
 
+        public void Start()
+        {
+            this.CheckDisposed();
+
+            if( this.cleanupThread != null )
+            {
+                throw new InvalidOperationException( "Already started" );
+            }
+
+            this.cleanupThread = new Thread( this.CleanupThreadLoop );
+            this.cleanupThread.Start();
+        }
+
         /// <summary>
         /// Releases all resource used by the <see cref="SethCS.Basic.EventScheduler"/> object.
         /// </summary>
@@ -155,12 +166,16 @@ namespace SethCS.Basic
             {
                 try
                 {
-                    this.cleanupQueue.Add( cleanupThreadExitId );
-                    bool joined = this.cleanupThread.Join( 3000 );
-                    if ( joined == false )
+                    if( this.cleanupThread != null )
                     {
-                        this.cleanupThread.Abort();
-                        this.cleanupThread.Join( 3000 );
+                        this.cleanupQueue.Add( cleanupThreadExitId );
+                        bool joined = this.cleanupThread.Join( 3000 );
+                        if( joined == false )
+                        {
+                            this.cleanupThread.Abort();
+                            this.cleanupThread.Join( 3000 );
+                            this.cleanupThread = null;
+                        }
                     }
 
                     if( disposing )

@@ -40,6 +40,7 @@ namespace Tests
         {
             this.cleanedUpQueue = new BlockingCollection<int>();
             this.uut = new EventScheduler();
+            this.uut.Start();
             this.uut.OnCleanup += delegate( int id )
             {
                 this.cleanedUpQueue.Add( id );
