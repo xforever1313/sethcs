@@ -23,19 +23,11 @@ namespace SethCS.Basic
 
         public new const string DefaultThreadName = nameof( InterruptibleEventExecutor );
 
-        private int maxRunTime;
+        private readonly TimeSpan maxRunTime;
 
-        private AutoResetEvent eventCompletedEvent;
-        private AutoResetEvent eventStartedEvent;
-        private ManualResetEvent ableToInterrupt;
+        private readonly EventExecutor executor;
 
-        /// <summary>
-        /// This thread will interrupt events if they take to long to execute.
-        /// </summary>
-        private Thread eventWatcherThread;
-
-        private bool isActive;
-        private object isActiveLock;
+        private readonly AutoResetEvent interruptEvent;
 
         // ----------------- Constructor -----------------
 
@@ -44,16 +36,28 @@ namespace SethCS.Basic
         /// </summary>
         /// <param name="maxRunTime">
         /// How long each event is allowed to run for before being interrupted in milliseconds.
-        /// 
-        /// Set to <see cref="int.MaxValue"/> for no time limit.
         /// </param>
         /// <param name="name">
         /// What to name the event executor's thread.  Null for default value.
         /// </param>
-        public InterruptibleEventExecutor( int maxRunTime = int.MaxValue, string name = DefaultThreadName ) :
-            base( name )
+        public InterruptibleEventExecutor( int maxRunTime, string name = DefaultThreadName ) :
+            this( TimeSpan.FromMilliseconds( maxRunTime ), name )
         {
-            if( maxRunTime <= 0 )
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="maxRunTime">
+        /// How long each event is allowed to run for before being interrupted.
+        /// </param>
+        /// <param name="name">
+        /// What to name the event executor's thread.  Null for default value.
+        /// </param>
+        public InterruptibleEventExecutor( TimeSpan maxRunTime, string name = DefaultThreadName ) :
+            base( $"{name}: Interrruptor" )
+        {
+            if( maxRunTime <= TimeSpan.Zero )
             {
                 throw new ArgumentException( "Must be greater than 0.", nameof( maxRunTime ) );
             }
@@ -61,38 +65,13 @@ namespace SethCS.Basic
             ArgumentChecker.IsNotNull( name, nameof( name ) );
 
             this.maxRunTime = maxRunTime;
-            this.eventCompletedEvent = new AutoResetEvent( false );
-            this.eventStartedEvent = new AutoResetEvent( false );
-            this.ableToInterrupt = new ManualResetEvent( false );
 
-            this.isActive = false;
-            this.isActiveLock = new object();
+            this.executor = new EventExecutor( $"{name}: Executor" );
+            this.executor.OnError += this.Executor_OnError;
+            this.interruptEvent = new AutoResetEvent( false );
         }
 
         // ----------------- Properties -----------------
-
-        /// <summary>
-        /// Is this class currently active?
-        /// </summary>
-        private bool IsActive
-        {
-            get
-            {
-                lock( this.isActiveLock )
-                {
-                    return this.isActive;
-                }
-            }
-            set
-            {
-                lock( this.isActiveLock )
-                {
-                    this.isActive = value;
-                }
-            }
-        }
-
-        // ----------------- Functions -----------------
 
         public override void Start()
         {
@@ -101,44 +80,8 @@ namespace SethCS.Basic
                 throw new InvalidOperationException( "Already Started" );
             }
 
-            // Set this to true first before starting the thread
-            // so the thread doesn't exit right away.
-            this.IsActive = true;
-            if( this.maxRunTime != int.MaxValue )
-            {
-                this.eventWatcherThread = new Thread(
-                    this.WatcherThreadRun
-                );
-                this.eventWatcherThread.Name = this.name + "'s event watcher";
-
-                this.eventWatcherThread.Start();
-            }
-
+            this.executor?.Start();
             base.Start();
-        }
-
-        /// <summary>
-        /// Interrupts the event runner thread.
-        /// Blocks until the running thread is in an interruptable state
-        /// (an event is actively being run).  This means that if no
-        /// events are on the queue, this will block forever.
-        /// This is why there is a supplied timeout.
-        /// </summary>
-        /// <param name="timeout">How long to wait before interrupting</param>
-        /// <returns>True if interrupt was sent to the runner thread, else false.</returns>
-        public bool Interrupt( int timeout = Timeout.Infinite )
-        {
-            if( this.runnerThread == null )
-            {
-                throw new InvalidOperationException( "Not Started.  Call Start() first." );
-            }
-            bool waitForInterrupt = this.ableToInterrupt.WaitOne( timeout );
-            if( waitForInterrupt )
-            {
-                this.runnerThread.Interrupt();
-            }
-
-            return waitForInterrupt;
         }
 
         /// <summary>
@@ -148,31 +91,31 @@ namespace SethCS.Basic
         /// <param name="action">The action to add.</param>
         public override void AddEvent( Action action )
         {
-            // If there's no maximum time, just execute the event normally.
-            if( this.maxRunTime == int.MaxValue )
+            Action eventAction = delegate ()
             {
-                base.AddEvent( action );
-            }
-            else
-            {
-                Action theAction = delegate ()
+                try
                 {
-                    try
-                    {
-                        this.eventStartedEvent.Set();
-                        this.ableToInterrupt.Set();
-                        action();
-                        this.ableToInterrupt.Reset();
-                    }
-                    finally
-                    {
-                        this.ableToInterrupt.Reset();
-                        this.eventCompletedEvent.Set();
-                    }
-                };
+                    action();
+                }
+                finally
+                {
+                    this.interruptEvent.Set();
+                }
+            };
 
-                base.AddEvent( theAction );
-            }
+            Action interruptAction = delegate ()
+            {
+                if( this.interruptEvent.WaitOne( this.maxRunTime ) == false )
+                {
+                    this.executor.Interrupt();
+
+                    // Wait to be interrupted.
+                    this.interruptEvent.WaitOne();
+                }
+            };
+
+            this.executor.AddEvent( eventAction );
+            base.AddEvent( interruptAction );
         }
 
         /// <summary>
@@ -184,42 +127,24 @@ namespace SethCS.Basic
         {
             try
             {
-                base.Dispose();
+                // First, stop the executor thread.  This means
+                // no other events will trigger the interrupt event.
+                // until below.
+                this.executor.Dispose();
             }
             finally
             {
-                this.IsActive = false;
-                this.eventCompletedEvent.Set();
-                this.eventStartedEvent.Set();
-                this.eventWatcherThread?.Join();
-
-                this.ableToInterrupt.Dispose();
-                this.eventStartedEvent.Dispose();
-                this.eventCompletedEvent.Dispose();
+                // Set the interrupt event so this thread unblocks if its waiting.
+                // No other actions should be being enqueued when dispose is called.
+                this.interruptEvent.Set();
+                base.Dispose();
+                this.interruptEvent.Dispose();
             }
         }
 
-        private void WatcherThreadRun()
+        private void Executor_OnError( Exception obj )
         {
-            while( this.IsActive )
-            {
-                // Wait for an event to fire.
-                this.eventStartedEvent.WaitOne();
-
-                if( this.IsActive )
-                {
-                    // Wait for our AutoResetEvent to be set. If it is not, send an interrupt and wait
-                    // for the event to be interrupted.
-                    bool completed = this.eventCompletedEvent.WaitOne( this.maxRunTime );
-                    if( ( completed == false ) && this.IsActive )
-                    {
-                        this.runnerThread.Interrupt();
-
-                        // Wait to be interrupted.
-                        this.eventCompletedEvent.WaitOne();
-                    }
-                }
-            }
+            this.InvokeOnError( obj );
         }
     }
 }

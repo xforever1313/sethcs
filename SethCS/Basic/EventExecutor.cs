@@ -159,6 +159,14 @@ namespace SethCS.Basic
         }
 
         /// <summary>
+        /// Calls <see cref="Thread.Interrupt"/> on the event queue thread.
+        /// </summary>
+        public void Interrupt()
+        {
+            this.runnerThread.Interrupt();
+        }
+
+        /// <summary>
         /// Runs the events.
         /// </summary>
         private void Run()
@@ -213,6 +221,11 @@ namespace SethCS.Basic
             // Only execute event if there was something in the queue.
             // Its possible we ended up here due to the thread stopping.
             action?.Invoke();
+        }
+
+        protected void InvokeOnError( Exception e )
+        {
+            this.OnError?.Invoke( e );
         }
 
         // ---------------- Helper Classes ----------------
