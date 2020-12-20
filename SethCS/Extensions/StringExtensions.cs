@@ -40,7 +40,10 @@ namespace SethCS.Extensions
 
         public static bool EqualsIgnoreCase( this string str, string other )
         {
-            ArgumentChecker.IsNotNull( str, nameof( str ) );
+            if( str == null )
+            {
+                return ( other == null );
+            }
 
             return str.Equals( other, StringComparison.InvariantCultureIgnoreCase );
         }
