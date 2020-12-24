@@ -9,5 +9,6 @@ Debug
 Release
 *.userprefs
 CodeCoverage
+/TestResults
 /CakeFiles/tools
 /tools

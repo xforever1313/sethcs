@@ -19,4 +19,23 @@ Task( buildTarget )
     }
 );
 
+
+Task( "run_unit_tests" )
+.Does(
+    ( context ) =>
+    {
+        DirectoryPath resultsDir = Directory( "TestResults" );
+        UnitTestRunner runner = new UnitTestRunner( context, resultsDir, File( "Tests/Tests.csproj" ) );
+
+        if( context.Argument<bool>( "coverage", false ) )
+        {
+            runner.RunCodeCoverage( "+[*]SethCS*" );
+        }
+        else
+        {
+            runner.RunTests();
+        }
+    }
+).IsDependentOn( buildTarget );
+
 RunTarget( target );

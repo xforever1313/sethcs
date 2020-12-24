@@ -7,8 +7,13 @@
 
 #addin nuget:?package=Cake.ArgumentBinder&version=0.2.3
 
-using Cake.ArgumentBinder;
+// For unit tests
+#tool nuget:?package=NUnit.ConsoleRunner&version=3.9.0
+#tool nuget:?package=OpenCover&version=4.6.519
+#tool nuget:?package=ReportGenerator&version=4.0.10
 
 #load "DeleteHelpers.cake"
 #load "MSBuild.cake"
 #load "SvnHelpers.cake"
+#load "TestRunner.cake"
+#load "UnitTestRunner.cake"
