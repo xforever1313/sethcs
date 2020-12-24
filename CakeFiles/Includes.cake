@@ -1,4 +1,4 @@
-#addin nuget:?package=Cake.ArgumentBinder&version=0.2.1
+#addin nuget:?package=Cake.ArgumentBinder&version=0.2.3
 
 using Cake.ArgumentBinder;
 
