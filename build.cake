@@ -38,4 +38,7 @@ Task( "run_unit_tests" )
     }
 ).IsDependentOn( buildTarget );
 
+Task( "appveyor" )
+.IsDependentOn( "run_unit_tests" );
+
 RunTarget( target );
