@@ -1,7 +1,0 @@
-language: csharp
-solution: ./SethCS.sln
-install:
-  - nuget restore ./SethCS.sln
-script:
-  - xbuild /p:Configuration=Release ./SethCS.sln
-  - mono ./packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./Tests/bin/Release/Tests.dll

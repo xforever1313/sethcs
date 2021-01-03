@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibSethCS", "LibSethCS\LibS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SethCS.CakeAddin", "CakeAddin\SethCS.CakeAddin.csproj", "{85CA3F8E-349F-4B0A-B9F2-1B2B3BBDFC2D}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SethCS\SethCS.projitems*{296fe0a3-baea-4234-ae51-c01ec3f9c153}*SharedItemsImports = 5
@@ -29,10 +27,6 @@ Global
 		{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1DD10DC-CDFD-4795-AE25-DA3F56B86BDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85CA3F8E-349F-4B0A-B9F2-1B2B3BBDFC2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85CA3F8E-349F-4B0A-B9F2-1B2B3BBDFC2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85CA3F8E-349F-4B0A-B9F2-1B2B3BBDFC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85CA3F8E-349F-4B0A-B9F2-1B2B3BBDFC2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
