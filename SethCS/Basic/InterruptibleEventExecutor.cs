@@ -28,6 +28,7 @@ namespace SethCS.Basic
         private readonly EventExecutor executor;
 
         private readonly AutoResetEvent interruptEvent;
+        private readonly AutoResetEvent waitForInterruptCompleteEvent;
 
         // ----------------- Constructor -----------------
 
@@ -69,6 +70,7 @@ namespace SethCS.Basic
             this.executor = new EventExecutor( $"{name}: Executor" );
             this.executor.OnError += this.Executor_OnError;
             this.interruptEvent = new AutoResetEvent( false );
+            this.waitForInterruptCompleteEvent = new AutoResetEvent( false );
         }
 
         // ----------------- Properties -----------------
@@ -100,17 +102,25 @@ namespace SethCS.Basic
                 finally
                 {
                     this.interruptEvent.Set();
+                    this.waitForInterruptCompleteEvent.WaitOne();
                 }
             };
 
             Action interruptAction = delegate ()
             {
-                if( this.interruptEvent.WaitOne( this.maxRunTime ) == false )
+                try
                 {
-                    this.executor.Interrupt();
+                    if( this.interruptEvent.WaitOne( this.maxRunTime ) == false )
+                    {
+                        this.executor.Interrupt();
 
-                    // Wait to be interrupted.
-                    this.interruptEvent.WaitOne();
+                        // Wait to be interrupted.
+                        this.interruptEvent.WaitOne();
+                    }
+                }
+                finally
+                {
+                    this.waitForInterruptCompleteEvent.Set();
                 }
             };
 
