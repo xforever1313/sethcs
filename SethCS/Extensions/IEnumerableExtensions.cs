@@ -1,5 +1,5 @@
 ﻿//
-//          Copyright Seth Hendrick 2019.
+//          Copyright Seth Hendrick 2019-2020.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -36,7 +36,23 @@ namespace SethCS.Extensions
 
         public static bool IsEmpty<T>( this IEnumerable<T> list )
         {
-            return list.LongCount() == 0;
+            return ( list.Any() == false );
+        }
+
+        /// <summary>
+        /// Checks to see if the two lists are the same, should both
+        /// of them be ordered.
+        /// </summary>
+        public static bool EqualsIgnoreOrder<T>( this IEnumerable<T> left, IEnumerable<T> right )
+        {
+            // If either list is null, do a referenc equals.
+            if( ReferenceEquals( left, null ) || ReferenceEquals( right, null ) )
+            {
+                return ReferenceEquals( left, right );
+            }
+
+            // If we don't care about order, just sort both lists, and call sequence equals.
+            return left.OrderBy( t => t ).SequenceEqual( right.OrderBy( t => t ) );
         }
     }
 }
