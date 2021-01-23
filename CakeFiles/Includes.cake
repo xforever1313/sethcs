@@ -13,6 +13,7 @@
 #tool nuget:?package=ReportGenerator&version=4.0.10
 
 #load "DeleteHelpers.cake"
+#load "GitHelpers.cake"
 #load "MSBuild.cake"
 #load "SvnHelpers.cake"
 #load "TestRunner.cake"
