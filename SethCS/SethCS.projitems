@@ -30,4 +30,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Msi\MsiNativeMethods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Msi\MsiReader.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)T4Includes\GitBuildInfo.t4">
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)T4Includes\" />
+  </ItemGroup>
 </Project>
