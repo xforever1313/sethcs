@@ -23,11 +23,14 @@ namespace DevOps.LicenseUpdater
         // ---------------- Fields ----------------
 
         const string currentLicense =
-@"";
+@"//
+//
+
+";
 
         // Used to be boost before Feb 28th 2021 before switching to GPL.
         const string oldLicenseRegex1 =
-@"//
+@"^//
 //\s+Copyright\s+Seth\s+Hendrick\s+\d+-?\d*\.?
 //\s+Distributed\s+under\s+the\s+Boost\s+Software\s+License,\s+Version\s+1\.0\.?
 //\s+\(See\s+accompanying\s+file\s+[./]*LICENSE_1_0\.txt\s+or\s+copy\s+at
@@ -35,7 +38,7 @@ namespace DevOps.LicenseUpdater
 //[\n\r\s]*";
 
         const string oldLicenseRegex2 =
-@"(//)?
+@"^(//)?
 //\s+Copyright\s+Seth\s+Hendrick\s+[^\n\r]+\.?
 //\s+Distributed\s+under\s+the\s+Boost\s+Software\s+License,\s+Version\s+1\.0\.?
 //\s+\(See\s+accompanying\s+file\s+[./]*LICENSE_1_0\.txt\s+or\s+copy\s+at
