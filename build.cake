@@ -1,44 +1,77 @@
 //
-//          Copyright Seth Hendrick 2019-2020.
+//          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#load "./CakeFiles/Includes.cake"
+// ----------------- Constants ----------------
 
-const string buildTarget = "build";
-string target = Argument( "target", buildTarget );
-FilePath sln = File( "SethCS.sln" );
+const string devopsTarget = "run_devops";
+const string buildTask = "build";
+bool forceBuild = Argument<bool>( "force_build", false );
 
-Task( buildTarget )
+string target = Argument( "target", buildTask );
+
+FilePath devopsExe = File( "./DevOps/bin/Debug/netcoreapp3.1/DevOps.dll" );
+
+FilePath sln = File( "./SethCS.sln" );
+
+// ----------------- Build Targets ----------------
+
+Task( buildTask )
 .Does(
     () =>
     {
-        DoMsBuild( sln );
+        if( forceBuild == false )
+        {
+            if( target != buildTask )
+            {
+                Information( "DevOps.dll not found, compiling" );
+            }
+        }
+
+        DotNetCoreBuildSettings settings = new DotNetCoreBuildSettings
+        {
+        };
+
+        DotNetCoreBuild( sln.ToString(), settings );
     }
 );
 
-
-Task( "run_unit_tests" )
+var runTask = Task( devopsTarget )
 .Does(
-    ( context ) =>
+    () =>
     {
-        DirectoryPath resultsDir = Directory( "TestResults" );
-        UnitTestRunner runner = new UnitTestRunner( context, resultsDir, File( "Tests/Tests.csproj" ) );
+        List<string> args = new List<string>( System.Environment.GetCommandLineArgs() );
+        args.RemoveAt( 0 );
+        args.Insert( 0, devopsExe.ToString() );
 
-        if( context.Argument<bool>( "coverage", false ) )
+        ProcessSettings processSettings = new ProcessSettings
         {
-            runner.RunCodeCoverage( "+[*]SethCS*" );
-        }
-        else
+            Arguments = ProcessArgumentBuilder.FromStrings( args )
+        };
+
+        int exitCode = StartProcess( "dotnet", processSettings );
+        if( exitCode != 0 )
         {
-            runner.RunTests();
+            throw new Exception( $"DevOps.exe Exited with exit code: {exitCode}" );
         }
     }
-).IsDependentOn( buildTarget );
+);
 
-Task( "appveyor" )
-.IsDependentOn( "run_unit_tests" );
+if( forceBuild || ( FileExists( devopsExe ) == false ) )
+{
+    runTask.IsDependentOn( buildTask );
+}
 
-RunTarget( target );
+// ---------------- Run ----------------
+
+if( target == buildTask )
+{
+    RunTarget( target );
+}
+else
+{
+    RunTarget( devopsTarget );
+}
