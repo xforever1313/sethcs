@@ -10,7 +10,7 @@ using Cake.ArgumentBinder;
 
 namespace Seth.CakeLib.Git.LastCommitDate
 {
-    public sealed class LastCommitDateConfig : BaseGitQueryTask
+    public sealed class GitLastCommitDateConfig : BaseGitQueryTask
     {
         // ---------------- Properties ----------------
 

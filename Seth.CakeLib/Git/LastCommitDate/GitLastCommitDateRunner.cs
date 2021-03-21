@@ -13,7 +13,7 @@ using Cake.Core.IO;
 
 namespace Seth.CakeLib.Git.LastCommitDate
 {
-    public class LastCommitDateRunner : GitRunner
+    public class GitLastCommitDateRunner : GitRunner
     {
         // ---------------- Fields ----------------
 
@@ -22,7 +22,7 @@ namespace Seth.CakeLib.Git.LastCommitDate
         
         // ---------------- Constructor ----------------
 
-        public LastCommitDateRunner(
+        public GitLastCommitDateRunner(
             ICakeContext context,
             GitToolSettings toolSettings = null
         ) : base( context )
@@ -41,11 +41,11 @@ namespace Seth.CakeLib.Git.LastCommitDate
         /// Configuration.  If null, it grabs the configuration
         /// from the passed in command-line arguments.
         /// </param>
-        public DateTime Run( LastCommitDateConfig config = null )
+        public DateTime Run( GitLastCommitDateConfig config = null )
         {
             if( config == null )
             {
-                config = ArgumentBinder.FromArguments<LastCommitDateConfig>( this.context );
+                config = ArgumentBinder.FromArguments<GitLastCommitDateConfig>( this.context );
             }
 
             DateTime? timeStamp = null;

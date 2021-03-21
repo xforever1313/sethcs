@@ -22,7 +22,7 @@ namespace DevOps.Git
                 WorkingDirectory = context.RepoRoot
             };
 
-            LastCommitDateRunner runner = new LastCommitDateRunner( context, toolSettings );
+            GitLastCommitDateRunner runner = new GitLastCommitDateRunner( context, toolSettings );
             runner.Run();
         }
     }
