@@ -8,7 +8,7 @@
 using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Core.IO;
-using Seth.CakeLib.Git.RevisionNumber;
+using Seth.CakeLib.Git.QueryRevisionNumber;
 
 namespace Seth.CakeLib.Git
 {
@@ -25,11 +25,11 @@ namespace Seth.CakeLib.Git
         /// </param>
         [CakeMethodAlias]
         [CakeAliasCategory( "Revision Number" )]
-        [CakeNamespaceImport( "Seth.CakeLib.Git.RevisionNumber" )]
-        public static int GitRevisionNumber(
+        [CakeNamespaceImport( "Seth.CakeLib.Git.QueryRevisionNumber" )]
+        public static int GitQueryRevisionNumber(
             this ICakeContext context,
             DirectoryPath repoRoot,
-            GitRevisionNumberConfig config = null
+            GitQueryRevisionNumberConfig config = null
         )
         {
             var toolSettings = new GitToolSettings
@@ -37,7 +37,7 @@ namespace Seth.CakeLib.Git
                 WorkingDirectory = repoRoot
             };
 
-            return GitRevisionNumber( context, toolSettings, config );
+            return GitQueryRevisionNumber( context, toolSettings, config );
         }
 
         /// <summary>
@@ -50,14 +50,14 @@ namespace Seth.CakeLib.Git
         /// </param>
         [CakeMethodAlias]
         [CakeAliasCategory( "Revision Number" )]
-        [CakeNamespaceImport( "Seth.CakeLib.Git.RevisionNumber" )]
-        public static int GitRevisionNumber(
+        [CakeNamespaceImport( "Seth.CakeLib.Git.QueryRevisionNumber" )]
+        public static int GitQueryRevisionNumber(
             this ICakeContext context,
             GitToolSettings toolSettings,
-            GitRevisionNumberConfig config = null
+            GitQueryRevisionNumberConfig config = null
         )
         {
-            var runner = new GitRevisionNumberRunner( context, toolSettings );
+            var runner = new GitQueryRevisionNumberRunner( context, toolSettings );
             return runner.Run( config );
         }
     }

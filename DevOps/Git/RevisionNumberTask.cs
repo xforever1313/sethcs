@@ -16,7 +16,7 @@ namespace DevOps.Git
     {
         public override void Run( BuildContext context )
         {
-            context.GitRevisionNumber( context.RepoRoot );
+            context.GitQueryRevisionNumber( context.RepoRoot );
         }
     }
 }

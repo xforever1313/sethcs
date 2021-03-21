@@ -9,7 +9,7 @@ using System;
 using Cake.Core;
 using Cake.Core.Annotations;
 using Cake.Core.IO;
-using Seth.CakeLib.Git.LastCommitDate;
+using Seth.CakeLib.Git.QueryLastCommitDate;
 
 namespace Seth.CakeLib.Git
 {
@@ -26,11 +26,11 @@ namespace Seth.CakeLib.Git
         /// </param>
         [CakeMethodAlias]
         [CakeAliasCategory( "Last Commit Date" )]
-        [CakeNamespaceImport( "Seth.CakeLib.Git.RevisionNumber" )]
-        public static DateTime GitLastCommitDate(
+        [CakeNamespaceImport( "Seth.CakeLib.Git.QueryLastCommitDate" )]
+        public static DateTime GitQueryLastCommitDate(
             this ICakeContext context,
             DirectoryPath repoRoot,
-            GitLastCommitDateConfig config = null
+            GitQueryLastCommitDateConfig config = null
         )
         {
             var toolSettings = new GitToolSettings
@@ -38,7 +38,7 @@ namespace Seth.CakeLib.Git
                 WorkingDirectory = repoRoot
             };
 
-            return GitLastCommitDate( context, toolSettings, config );
+            return GitQueryLastCommitDate( context, toolSettings, config );
         }
 
         /// <summary>
@@ -51,14 +51,14 @@ namespace Seth.CakeLib.Git
         /// </param>
         [CakeMethodAlias]
         [CakeAliasCategory( "Last Commit Date" )]
-        [CakeNamespaceImport( "Seth.CakeLib.Git.RevisionNumber" )]
-        public static DateTime GitLastCommitDate(
+        [CakeNamespaceImport( "Seth.CakeLib.Git.QueryLastCommitDate" )]
+        public static DateTime GitQueryLastCommitDate(
             this ICakeContext context,
             GitToolSettings toolSettings,
-            GitLastCommitDateConfig config = null
+            GitQueryLastCommitDateConfig config = null
         )
         {
-            var runner = new GitLastCommitDateRunner( context, toolSettings );
+            var runner = new GitQueryLastCommitDateRunner( context, toolSettings );
             return runner.Run( config );
         }
     }

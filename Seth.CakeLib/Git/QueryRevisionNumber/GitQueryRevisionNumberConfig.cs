@@ -8,9 +8,9 @@
 using System;
 using Cake.ArgumentBinder;
 
-namespace Seth.CakeLib.Git.RevisionNumber
+namespace Seth.CakeLib.Git.QueryRevisionNumber
 {
-    public sealed class GitRevisionNumberConfig : BaseGitQueryTask
+    public sealed class GitQueryRevisionNumberConfig : BaseGitQueryTask
     {
     }
 }

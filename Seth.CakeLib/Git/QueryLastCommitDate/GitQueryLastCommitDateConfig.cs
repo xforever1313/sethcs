@@ -8,9 +8,9 @@
 using System;
 using Cake.ArgumentBinder;
 
-namespace Seth.CakeLib.Git.LastCommitDate
+namespace Seth.CakeLib.Git.QueryLastCommitDate
 {
-    public sealed class GitLastCommitDateConfig : BaseGitQueryTask
+    public sealed class GitQueryLastCommitDateConfig : BaseGitQueryTask
     {
         // ---------------- Properties ----------------
 

@@ -11,18 +11,18 @@ using Cake.Common.Diagnostics;
 using Cake.Core;
 using Cake.Core.IO;
 
-namespace Seth.CakeLib.Git.LastCommitDate
+namespace Seth.CakeLib.Git.QueryRevisionNumber
 {
-    public class GitLastCommitDateRunner : GitRunner
+    public sealed class GitQueryRevisionNumberRunner : GitRunner
     {
         // ---------------- Fields ----------------
 
         private readonly ICakeContext context;
         private readonly GitToolSettings toolSettings;
-        
+
         // ---------------- Constructor ----------------
 
-        public GitLastCommitDateRunner(
+        public GitQueryRevisionNumberRunner(
             ICakeContext context,
             GitToolSettings toolSettings = null
         ) : base( context )
@@ -34,28 +34,30 @@ namespace Seth.CakeLib.Git.LastCommitDate
         // ---------------- Functions ----------------
 
         /// <summary>
-        /// Runs git on the local repository and returns
-        /// the <see cref="DateTime"/> of the last commit.
+        /// Runs git and gets the number of commits on the current branch.
         /// </summary>
         /// <param name="config">
         /// Configuration.  If null, it grabs the configuration
         /// from the passed in command-line arguments.
         /// </param>
-        public DateTime Run( GitLastCommitDateConfig config = null )
+        /// <returns>
+        /// The number of commits that have happend on the current git branch.
+        /// </returns>
+        public int Run( GitQueryRevisionNumberConfig config = null )
         {
             if( config == null )
             {
-                config = ArgumentBinder.FromArguments<GitLastCommitDateConfig>( this.context );
+                config = ArgumentBinder.FromArguments<GitQueryRevisionNumberConfig>( this.context );
             }
 
-            DateTime? timeStamp = null;
+            int revNumber = -1;
             string onStdOut( string line )
             {
                 if( string.IsNullOrWhiteSpace( line ) == false )
                 {
-                    if( DateTime.TryParse( line, out DateTime foundTimeStamp ) )
+                    if( int.TryParse( line, out revNumber ) == false )
                     {
-                        timeStamp = foundTimeStamp;
+                        revNumber = -1;
                     }
                 }
 
@@ -64,41 +66,31 @@ namespace Seth.CakeLib.Git.LastCommitDate
 
             ProcessSettings processSettings = new ProcessSettings
             {
-                Arguments = ProcessArgumentBuilder.FromString( "show -s --format=%cI" ),
+                Arguments = ProcessArgumentBuilder.FromString( "rev-list --count HEAD" ),
                 RedirectStandardOutput = true,
                 RedirectedStandardOutputHandler = onStdOut
             };
 
             this.Run( this.toolSettings, processSettings.Arguments, processSettings, null );
 
-            if( timeStamp == null )
+            if( revNumber < 0 )
             {
                 throw new InvalidOperationException(
-                    "Could not get timestamp from git"
+                    "Could not get rev number from git"
                 );
-            }
-
-            string timeStampStr;
-            if( string.IsNullOrEmpty( config.DateTimeFormat ) )
-            {
-                timeStampStr = timeStamp.Value.ToString();
-            }
-            else
-            {
-                timeStampStr = timeStamp.Value.ToString( config.DateTimeFormat );
             }
 
             if( config.NoPrint == false )
             {
-                context.Information( $"Last commit was at: {timeStampStr}" );
+                context.Information( "Current Revision Number: " + revNumber );
             }
 
             if( string.IsNullOrWhiteSpace( config.OutputFile ) == false )
             {
-                System.IO.File.WriteAllText( config.OutputFile, timeStampStr );
+                System.IO.File.WriteAllText( config.OutputFile, revNumber.ToString() );
             }
 
-            return timeStamp.Value;
+            return revNumber;
         }
     }
 }
