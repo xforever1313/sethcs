@@ -13,7 +13,7 @@ namespace DevOps.Git
 {
     [TaskName( "print_git_commit_date" )]
     [TaskDescription( "Prints the commit date" )]
-    public class LastCommitDateTask : DevOpsTask
+    public sealed class LastCommitDateTask : DevOpsTask
     {
         public override void Run( BuildContext context )
         {

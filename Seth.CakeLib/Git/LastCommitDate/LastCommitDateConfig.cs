@@ -10,17 +10,9 @@ using Cake.ArgumentBinder;
 
 namespace Seth.CakeLib.Git.LastCommitDate
 {
-    public class LastCommitDateConfig
+    public sealed class LastCommitDateConfig : BaseGitQueryTask
     {
         // ---------------- Properties ----------------
-
-        [StringArgument(
-            "output_file",
-            DefaultValue = null,
-            Description = "Where to output the date of the last git commit.  Don't specify to not write a file",
-            Required = false
-        )]
-        public string OutputFile { get; set; }
 
         [StringArgument(
             "format",

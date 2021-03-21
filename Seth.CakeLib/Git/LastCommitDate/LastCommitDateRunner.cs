@@ -33,7 +33,7 @@ namespace Seth.CakeLib.Git.LastCommitDate
 
         // ---------------- Functions ----------------
 
-        public void Run( LastCommitDateConfig config = null )
+        public string Run( LastCommitDateConfig config = null )
         {
             if( config == null )
             {
@@ -80,12 +80,17 @@ namespace Seth.CakeLib.Git.LastCommitDate
                 timeStampStr = timeStamp.Value.ToString( config.DateTimeFormat );
             }
 
-            context.Information( $"Last commit was at: {timeStampStr}" );
+            if( config.NoPrint == false )
+            {
+                context.Information( $"Last commit was at: {timeStampStr}" );
+            }
 
             if( string.IsNullOrWhiteSpace( config.OutputFile ) == false )
             {
                 System.IO.File.WriteAllText( config.OutputFile, timeStampStr );
             }
+
+            return timeStampStr;
         }
     }
 }
