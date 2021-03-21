@@ -7,7 +7,6 @@
 
 using Cake.Frosting;
 using Seth.CakeLib.Git;
-using Seth.CakeLib.Git.RevisionNumber;
 
 namespace DevOps.Git
 {
@@ -17,13 +16,7 @@ namespace DevOps.Git
     {
         public override void Run( BuildContext context )
         {
-            GitToolSettings toolSettings = new GitToolSettings
-            {
-                WorkingDirectory = context.RepoRoot
-            };
-
-            GitRevisionNumberRunner runner = new GitRevisionNumberRunner( context, toolSettings );
-            runner.Run();
+            context.GitRevisionNumber( context.RepoRoot );
         }
     }
 }

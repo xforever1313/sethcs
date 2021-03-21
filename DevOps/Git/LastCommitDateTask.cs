@@ -7,7 +7,6 @@
 
 using Cake.Frosting;
 using Seth.CakeLib.Git;
-using Seth.CakeLib.Git.LastCommitDate;
 
 namespace DevOps.Git
 {
@@ -17,13 +16,7 @@ namespace DevOps.Git
     {
         public override void Run( BuildContext context )
         {
-            GitToolSettings toolSettings = new GitToolSettings
-            {
-                WorkingDirectory = context.RepoRoot
-            };
-
-            GitLastCommitDateRunner runner = new GitLastCommitDateRunner( context, toolSettings );
-            runner.Run();
+            context.GitLastCommitDate( context.RepoRoot );
         }
     }
 }
