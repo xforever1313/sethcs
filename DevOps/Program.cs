@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using Cake.Frosting;
+using Seth.CakeLib;
 
 namespace DevOps
 {
@@ -27,6 +28,7 @@ namespace DevOps
 
             return new CakeHost()
                 .UseContext<BuildContext>()
+                .AddAssembly( SethCakeLib.GetAssembly() )
                 .InstallTool( new Uri( "nuget:?package=OpenCover&version=4.6.519" ) )
                 .InstallTool( new Uri( "nuget:?package=ReportGenerator&version=4.0.10" ) )
                 .SetToolPath( ".cake" )
