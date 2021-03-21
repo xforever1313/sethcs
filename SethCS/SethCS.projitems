@@ -9,6 +9,7 @@
     <Import_RootNamespace>SethCS</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\EqualsHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\EventExecutor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\InterruptibleEventExecutor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\SemanticVersion.cs" />
