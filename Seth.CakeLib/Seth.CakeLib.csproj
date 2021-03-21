@@ -9,8 +9,4 @@
     <PackageReference Include="Cake.ArgumentBinder" Version="0.3.0" />
     <PackageReference Include="Cake.LicenseHeaderUpdater" Version="0.2.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Git\QueryBranch\" />
-  </ItemGroup>
 </Project>
