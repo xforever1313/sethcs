@@ -12,7 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Basic\EqualsHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\EventExecutor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\InterruptibleEventExecutor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Basic\SemanticVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\GenericLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\WatchdogTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\CloningReadOnlyList.cs" />
