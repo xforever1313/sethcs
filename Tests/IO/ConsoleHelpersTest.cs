@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -11,9 +11,7 @@ using System.IO;
 using NUnit.Framework;
 using SethCS.IO;
 
-namespace Tests
-{
-namespace IO
+namespace Tests.IO
 {
     [TestFixture]
     public class ConsoleHelpersTest
@@ -74,57 +72,57 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseBoolErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect true).
-             {
+            // Case 2 is the first one that returns (expect true).
+            {
                 bool? case2 = ConsoleHelpers.GetBool(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsTrue( case2.Value );
-             }
+            }
 
-             // Case 3 returns false.
-             {
+            // Case 3 returns false.
+            {
                 bool? case3 = ConsoleHelpers.GetBool(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsFalse( case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 bool? case4 = ConsoleHelpers.GetBool(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsTrue( case4.Value );
-             }
+            }
 
-             // Case 5 returns false.
-             {
+            // Case 5 returns false.
+            {
                 bool? case5 = ConsoleHelpers.GetBool(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsFalse( case5.Value );
-             }
+            }
 
-             // Case 6 we expect EOF
-             {
+            // Case 6 we expect EOF
+            {
                 bool? case6 = ConsoleHelpers.GetBool(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         [Test]
@@ -151,47 +149,47 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseShortErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect 0).
-             {
+            // Case 2 is the first one that returns (expect 0).
+            {
                 short? case2 = ConsoleHelpers.GetShort(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 0, case2.Value );
-             }
+            }
 
-             // Case 3 returns minValue.
-             {
+            // Case 3 returns minValue.
+            {
                 short? case3 = ConsoleHelpers.GetShort(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( short.MinValue, case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 short? case4 = ConsoleHelpers.GetShort(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( short.MaxValue, case4.Value );
-             }
+            }
 
-             // Case 5/6 we expect EOF
-             {
+            // Case 5/6 we expect EOF
+            {
                 short? case6 = ConsoleHelpers.GetShort(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         [Test]
@@ -218,47 +216,47 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseUShortErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect 0).
-             {
+            // Case 2 is the first one that returns (expect 0).
+            {
                 ushort? case2 = ConsoleHelpers.GetUShort(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 100, case2.Value );
-             }
+            }
 
-             // Case 3 returns minValue.
-             {
+            // Case 3 returns minValue.
+            {
                 ushort? case3 = ConsoleHelpers.GetUShort(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( ushort.MinValue, case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 ushort? case4 = ConsoleHelpers.GetUShort(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( ushort.MaxValue, case4.Value );
-             }
+            }
 
-             // Case 5/6 we expect EOF
-             {
+            // Case 5/6 we expect EOF
+            {
                 ushort? case6 = ConsoleHelpers.GetUShort(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         [Test]
@@ -285,47 +283,47 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseIntErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect 0).
-             {
+            // Case 2 is the first one that returns (expect 0).
+            {
                 int? case2 = ConsoleHelpers.GetInt(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 0, case2.Value );
-             }
+            }
 
-             // Case 3 returns minValue.
-             {
+            // Case 3 returns minValue.
+            {
                 int? case3 = ConsoleHelpers.GetInt(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( int.MinValue, case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 int? case4 = ConsoleHelpers.GetInt(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( int.MaxValue, case4.Value );
-             }
+            }
 
-             // Case 5/6 we expect EOF
-             {
+            // Case 5/6 we expect EOF
+            {
                 int? case6 = ConsoleHelpers.GetInt(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         [Test]
@@ -352,47 +350,47 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseUIntErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect 0).
-             {
+            // Case 2 is the first one that returns (expect 0).
+            {
                 uint? case2 = ConsoleHelpers.GetUInt(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 100, case2.Value );
-             }
+            }
 
-             // Case 3 returns minValue.
-             {
+            // Case 3 returns minValue.
+            {
                 uint? case3 = ConsoleHelpers.GetUInt(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( uint.MinValue, case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 uint? case4 = ConsoleHelpers.GetUInt(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( uint.MaxValue, case4.Value );
-             }
+            }
 
-             // Case 5/6 we expect EOF
-             {
+            // Case 5/6 we expect EOF
+            {
                 uint? case6 = ConsoleHelpers.GetUInt(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         [Test]
@@ -419,47 +417,47 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseLongErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect 0).
-             {
+            // Case 2 is the first one that returns (expect 0).
+            {
                 long? case2 = ConsoleHelpers.GetLong(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 0, case2.Value );
-             }
+            }
 
-             // Case 3 returns minValue.
-             {
+            // Case 3 returns minValue.
+            {
                 long? case3 = ConsoleHelpers.GetLong(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( long.MinValue, case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 long? case4 = ConsoleHelpers.GetLong(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( long.MaxValue, case4.Value );
-             }
+            }
 
-             // Case 5/6 we expect EOF
-             {
+            // Case 5/6 we expect EOF
+            {
                 long? case6 = ConsoleHelpers.GetLong(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         [Test]
@@ -486,47 +484,47 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseULongErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect 0).
-             {
+            // Case 2 is the first one that returns (expect 0).
+            {
                 ulong? case2 = ConsoleHelpers.GetULong(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 100, case2.Value );
-             }
+            }
 
-             // Case 3 returns minValue.
-             {
+            // Case 3 returns minValue.
+            {
                 ulong? case3 = ConsoleHelpers.GetULong(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( ulong.MinValue, case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 ulong? case4 = ConsoleHelpers.GetULong(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( ulong.MaxValue, case4.Value );
-             }
+            }
 
-             // Case 5/6 we expect EOF
-             {
+            // Case 5/6 we expect EOF
+            {
                 ulong? case6 = ConsoleHelpers.GetULong(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         [Test]
@@ -549,22 +547,22 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + // Case 2
                 ConsoleHelpers.DefaultCinMessage + // Case 3
                 ConsoleHelpers.DefaultCinMessage + // Case 4
-                ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseFloatErrorMessage + Environment.NewLine + // Case 5
+                ConsoleHelpers.DefaultCinMessage + // Case 5
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseFloatErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect 0).
-             {
+            // Case 2 is the first one that returns (expect 0).
+            {
                 float? case2 = ConsoleHelpers.GetFloat(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 0, case2.Value );
-             }
+            }
 
-             // Case 3 returns minValue.
-             {
+            // Case 3 returns minValue.
+            {
                 float? case3 = ConsoleHelpers.GetFloat(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
@@ -572,29 +570,39 @@ namespace IO
                 );
 
                 Assert.AreEqual( -100.5, case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 float? case4 = ConsoleHelpers.GetFloat(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 100.5, case4.Value );
-             }
+            }
 
-             // Case 5/6 we expect EOF
-             {
+            // Case 5 we expect infinite
+            {
+                float? case5 = ConsoleHelpers.GetFloat(
+                    ConsoleHelpers.DefaultCinMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+                Assert.AreEqual( float.PositiveInfinity, case5 );
+            }
+
+            // Case 6 we expect EOF
+            {
                 float? case6 = ConsoleHelpers.GetFloat(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         [Test]
@@ -617,22 +625,22 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + // Case 2
                 ConsoleHelpers.DefaultCinMessage + // Case 3
                 ConsoleHelpers.DefaultCinMessage + // Case 4
-                ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseDoubleErrorMessage + Environment.NewLine + // Case 5
+                ConsoleHelpers.DefaultCinMessage + // Case 5
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseDoubleErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect 0).
-             {
+            // Case 2 is the first one that returns (expect 0).
+            {
                 double? case2 = ConsoleHelpers.GetDouble(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 0, case2.Value );
-             }
+            }
 
-             // Case 3 returns minValue.
-             {
+            // Case 3 returns minValue.
+            {
                 double? case3 = ConsoleHelpers.GetDouble(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
@@ -640,29 +648,39 @@ namespace IO
                 );
 
                 Assert.AreEqual( -100.5, case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 double? case4 = ConsoleHelpers.GetDouble(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 100.5, case4.Value );
-             }
+            }
 
-             // Case 5/6 we expect EOF
-             {
+            // Case 5 we expect Infinity.
+            {
+                double? case5 = ConsoleHelpers.GetDouble(
+                    ConsoleHelpers.DefaultCinMessage,
+                    this.mockCin,
+                    this.mockCout
+                );
+                Assert.AreEqual( double.PositiveInfinity, case5 );
+            }
+
+            // Case 6 we expect EOF
+            {
                 double? case6 = ConsoleHelpers.GetDouble(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         [Test]
@@ -689,18 +707,18 @@ namespace IO
                 ConsoleHelpers.DefaultCinMessage + ConsoleHelpers.ParseDecimalErrorMessage + Environment.NewLine + // Case 6
                 ConsoleHelpers.DefaultCinMessage; // EOF
 
-             // Case 2 is the first one that returns (expect 0).
-             {
+            // Case 2 is the first one that returns (expect 0).
+            {
                 decimal? case2 = ConsoleHelpers.GetDecimal(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 0, case2.Value );
-             }
+            }
 
-             // Case 3 returns minValue.
-             {
+            // Case 3 returns minValue.
+            {
                 decimal? case3 = ConsoleHelpers.GetDecimal(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
@@ -708,29 +726,29 @@ namespace IO
                 );
 
                 Assert.AreEqual( -100.5, case3.Value );
-             }
+            }
 
-             // Case 4 returns true.
-             {
+            // Case 4 returns true.
+            {
                 decimal? case4 = ConsoleHelpers.GetDecimal(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.AreEqual( 100.5, case4.Value );
-             }
+            }
 
-             // Case 5/6 we expect EOF
-             {
+            // Case 5/6 we expect EOF
+            {
                 decimal? case6 = ConsoleHelpers.GetDecimal(
                     ConsoleHelpers.DefaultCinMessage,
                     this.mockCin,
                     this.mockCout
                 );
                 Assert.IsNull( case6 );
-             }
+            }
 
-             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
+            Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
         // ---- ShowListPrompt Tests ----
@@ -741,7 +759,7 @@ namespace IO
             // Ensure we get an exception if we pass in null
             // for the options parameter.
             Assert.Throws<ArgumentNullException>(
-                delegate()
+                delegate ()
                 {
                     ConsoleHelpers.ShowListPrompt(
                         null,
@@ -753,7 +771,7 @@ namespace IO
             // Ensure we get an exception if we pass a list
             // if no options.
             Assert.Throws<ArgumentException>(
-                delegate()
+                delegate ()
                 {
                     ConsoleHelpers.ShowListPrompt(
                         new List<string>(),
@@ -815,7 +833,7 @@ namespace IO
                 Assert.AreEqual( 0, case3.Value );
             }
 
-           {
+            {
                 int? case4 = ConsoleHelpers.ShowListPrompt(
                     options,
                     false,
@@ -845,7 +863,7 @@ namespace IO
                 "derp" + Environment.NewLine + // 0: Fail
                 "5" + Environment.NewLine +    // 1: Fail (out of range)
                 "-1" + Environment.NewLine +   // 2: Fail (out of range)
-                "4" + Environment.NewLine  +   // 3: Returns 4
+                "4" + Environment.NewLine +   // 3: Returns 4
                 "0" + Environment.NewLine;     // 4: Returns 0
                                                // 5: Fail (EOF).
 
@@ -973,7 +991,7 @@ namespace IO
                 Assert.AreEqual( 0, case3.Value );
             }
 
-           {
+            {
                 int? case4 = ConsoleHelpers.ShowListPrompt(
                     options,
                     true,
@@ -1003,7 +1021,7 @@ namespace IO
                 "derp" + Environment.NewLine + // 0: Fail
                 "5" + Environment.NewLine +    // 1: Fail (out of range)
                 "-1" + Environment.NewLine +   // 2: Fail (out of range)
-                "4" + Environment.NewLine  +   // 3: Returns 4
+                "4" + Environment.NewLine +   // 3: Returns 4
                 "0" + Environment.NewLine;     // 4: Returns 0
                                                // 5: Fail (EOF).
 
@@ -1079,6 +1097,5 @@ namespace IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
     }
-}
 }
 
