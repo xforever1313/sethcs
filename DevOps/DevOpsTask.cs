@@ -17,8 +17,13 @@ namespace DevOps
 
         public override void OnError( Exception exception, BuildContext context )
         {
-            base.OnError( exception, context );
-            context.Error( exception.ToString() );
+            // We want the stack trace to print out when all is said and done.
+            // The way to do this is to set the verbosity to the maximum,
+            // and then re-throw the exception.  Use the weird DispatchInfo
+            // class so we don't get a new stack trace.
+            // We need to re-throw the exception, or cake will exit with a zero exit code.
+            context.DiagnosticVerbosity();
+            ExceptionDispatchInfo.Capture( exception ).Throw();
         }
     }
 }
