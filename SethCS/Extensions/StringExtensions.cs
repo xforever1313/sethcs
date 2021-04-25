@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -45,6 +45,16 @@ namespace SethCS.Extensions
             }
 
             return str.Equals( other, StringComparison.InvariantCultureIgnoreCase );
+        }
+
+        public static bool StartsWithIgnoreCase( this string str, string value )
+        {
+            return str.StartsWith( value, StringComparison.OrdinalIgnoreCase );
+        }
+
+        public static bool EndsWithIgnoreCase( this string str, string value  )
+        {
+            return str.EndsWith( value, StringComparison.OrdinalIgnoreCase );
         }
 
         /// <summary>
