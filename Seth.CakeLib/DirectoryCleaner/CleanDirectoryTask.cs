@@ -13,6 +13,8 @@ using Cake.Frosting;
 
 namespace Seth.CakeLib.DirectoryCleaner
 {
+    [TaskName( "clean_directory" )]
+    [TaskDescription( "Cleans the specified directory.  If it does not exist, it will be created." )]
     public class CleanDirectoryTask : FrostingTask
     {
         // ---------------- Functions ----------------
