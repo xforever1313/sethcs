@@ -25,8 +25,12 @@ namespace Seth.CakeLib.DirectoryCleaner
 
             context.Information( config );
 
-            context.EnsureDirectoryExists( config.Path );
-            context.CleanDirectory( config.Path );
+            if( context.DirectoryExists( config.Path ) )
+            {
+                context.DeleteDirectory( config.Path, new DeleteDirectorySettings { Force = true, Recursive = true } );
+            }
+
+            context.CreateDirectory( config.Path );
         }
     }
 }
