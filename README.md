@@ -1,5 +1,9 @@
 # Seth CS 
 Sethcommon for C#. Personal Libraries I use for all my C# projects.
 
-## Build Status:
-[![Build Status](https://travis-ci.org/xforever1313/sethcs.svg?branch=master)](https://travis-ci.org/xforever1313/sethcs)
+# Contents
+
+* **SethCS** - Shared Project for common classes I use.
+* **LibSethCS** - SethCS but in a proper .csproj format
+* **Seth.CakeLib** - Common Cake classes I use.
+* **Seth.Analyzer** - Roslyn Analyzer I use.
