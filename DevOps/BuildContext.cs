@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
+using System;
 using Cake.Core;
 using Cake.Core.IO;
 using Cake.Frosting;
@@ -18,6 +19,7 @@ namespace DevOps
         public BuildContext( ICakeContext context ) :
             base( context )
         {
+            DateTime.Parse( "lol" );
             this.RepoRoot = context.Environment.WorkingDirectory;
             this.SrcDir = this.RepoRoot.Combine( "src" );
             this.Solution = this.RepoRoot.CombineWithFilePath( "SethCS.sln" );

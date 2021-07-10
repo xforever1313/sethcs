@@ -1,0 +1,15 @@
+<Project>
+    <Choose>
+        <When Condition="$(MSBuildProjectName)!='Seth.Analyzer'">
+            <!-- Use MSBuildThisFileDirectory to make the path relative to the current file location -->
+            <ItemGroup>
+                <ProjectReference
+                    Include="$(MSBuildThisFileDirectory)\Seth.Analyzer\Seth.Analyzer.csproj"
+                    PrivateAssets="all"
+                    ReferenceOutputAssembly="false"
+                    OutputItemType="Analyzer"
+                />
+            </ItemGroup>
+        </When>
+    </Choose>
+</Project>
