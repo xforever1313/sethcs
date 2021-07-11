@@ -16,6 +16,8 @@ namespace Seth.Analyzer.Rules
     {
         // ---------------- Fields ----------------
 
+        private const string Descriptor = nameof( SethDateTimeParseRule );
+
         private static readonly Type dateTimeType = typeof( DateTime );
 
         private static readonly string className = dateTimeType.Name;
@@ -40,8 +42,6 @@ namespace Seth.Analyzer.Rules
         // ---------------- Properties ----------------
 
         public static DiagnosticDescriptor Rule { get; private set; }
-
-        internal const string Descriptor = nameof( SethDateTimeParseRule );
 
         private static LocalizableString Title => signature + " analyzier.";
 
