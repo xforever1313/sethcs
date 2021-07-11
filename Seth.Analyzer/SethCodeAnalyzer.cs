@@ -5,10 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Seth.Analyzer.Rules;
@@ -20,25 +17,15 @@ namespace Seth.Analyzer
     {
         // ---------------- Fields ----------------
 
-        private readonly List<BaseRule> rules;
-
         private readonly ImmutableArray<DiagnosticDescriptor> descriptors;
 
         // ---------------- Constructor ----------------
 
         public SethCodeAnalyzer()
         {
-            this.rules = new List<BaseRule>();
-
-            foreach( Type type in typeof( SethCodeAnalyzer ).Assembly.GetTypes() )
-            {
-                if( type.IsSubclassOf( typeof( BaseRule ) ) )
-                {
-                    this.rules.Add( (BaseRule)Activator.CreateInstance( type ) );
-                }
-            }
-
-            this.descriptors = ImmutableArray.Create( this.rules.Select( r => r.Rule ).ToArray() );
+            this.descriptors = ImmutableArray.Create(
+                SethDateTimeParseRule.Rule
+            );
         }
 
         // ---------------- Properties ----------------
@@ -52,10 +39,7 @@ namespace Seth.Analyzer
             context.ConfigureGeneratedCodeAnalysis( GeneratedCodeAnalysisFlags.None );
             context.EnableConcurrentExecution();
 
-            foreach( BaseRule rule in this.rules )
-            {
-                rule.Init( context );
-            }
+            SethDateTimeParseRule.Init( context );
         }
     }
 }

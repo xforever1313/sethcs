@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.Operations;
 
 namespace Seth.Analyzer.Rules
 {
-    public sealed class SethDateTimeParseRule : BaseRule
+    public static class SethDateTimeParseRule
     {
         // ---------------- Fields ----------------
 
@@ -22,34 +22,40 @@ namespace Seth.Analyzer.Rules
         private static readonly string functionName = nameof( DateTime.Parse );
         private static readonly string signature = $"{className}.{functionName}";
 
-        // ---------------- Constructor ----------------
-
-        public SethDateTimeParseRule()
-        {
-        }
-
         // ---------------- Properties ----------------
 
-        protected override LocalizableString Title => signature + " analyzier.";
+        public static DiagnosticDescriptor Rule => new DiagnosticDescriptor(
+            Descriptor,
+            Title,
+            MessageFormat,
+            RuleCategory.ToString(),
+            Serverity,
+            isEnabledByDefault: true,
+            description: Description
+        );
 
-        protected override LocalizableString MessageFormat =>
+        internal const string Descriptor = nameof( SethDateTimeParseRule );
+
+        private static LocalizableString Title => signature + " analyzier.";
+
+        private static LocalizableString MessageFormat =>
             $"Avoid using {signature}";
 
-        protected override LocalizableString Description =>
+        private static LocalizableString Description =>
             $"Do not use {signature}, it differs system to system.  Use {className}.{nameof( DateTime.ParseExact )} instead.";
 
-        protected override Category RuleCategory => Category.Warning;
+        private static string RuleCategory => DiagnosticCategory.Warning.ToString();
 
-        protected override DiagnosticSeverity Serverity => DiagnosticSeverity.Warning;
+        private static DiagnosticSeverity Serverity => DiagnosticSeverity.Warning;
 
         // ---------------- Properties ----------------
 
-        public override void Init( AnalysisContext context )
+        public static void Init( AnalysisContext context )
         {
-            context.RegisterOperationAction( this.LookForDateTimeParse, OperationKind.Invocation );
+            context.RegisterOperationAction( LookForDateTimeParse, OperationKind.Invocation );
         }
 
-        private void LookForDateTimeParse( OperationAnalysisContext context )
+        private static void LookForDateTimeParse( OperationAnalysisContext context )
         {
             IInvocationOperation op = context.Operation as IInvocationOperation;
             if( op == null )
@@ -81,7 +87,7 @@ namespace Seth.Analyzer.Rules
                 ( method.Name.Equals( functionName ) )
             )
             {
-                var diagnostic = Diagnostic.Create( this.Rule, op.Syntax.GetLocation() );
+                var diagnostic = Diagnostic.Create( Rule, op.Syntax.GetLocation() );
                 context.ReportDiagnostic( diagnostic );
             }
         }
