@@ -33,7 +33,7 @@ namespace Tests.Analyzer.Rules
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     class {|#0:Program|}
     {
@@ -61,7 +61,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -92,7 +92,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -112,7 +112,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -135,7 +135,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -158,7 +158,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     internal class Program
     {
@@ -178,7 +178,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -200,7 +200,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -228,7 +228,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     struct {|#0:Point|}
     {
@@ -255,7 +255,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -285,7 +285,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public struct Point
     {
@@ -304,7 +304,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -326,7 +326,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -348,7 +348,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     internal struct Point
     {
@@ -367,7 +367,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -389,7 +389,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -416,7 +416,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     interface {|#0:IProgram|}
     {
@@ -442,7 +442,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -471,7 +471,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public interface IProgram
     {
@@ -489,7 +489,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -510,7 +510,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -531,7 +531,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     internal interface Program
     {
@@ -549,7 +549,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -569,7 +569,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -595,7 +595,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     enum {|#0:SomeEnum|}
     {
@@ -622,7 +622,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -652,7 +652,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public enum SomeEnum
     {
@@ -671,7 +671,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -693,7 +693,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -715,7 +715,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     internal enum SomeEnum
     {
@@ -734,7 +734,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -755,7 +755,7 @@ namespace ConsoleApplication1
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {

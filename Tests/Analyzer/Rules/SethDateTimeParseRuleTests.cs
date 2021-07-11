@@ -26,7 +26,7 @@ namespace Tests.Analyzer.Rules
 @"
 using System;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -54,7 +54,7 @@ namespace ConsoleApplication1
 using System;
 using System.Globalization;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
@@ -83,7 +83,7 @@ namespace ConsoleApplication1
 using System;
 using System.Globalization;
 
-namespace ConsoleApplication1
+namespace TestNamespace
 {
     public class Program
     {
