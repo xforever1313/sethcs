@@ -24,7 +24,8 @@ namespace Seth.Analyzer
         public SethCodeAnalyzer()
         {
             this.descriptors = ImmutableArray.Create(
-                SethDateTimeParseRule.Rule
+                SethDateTimeParseRule.Rule,
+                SethDateTimeTryParseRule.Rule
             );
         }
 
@@ -40,6 +41,7 @@ namespace Seth.Analyzer
             context.EnableConcurrentExecution();
 
             SethDateTimeParseRule.Init( context );
+            SethDateTimeTryParseRule.Init( context );
         }
     }
 }

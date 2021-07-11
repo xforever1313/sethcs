@@ -5,8 +5,13 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
+using System.Threading.Tasks;
 using NUnit.Framework;
-using Seth.Analyzer;
+using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
+    Seth.Analyzer.SethCodeAnalyzer,
+    Seth.Analyzer.SethCodeFixProvider
+>;
+
 
 namespace Tests.Analyzer
 {
@@ -14,10 +19,11 @@ namespace Tests.Analyzer
     public sealed class SethCodeAnalyzerTests
     {
         [Test]
-        public void ConstructorTest()
+        public async Task NoDiasnosticTest()
         {
-            SethCodeAnalyzer uut = new SethCodeAnalyzer();
-            Assert.AreNotEqual( 0, uut.SupportedDiagnostics.Length );
+            string test = @"";
+
+            await VerifyCS.VerifyAnalyzerAsync( test );
         }
     }
 }

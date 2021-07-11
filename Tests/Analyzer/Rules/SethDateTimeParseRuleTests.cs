@@ -5,11 +5,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
-using System;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using NUnit.Framework;
+using Seth.Analyzer.Rules;
 using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
     Seth.Analyzer.SethCodeAnalyzer,
     Seth.Analyzer.SethCodeFixProvider
@@ -18,7 +17,7 @@ using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
 namespace Tests.Analyzer.Rules
 {
     [TestFixture]
-    public sealed class SethDateTimeParseRule
+    public sealed class SethDateTimeParseRuleTests
     {
         [Test]
         public async Task NoDiasnosticTest()
@@ -48,7 +47,7 @@ namespace ConsoleApplication1
     }
 }
 ";
-            var expected = VerifyCS.Diagnostic( nameof( SethDateTimeParseRule ) )
+            var expected = VerifyCS.Diagnostic( SethDateTimeParseRule.Rule )
                 .WithLocation( 0 )
                 .WithSeverity( DiagnosticSeverity.Warning );
 
@@ -76,7 +75,7 @@ namespace ConsoleApplication1
     }
 }
 ";
-            var expected = VerifyCS.Diagnostic( nameof( SethDateTimeParseRule ) )
+            var expected = VerifyCS.Diagnostic( SethDateTimeParseRule.Rule )
                 .WithLocation( 0 )
                 .WithSeverity( DiagnosticSeverity.Warning );
 
@@ -105,7 +104,7 @@ namespace ConsoleApplication1
     }
 }
 ";
-            var expected = VerifyCS.Diagnostic( nameof( SethDateTimeParseRule ) )
+            var expected = VerifyCS.Diagnostic( SethDateTimeParseRule.Rule )
                 .WithLocation( 0 )
                 .WithSeverity( DiagnosticSeverity.Warning );
 
