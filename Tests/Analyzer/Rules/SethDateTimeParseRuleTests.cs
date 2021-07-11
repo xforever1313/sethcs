@@ -20,14 +20,6 @@ namespace Tests.Analyzer.Rules
     public sealed class SethDateTimeParseRuleTests
     {
         [Test]
-        public async Task NoDiasnosticTest()
-        {
-            string test = @"";
-
-            await VerifyCS.VerifyAnalyzerAsync( test );
-        }
-
-        [Test]
         public async Task DateTimeParseTest()
         {
             string test =
@@ -36,7 +28,7 @@ using System;
 
 namespace ConsoleApplication1
 {
-    class Program
+    public class Program
     {
         private readonly DateTime time;
 
@@ -64,7 +56,7 @@ using System.Globalization;
 
 namespace ConsoleApplication1
 {
-    class Program
+    public class Program
     {
         private readonly DateTime time;
 
@@ -93,7 +85,7 @@ using System.Globalization;
 
 namespace ConsoleApplication1
 {
-    class Program
+    public class Program
     {
         private readonly DateTime time;
 

@@ -28,7 +28,7 @@ using System;
 
 namespace ConsoleApplication1
 {
-    class Program
+    public class Program
     {
         private readonly DateTime time;
 
@@ -56,7 +56,7 @@ using System.Globalization;
 
 namespace ConsoleApplication1
 {
-    class Program
+    public class Program
     {
         private readonly DateTime time;
 

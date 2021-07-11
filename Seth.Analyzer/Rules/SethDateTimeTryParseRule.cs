@@ -24,6 +24,18 @@ namespace Seth.Analyzer.Rules
         private static readonly string functionName = nameof( DateTime.TryParse );
         private static readonly string signature = $"{className}.{functionName}";
 
+        private static readonly LocalizableString Title = signature + " analyzier.";
+
+        private static readonly LocalizableString MessageFormat =
+            $"Avoid using {signature}";
+
+        private static readonly LocalizableString Description =
+            $"Do not use {signature}, it differs system to system.  Use {className}.{nameof( DateTime.TryParseExact )} instead.";
+
+        private static readonly string RuleCategory = DiagnosticCategory.Warning.ToString();
+
+        private const DiagnosticSeverity Serverity = DiagnosticSeverity.Warning;
+
         // ---------------- Constructor ----------------
 
         static SethDateTimeTryParseRule()
@@ -43,26 +55,14 @@ namespace Seth.Analyzer.Rules
 
         public static DiagnosticDescriptor Rule { get; private set; }
 
-        private static LocalizableString Title => signature + " analyzier.";
-
-        private static LocalizableString MessageFormat =>
-            $"Avoid using {signature}";
-
-        private static LocalizableString Description =>
-            $"Do not use {signature}, it differs system to system.  Use {className}.{nameof( DateTime.TryParseExact )} instead.";
-
-        private static string RuleCategory => DiagnosticCategory.Warning.ToString();
-
-        private static DiagnosticSeverity Serverity => DiagnosticSeverity.Warning;
-
         // ---------------- Properties ----------------
 
         public static void Init( AnalysisContext context )
         {
-            context.RegisterOperationAction( LookForDateTimeParse, OperationKind.Invocation );
+            context.RegisterOperationAction( Run, OperationKind.Invocation );
         }
 
-        private static void LookForDateTimeParse( OperationAnalysisContext context )
+        private static void Run( OperationAnalysisContext context )
         {
             IInvocationOperation op = context.Operation as IInvocationOperation;
             if( op == null )
