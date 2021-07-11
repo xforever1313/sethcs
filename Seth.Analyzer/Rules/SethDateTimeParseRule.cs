@@ -22,17 +22,24 @@ namespace Seth.Analyzer.Rules
         private static readonly string functionName = nameof( DateTime.Parse );
         private static readonly string signature = $"{className}.{functionName}";
 
+        // ---------------- Constructor ----------------
+
+        static SethDateTimeParseRule()
+        {
+            Rule = new DiagnosticDescriptor(
+                Descriptor,
+                Title,
+                MessageFormat,
+                RuleCategory.ToString(),
+                Serverity,
+                isEnabledByDefault: true,
+                description: Description
+            );
+        }
+
         // ---------------- Properties ----------------
 
-        public static DiagnosticDescriptor Rule => new DiagnosticDescriptor(
-            Descriptor,
-            Title,
-            MessageFormat,
-            RuleCategory.ToString(),
-            Serverity,
-            isEnabledByDefault: true,
-            description: Description
-        );
+        public static DiagnosticDescriptor Rule { get; private set; }
 
         internal const string Descriptor = nameof( SethDateTimeParseRule );
 
