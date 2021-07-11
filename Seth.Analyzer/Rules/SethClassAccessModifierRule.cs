@@ -6,6 +6,7 @@
 //
 
 using System;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -86,7 +87,17 @@ namespace Seth.Analyzer.Rules
                 return;
             }
 
-            if( modifiers.Count == 0 )
+            // Need to search for modifiers like this;
+            // as things like "static" could show up here.
+            var foundModifiers = modifiers.Where(
+                m =>
+                    m.Text.Equals( "private" ) ||
+                    m.Text.Equals( "protected" ) ||
+                    m.Text.Equals( "public" ) ||
+                    m.Text.Equals( "internal" )
+            );
+
+            if( foundModifiers.Count() == 0 )
             {
                 var diagnostic = Diagnostic.Create(
                     Rule,

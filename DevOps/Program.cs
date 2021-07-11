@@ -13,7 +13,7 @@ using Seth.CakeLib;
 
 namespace DevOps
 {
-    static class Program
+    public static class Program
     {
         static int Main( string[] args )
         {

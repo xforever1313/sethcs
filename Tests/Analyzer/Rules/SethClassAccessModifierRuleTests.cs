@@ -216,6 +216,106 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
+        // -------- Static Classes --------
+
+        /// <summary>
+        /// No access declaration, make warning.
+        /// </summary>
+        [Test]
+        public async Task StaticClassNoAccessModifierDeclarationTest()
+        {
+            string test =
+@"
+using System;
+
+namespace TestNamespace
+{
+    static class {|#0:Program|}
+    {
+        public static void Run()
+        {
+        }
+    }
+}
+";
+            var expected = VerifyCS.Diagnostic( SethClassAccessModifierRule.Rule )
+                .WithLocation( 0 )
+                .WithSeverity( DiagnosticSeverity.Warning )
+                .WithArguments( "class", "Program" );
+
+            await VerifyCS.VerifyAnalyzerAsync( test, expected );
+        }
+
+        [Test]
+        public async Task StaticClassPublicAccessModifierDeclarationTest()
+        {
+            string test =
+@"
+using System;
+
+namespace TestNamespace
+{
+    public static class Program
+    {
+        public static void Run()
+        {
+        }
+    }
+}
+";
+            await VerifyCS.VerifyAnalyzerAsync( test );
+        }
+
+        // -------- Sealed Classes --------
+
+        /// <summary>
+        /// No access declaration, make warning.
+        /// </summary>
+        [Test]
+        public async Task SealedClassNoAccessModifierDeclarationTest()
+        {
+            string test =
+@"
+using System;
+
+namespace TestNamespace
+{
+    sealed class {|#0:Program|}
+    {
+        public Program()
+        {
+        }
+    }
+}
+";
+            var expected = VerifyCS.Diagnostic( SethClassAccessModifierRule.Rule )
+                .WithLocation( 0 )
+                .WithSeverity( DiagnosticSeverity.Warning )
+                .WithArguments( "class", "Program" );
+
+            await VerifyCS.VerifyAnalyzerAsync( test, expected );
+        }
+
+        [Test]
+        public async Task SealedClassPublicAccessModifierDeclarationTest()
+        {
+            string test =
+@"
+using System;
+
+namespace TestNamespace
+{
+    public sealed class Program
+    {
+        public Program()
+        {
+        }
+    }
+}
+";
+            await VerifyCS.VerifyAnalyzerAsync( test );
+        }
+
         // -------- Structs --------
 
         /// <summary>
