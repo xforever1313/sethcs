@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Basic\EventExecutor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\InterruptibleEventExecutor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\GenericLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Basic\MustCallAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\WatchdogTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\CloningReadOnlyList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ListedValidationException.cs" />
