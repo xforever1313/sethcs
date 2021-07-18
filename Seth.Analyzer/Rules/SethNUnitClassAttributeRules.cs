@@ -21,8 +21,8 @@ namespace Seth.Analyzer.Rules
 
             private const string Descriptor = nameof( SethNUnitTestMethodMustBePublicRule );
 
-            private static readonly LocalizableString Title = "NUnit test methods should be public.";
-            private static readonly LocalizableString MessageFormat = "Method '{0}' within '{1}' has a TestAttribute on it, but is not public.";
+            private static readonly LocalizableString Title = "NUnit test methods should be public";
+            private static readonly LocalizableString MessageFormat = "Method '{0}' within '{1}' has a TestAttribute on it, but is not public";
             private static readonly LocalizableString Description =
                 "Method with the TestAttribute should be public so they can be found by runners.";
 
@@ -30,24 +30,15 @@ namespace Seth.Analyzer.Rules
 
             private const DiagnosticSeverity Serverity = DiagnosticSeverity.Warning;
 
-            // ---------------- Constructor ----------------
-
-            static SethNUnitTestMethodMustBePublicRule()
-            {
-                Rule = new DiagnosticDescriptor(
-                    Descriptor,
-                    Title,
-                    MessageFormat,
-                    RuleCategory.ToString(),
-                    Serverity,
-                    isEnabledByDefault: true,
-                    description: Description
-                );
-            }
-
-            // ---------------- Properties ----------------
-
-            public static DiagnosticDescriptor Rule { get; private set; }
+            public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+                Descriptor,
+                Title,
+                MessageFormat,
+                RuleCategory.ToString(),
+                Serverity,
+                isEnabledByDefault: true,
+                description: Description
+            );
         }
 
         public static class SethNUnitClassContainsTestMethodMustBeAFixtureRule
@@ -56,8 +47,8 @@ namespace Seth.Analyzer.Rules
 
             private const string Descriptor = nameof( SethNUnitClassContainsTestMethodMustBeAFixtureRule );
 
-            private static readonly LocalizableString Title = "Class that contains TestAttribute is not a TestFixture.";
-            private static readonly LocalizableString MessageFormat = "Class '{0}' has a method that contains a TestAttribute on it, but it lacks a TestFixtureAttribute.";
+            private static readonly LocalizableString Title = "Class that contains TestAttribute is not a TestFixture";
+            private static readonly LocalizableString MessageFormat = "Class '{0}' has a method that contains a TestAttribute on it, but it lacks a TestFixtureAttribute";
             private static readonly LocalizableString Description =
                 "Classes that contain a TestAttribute should contain a TestFixtureAttribute so they are not missed by runners.";
 
@@ -65,24 +56,15 @@ namespace Seth.Analyzer.Rules
 
             private const DiagnosticSeverity Serverity = DiagnosticSeverity.Warning;
 
-            // ---------------- Constructor ----------------
-
-            static SethNUnitClassContainsTestMethodMustBeAFixtureRule()
-            {
-                Rule = new DiagnosticDescriptor(
-                    Descriptor,
-                    Title,
-                    MessageFormat,
-                    RuleCategory.ToString(),
-                    Serverity,
-                    isEnabledByDefault: true,
-                    description: Description
-                );
-            }
-
-            // ---------------- Properties ----------------
-
-            public static DiagnosticDescriptor Rule { get; private set; }
+            public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+                Descriptor,
+                Title,
+                MessageFormat,
+                RuleCategory.ToString(),
+                Serverity,
+                isEnabledByDefault: true,
+                description: Description
+            );
         }
 
         public static class SethNUnitTestFixtureMustBePublicRule
@@ -91,8 +73,8 @@ namespace Seth.Analyzer.Rules
 
             private const string Descriptor = nameof( SethNUnitTestFixtureMustBePublicRule );
 
-            private static readonly LocalizableString Title = "Class that contains the TestFixture attribute should be public.";
-            private static readonly LocalizableString MessageFormat = "Class '{0}' has a TestFixtureAttribute, and it should be public.";
+            private static readonly LocalizableString Title = "Class that contains the TestFixture attribute should be public";
+            private static readonly LocalizableString MessageFormat = "Class '{0}' has a TestFixtureAttribute, and it should be public";
             private static readonly LocalizableString Description =
                 "Classes that contain a TestFixtureAttribute should be public so runners pick them up.";
 
@@ -100,24 +82,15 @@ namespace Seth.Analyzer.Rules
 
             private const DiagnosticSeverity Serverity = DiagnosticSeverity.Warning;
 
-            // ---------------- Constructor ----------------
-
-            static SethNUnitTestFixtureMustBePublicRule()
-            {
-                Rule = new DiagnosticDescriptor(
-                    Descriptor,
-                    Title,
-                    MessageFormat,
-                    RuleCategory.ToString(),
-                    Serverity,
-                    isEnabledByDefault: true,
-                    description: Description
-                );
-            }
-
-            // ---------------- Properties ----------------
-
-            public static DiagnosticDescriptor Rule { get; private set; }
+            public static readonly  DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+                Descriptor,
+                Title,
+                MessageFormat,
+                RuleCategory.ToString(),
+                Serverity,
+                isEnabledByDefault: true,
+                description: Description
+            );
         }
 
         public static class SethNUnitTestFixtureMustBeSealedRule
@@ -126,8 +99,8 @@ namespace Seth.Analyzer.Rules
 
             private const string Descriptor = nameof( SethNUnitTestFixtureMustBeSealedRule );
 
-            private static readonly LocalizableString Title = "Class that contains the TestFixture attribute should be sealed.";
-            private static readonly LocalizableString MessageFormat = "Class '{0}' has a TestFixtureAttribute, and it should be sealed.";
+            private static readonly LocalizableString Title = "Class that contains the TestFixture attribute should be sealed";
+            private static readonly LocalizableString MessageFormat = "Class '{0}' has a TestFixtureAttribute, and it should be sealed";
             private static readonly LocalizableString Description =
                 "A TestFixtureAttribute class should be sealed as it should not be inherited from.";
 
@@ -135,24 +108,15 @@ namespace Seth.Analyzer.Rules
 
             private const DiagnosticSeverity Serverity = DiagnosticSeverity.Warning;
 
-            // ---------------- Constructor ----------------
-
-            static SethNUnitTestFixtureMustBeSealedRule()
-            {
-                Rule = new DiagnosticDescriptor(
-                    Descriptor,
-                    Title,
-                    MessageFormat,
-                    RuleCategory.ToString(),
-                    Serverity,
-                    isEnabledByDefault: true,
-                    description: Description
-                );
-            }
-
-            // ---------------- Properties ----------------
-
-            public static DiagnosticDescriptor Rule { get; private set; }
+            public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+                Descriptor,
+                Title,
+                MessageFormat,
+                RuleCategory.ToString(),
+                Serverity,
+                isEnabledByDefault: true,
+                description: Description
+            );
         }
 
         public static void Init( AnalysisContext context )

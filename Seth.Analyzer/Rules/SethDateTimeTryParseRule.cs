@@ -24,7 +24,7 @@ namespace Seth.Analyzer.Rules
         private static readonly string functionName = nameof( DateTime.TryParse );
         private static readonly string signature = $"{className}.{functionName}";
 
-        private static readonly LocalizableString Title = signature + " analyzier.";
+        private static readonly LocalizableString Title = $"{signature} analyzier.";
 
         private static readonly LocalizableString MessageFormat =
             $"Avoid using {signature}";
@@ -36,24 +36,15 @@ namespace Seth.Analyzer.Rules
 
         private const DiagnosticSeverity Serverity = DiagnosticSeverity.Warning;
 
-        // ---------------- Constructor ----------------
-
-        static SethDateTimeTryParseRule()
-        {
-            Rule = new DiagnosticDescriptor(
-                Descriptor,
-                Title,
-                MessageFormat,
-                RuleCategory.ToString(),
-                Serverity,
-                isEnabledByDefault: true,
-                description: Description
-            );
-        }
-
-        // ---------------- Properties ----------------
-
-        public static DiagnosticDescriptor Rule { get; private set; }
+        public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+            Descriptor,
+            Title,
+            MessageFormat,
+            RuleCategory.ToString(),
+            Serverity,
+            isEnabledByDefault: true,
+            description: Description
+        );
 
         // ---------------- Properties ----------------
 

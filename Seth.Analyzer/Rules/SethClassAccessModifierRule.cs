@@ -20,9 +20,9 @@ namespace Seth.Analyzer.Rules
 
         private const string Descriptor = nameof( SethClassAccessModifierRule );
 
-        private static readonly LocalizableString Title = "Class requires access modifer.";
+        private static readonly LocalizableString Title = "Class requires access modifer";
 
-        private static readonly LocalizableString MessageFormat = "{0} {1} does not have an access modifer.";
+        private static readonly LocalizableString MessageFormat = "{0} {1} does not have an access modifer";
 
         private static readonly LocalizableString Description =
             $"Type declaration should have an explicit access modifier, otherwise it will defaulted.";
@@ -31,24 +31,15 @@ namespace Seth.Analyzer.Rules
 
         private const DiagnosticSeverity Serverity = DiagnosticSeverity.Warning;
 
-        // ---------------- Constructor ----------------
-
-        static SethClassAccessModifierRule()
-        {
-            Rule = new DiagnosticDescriptor(
-                Descriptor,
-                Title,
-                MessageFormat,
-                RuleCategory.ToString(),
-                Serverity,
-                isEnabledByDefault: true,
-                description: Description
-            );
-        }
-
-        // ---------------- Properties ----------------
-
-        public static DiagnosticDescriptor Rule { get; private set; }
+        public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+            Descriptor,
+            Title,
+            MessageFormat,
+            RuleCategory.ToString(),
+            Serverity,
+            isEnabledByDefault: true,
+            description: Description
+        );
 
         // ---------------- Functions ----------------
 

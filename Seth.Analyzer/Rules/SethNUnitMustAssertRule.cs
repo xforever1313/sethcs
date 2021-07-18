@@ -23,7 +23,7 @@ namespace Seth.Analyzer.Rules
         private const string Descriptor = nameof( SethNUnitMustAssertRule );
 
         private static readonly LocalizableString Title = "NUnit tests must call Assert";
-        private static readonly LocalizableString MessageFormat = "Assert must be called at least once in test '{0}'.";
+        private static readonly LocalizableString MessageFormat = "Assert must be called at least once in test '{0}'";
         private static readonly LocalizableString Description =
             "Assert should be called at least once in an NUnit test to ensure we actually test for something.";
 
@@ -31,24 +31,15 @@ namespace Seth.Analyzer.Rules
 
         private const DiagnosticSeverity Serverity = DiagnosticSeverity.Warning;
 
-        // ---------------- Constructor ----------------
-
-        static SethNUnitMustAssertRule()
-        {
-            Rule = new DiagnosticDescriptor(
-                Descriptor,
-                Title,
-                MessageFormat,
-                RuleCategory.ToString(),
-                Serverity,
-                isEnabledByDefault: true,
-                description: Description
-            );
-        }
-
-        // ---------------- Properties ----------------
-
-        public static DiagnosticDescriptor Rule { get; private set; }
+        public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+            Descriptor,
+            Title,
+            MessageFormat,
+            RuleCategory.ToString(),
+            Serverity,
+            isEnabledByDefault: true,
+            description: Description
+        );
 
         // ---------------- Functions ----------------
 
