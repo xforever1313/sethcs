@@ -26,7 +26,15 @@ namespace Seth.Analyzer
             this.descriptors = ImmutableArray.Create(
                 SethDateTimeParseRule.Rule,
                 SethDateTimeTryParseRule.Rule,
-                SethClassAccessModifierRule.Rule
+                SethClassAccessModifierRule.Rule,
+
+                // Doesn't work at the moment (Well, it does, but not for complex cases).
+                // Don't include for now.
+                //SethNUnitMustAssertRule.Rule,
+                SethNUnitClassAttributeRules.SethNUnitClassContainsTestMethodMustBeAFixtureRule.Rule,
+                SethNUnitClassAttributeRules.SethNUnitTestFixtureMustBePublicRule.Rule,
+                SethNUnitClassAttributeRules.SethNUnitTestFixtureMustBeSealedRule.Rule,
+                SethNUnitClassAttributeRules.SethNUnitTestMethodMustBePublicRule.Rule
             );
         }
 
@@ -44,6 +52,8 @@ namespace Seth.Analyzer
             SethDateTimeParseRule.Init( context );
             SethDateTimeTryParseRule.Init( context );
             SethClassAccessModifierRule.Init( context );
+            //SethNUnitMustAssertRule.Init( context );
+            SethNUnitClassAttributeRules.Init( context );
         }
     }
 }

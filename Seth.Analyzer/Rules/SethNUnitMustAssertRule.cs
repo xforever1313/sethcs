@@ -5,16 +5,17 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
 namespace Seth.Analyzer.Rules
 {
+    /// <remarks>
+    /// This doesn't work since it can't handle dynamic behavior.
+    /// However, its a good example, so it stays.
+    /// </remarks>
     public static class SethNUnitMustAssertRule
     {
         // ---------------- Fields ----------------

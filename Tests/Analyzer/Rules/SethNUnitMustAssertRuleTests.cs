@@ -18,7 +18,7 @@ using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
 
 namespace Tests.Analyzer.Rules
 {
-    [TestFixture]
+    //[TestFixture]
     public sealed class SethNUnitMustAssertRuleTests
     {
         // ---------------- Fields ----------------
@@ -33,7 +33,7 @@ namespace Tests.Analyzer.Rules
         /// <summary>
         /// If we don't call Assert, we should get a warning.
         /// </summary>
-        [Test]
+        //[Test]
         public async Task NoAssertCallTest()
         {
             string test =
@@ -63,7 +63,7 @@ namespace TestNamespace
         /// <summary>
         /// If we invoke Assert in the method of the test, we should not get a warning.
         /// </summary>
-        [Test]
+        //[Test]
         public async Task AssertInTestBodyTest()
         {
             string test =
@@ -91,7 +91,7 @@ namespace TestNamespace
         /// If we call Assert within the a method of the same class,
         /// we should get no warning.
         /// </summary>
-        [Test]
+        //[Test]
         public async Task AssertCallWithCallStackTest()
         {
             string test =
@@ -125,7 +125,7 @@ namespace TestNamespace
         /// not get a warning.
         /// </summary>
         /// <returns></returns>
-        [Test]
+        //[Test]
         public async Task InstanceAssertCallTest()
         {
             string test =
@@ -162,7 +162,7 @@ namespace TestNamespace
         /// Ensure if we call assert in an override method,
         /// but call that class that overrides, we get no warning.
         /// </summary>
-        [Test]
+        //[Test]
         public async Task OverrideAndInvokeChildClassTest()
         {
             string test =
@@ -206,7 +206,7 @@ namespace TestNamespace
         /// Ensure if we call assert in an override method,
         /// but the type is the base type, we don't get the warning.
         /// </summary>
-        [Test]
+        //[Test]
         public async Task OverrideAndInvokeBaseClassTest()
         {
             string test =
@@ -250,7 +250,7 @@ namespace TestNamespace
         /// If we call Assert through an action, we
         /// should not get a warning.
         /// </summary>
-        [Test]
+        //[Test]
         public async Task AssertThroughActionTest()
         {
             string test =
@@ -285,7 +285,7 @@ namespace TestNamespace
         /// If we call Assert through an action on a property, we
         /// should not get a warning.
         /// </summary>
-        [Test]
+        //[Test]
         public async Task AssertThroughPropertyFuncTest()
         {
             string test =
