@@ -16,7 +16,7 @@ namespace Seth.Analyzer.Rules
     {
         // ---------------- Fields ----------------
 
-        private const string Descriptor = nameof( SethDateTimeParseRule );
+        private const string Descriptor = nameof( SethDateTimeTryParseRule );
 
         private static readonly Type dateTimeType = typeof( DateTime );
 
