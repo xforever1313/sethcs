@@ -12,8 +12,4 @@
     <PackageReference Include="Microsoft.CodeAnalysis" Version="3.10.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CodeFixes\" />
-  </ItemGroup>
-
 </Project>

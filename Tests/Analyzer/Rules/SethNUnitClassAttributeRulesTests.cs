@@ -164,6 +164,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test, assemblies, expected );
         }
 
+        [Test]
         public async Task TestMethodHasNoModifierTest()
         {
             string test =
@@ -189,11 +190,37 @@ namespace TestNamespace
     }
 }
 ";
+            string fixTest =
+@"
+using System;
+using NUnit.Framework;
+
+namespace TestNamespace
+{
+    [TestFixture]
+    public sealed class TestFixture
+    {
+        [Test]
+        public void {|#0:TestMethod|}()
+        {
+            HelperMethod();
+        }
+
+        private void HelperMethod()
+        {
+            Assert.Pass();
+        }
+    }
+}
+";
+
             var expected = VerifyCS.Diagnostic( SethNUnitClassAttributeRules.SethNUnitTestMethodMustBePublicRule.Rule )
                 .WithLocation( 0 )
                 .WithSeverity( DiagnosticSeverity.Warning )
                 .WithArguments( "TestMethod", "TestFixture" );
-            await VerifyCS.VerifyAnalyzerAsync( test, assemblies, expected );
+
+            //await VerifyCS.VerifyAnalyzerAsync( test, assemblies, expected );
+            await VerifyCS.VerifyCodeFixAsync( test, expected, fixTest, assemblies );
         }
 
         [Test]

@@ -43,9 +43,7 @@ namespace Tests.Analyzer
             };
 
             test.ExpectedDiagnostics.AddRange( expected );
-
             test.AddAssenblies( assemblies );
-
             await test.RunAsync( CancellationToken.None );
         }
 
@@ -58,7 +56,10 @@ namespace Tests.Analyzer
 
         /// <inheritdoc cref="CodeFixVerifier{TAnalyzer, TCodeFix, TTest, TVerifier}.VerifyCodeFixAsync(string, DiagnosticResult, string)"/>
         public static async Task VerifyCodeFixAsync( string source, DiagnosticResult expected, string fixedSource )
-            => await VerifyCodeFixAsync( source, new[] { expected }, fixedSource );
+            => await VerifyCodeFixAsync( source, expected, fixedSource, null );
+
+        public static async Task VerifyCodeFixAsync( string source, DiagnosticResult expected, string fixedSource, IEnumerable<Assembly> assemblies )
+            => await VerifyCodeFixAsync( source, new[] { expected }, fixedSource, assemblies );
 
         /// <inheritdoc cref="CodeFixVerifier{TAnalyzer, TCodeFix, TTest, TVerifier}.VerifyCodeFixAsync(string, DiagnosticResult[], string)"/>
         public static async Task VerifyCodeFixAsync( string source, DiagnosticResult[] expected, string fixedSource )
@@ -71,7 +72,7 @@ namespace Tests.Analyzer
             var test = new Test
             {
                 TestCode = source,
-                FixedCode = fixedSource,
+                FixedCode = fixedSource
             };
 
             test.ExpectedDiagnostics.AddRange( expected );

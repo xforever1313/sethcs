@@ -6,32 +6,57 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
-using System.Threading;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Rename;
+using Seth.Analyzer.CodeFixes;
 
 namespace Seth.Analyzer
 {
     [ExportCodeFixProvider( LanguageNames.CSharp, Name = nameof( SethCodeFixProvider ) ), Shared]
     public sealed class SethCodeFixProvider : CodeFixProvider
     {
+        // ---------------- Fields ----------------
+
+        private readonly Dictionary<string, ICodeFix> fixes;
+
+        private ImmutableArray<string> fixableDiagnosticIds;
+
         // ---------------- Constructor ----------------
 
         public SethCodeFixProvider()
         {
+            // Use reflection so we don't need to manuall register everything
+            // like we're forced to do with rules.
+            fixes = new Dictionary<string, ICodeFix>();
+            Assembly assm = typeof( SethCodeFixProvider ).Assembly;
+            foreach( Type type in assm.GetTypes() )
+            {
+                if(
+                    type.IsAssignableFrom( typeof( ICodeFix ) ) &&
+                    ( type.IsAbstract == false ) && 
+                    ( type.IsInterface == false )
+                )
+                {
+                    ICodeFix codeFix = (ICodeFix)Activator.CreateInstance( type );
+                    fixes.Add( codeFix.Rule.Id, codeFix );
+                }
+            }
+
+            fixableDiagnosticIds = ImmutableArray.Create(
+                fixes.Keys.ToArray()
+            );
         }
 
         // ---------------- Properties ----------------
 
-        public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray<string>.Empty;
+        public override ImmutableArray<string> FixableDiagnosticIds => this.fixableDiagnosticIds;
 
         // ---------------- Functions ----------------
 
@@ -43,9 +68,15 @@ namespace Seth.Analyzer
 
         public override async Task RegisterCodeFixesAsync( CodeFixContext context )
         {
-            await context.Document.GetSyntaxRootAsync( context.CancellationToken ).ConfigureAwait( false );
+            foreach( Diagnostic diagnostic in context.Diagnostics )
+            {
+                if( this.fixes.ContainsKey( diagnostic.Id ) == false )
+                {
+                    continue;
+                }
 
-            // TODO: Add things
+                await this.fixes[diagnostic.Id].RegisterCodeFixesAsync( context, diagnostic );
+            }
         }
     }
 }
