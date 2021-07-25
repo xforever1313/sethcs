@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -22,6 +23,13 @@ namespace Seth.Analyzer.CodeFixes
         // ---------------- Fields ----------------
 
         private static readonly string title = "Add 'public' modifier to Test Method";
+
+        private static readonly HashSet<SyntaxKind> nonPublicSyntax = new HashSet<SyntaxKind>
+        {
+            SyntaxKind.PrivateKeyword,
+            SyntaxKind.ProtectedKeyword,
+            SyntaxKind.InternalKeyword
+        };
 
         // ---------------- Constructor ----------------
 
@@ -49,12 +57,6 @@ namespace Seth.Analyzer.CodeFixes
                 return;
             }
 
-            SyntaxToken token = SyntaxFactory.Token( SyntaxKind.PublicKeyword );
-            MethodDeclarationSyntax newSyntax = declaration.AddModifiers( token );
-
-            SyntaxNode newRoot = root.ReplaceNode( declaration, newSyntax );
-            Document newDoc = context.Document.WithSyntaxRoot( newRoot );
-
             CodeAction action = CodeAction.Create(
                 title,
                 c => AddPublicModifier( root, context.Document, declaration, c ),
@@ -69,8 +71,20 @@ namespace Seth.Analyzer.CodeFixes
             return await Task.Run(
                 () =>
                 {
-                    SyntaxToken token = SyntaxFactory.Token( SyntaxKind.PublicKeyword );
-                    MethodDeclarationSyntax newSyntax = dec.AddModifiers( token );
+                    SyntaxTokenList modList = dec.Modifiers;
+                    foreach( SyntaxToken token in dec.Modifiers )
+                    {
+                        if( nonPublicSyntax.Contains( token.Kind() ) == false )
+                        {
+                            continue;
+                        }
+
+                        modList = dec.Modifiers.Remove( token );
+                    }
+
+                    SyntaxToken newToken = SyntaxFactory.Token( SyntaxKind.PublicKeyword );
+                    modList = modList.Insert( 0, newToken );
+                    MethodDeclarationSyntax newSyntax = dec.WithModifiers( modList );
 
                     SyntaxNode newRoot = root.ReplaceNode( dec, newSyntax );
                     Document newDoc = document.WithSyntaxRoot( newRoot );

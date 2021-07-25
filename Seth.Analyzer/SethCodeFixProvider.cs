@@ -39,7 +39,7 @@ namespace Seth.Analyzer
             foreach( Type type in assm.GetTypes() )
             {
                 if(
-                    type.IsAssignableFrom( typeof( ICodeFix ) ) &&
+                    typeof( ICodeFix ).IsAssignableFrom( type ) &&
                     ( type.IsAbstract == false ) && 
                     ( type.IsInterface == false )
                 )
