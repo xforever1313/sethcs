@@ -128,5 +128,57 @@ namespace SethCS.Extensions
 
             return builder.ToString();
         }
+
+        public static string ToSnakeCase( this string str )
+        {
+            return NormalizeWhiteSpace( str, '_' ).ToLower();
+        }
+
+        public static string ToPascalCase( this string str )
+        {
+            if( string.IsNullOrWhiteSpace( str ) )
+            {
+                return str;
+            }
+
+            str = NormalizeWhiteSpace( str, ' ' ).ToLower();
+
+            StringBuilder builder = new StringBuilder();
+            string[] split = str.Split( ' ' );
+            foreach( string s in split )
+            {
+                builder.Append( char.ToUpper( s[0] ) + s.Substring( 1 ) );
+            }
+
+            return builder.ToString();
+        }
+
+        public static string ToCamelCase( this string str )
+        {
+            if( string.IsNullOrWhiteSpace( str ) )
+            {
+                return str;
+            }
+
+            str = NormalizeWhiteSpace( str, ' ' ).ToLower();
+
+            StringBuilder builder = new StringBuilder();
+            string[] split = str.Split( ' ' );
+            bool firstChar = true;
+            foreach( string s in split )
+            {
+                if( firstChar )
+                {
+                    builder.Append( s );
+                    firstChar = false;
+                }
+                else
+                {
+                    builder.Append( char.ToUpper( s[0] ) + s.Substring( 1 ) );
+                }
+            }
+
+            return builder.ToString();
+        }
     }
 }

@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -204,6 +204,48 @@ namespace Tests.Extensions
             Assert.AreEqual( 2, array.Length );
             Assert.AreEqual( "1234", array[0] );
             Assert.AreEqual( "5", array[1] );
+        }
+
+        [Test]
+        public void ToSnakeCaseTest()
+        {
+            // Setup
+            const string original = "Hello world HOW are You";
+            const string expected = "hello_world_how_are_you";
+
+            // Act
+            string actual = original.ToSnakeCase();
+
+            // Check
+            Assert.AreEqual( expected, actual );
+        }
+
+        [Test]
+        public void ToPascalCaseTest()
+        {
+            // Setup
+            const string original = "Hello world HOW are You";
+            const string expected = "HelloWorldHowAreYou";
+
+            // Act
+            string actual = original.ToPascalCase();
+
+            // Check
+            Assert.AreEqual( expected, actual );
+        }
+
+        [Test]
+        public void ToCamelCaseTest()
+        {
+            // Setup
+            const string original = "Hello world HOW are You";
+            const string expected = "helloWorldHowAreYou";
+
+            // Act
+            string actual = original.ToCamelCase();
+
+            // Check
+            Assert.AreEqual( expected, actual );
         }
     }
 }
