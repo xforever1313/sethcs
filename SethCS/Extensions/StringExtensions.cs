@@ -44,7 +44,7 @@ namespace SethCS.Extensions
                 return ( other == null );
             }
 
-            return str.Equals( other, StringComparison.InvariantCultureIgnoreCase );
+            return str.Equals( other, StringComparison.OrdinalIgnoreCase );
         }
 
         public static bool StartsWithIgnoreCase( this string str, string value )
