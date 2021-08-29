@@ -12,7 +12,7 @@ using SethCS.Extensions;
 namespace Tests.Extensions
 {
     [TestFixture]
-    public class StringExtensionsTest
+    public sealed class StringExtensionsTest
     {
         // ---------------- NormalizeWhiteSpace Tests ----------------
 
@@ -210,7 +210,7 @@ namespace Tests.Extensions
         public void ToSnakeCaseTest()
         {
             // Setup
-            const string original = "Hello world HOW are You";
+            const string original = "Hello world  HOW are You";
             const string expected = "hello_world_how_are_you";
 
             // Act
@@ -221,10 +221,24 @@ namespace Tests.Extensions
         }
 
         [Test]
+        public void ToMacroCaseTest()
+        {
+            // Setup
+            const string original = "Hello world  HOW are You";
+            const string expected = "HELLO_WORLD_HOW_ARE_YOU";
+
+            // Act
+            string actual = original.ToMacroCase();
+
+            // Check
+            Assert.AreEqual( expected, actual );
+        }
+
+        [Test]
         public void ToPascalCaseTest()
         {
             // Setup
-            const string original = "Hello world HOW are You";
+            const string original = "Hello world  HOW are You";
             const string expected = "HelloWorldHowAreYou";
 
             // Act
@@ -238,11 +252,39 @@ namespace Tests.Extensions
         public void ToCamelCaseTest()
         {
             // Setup
-            const string original = "Hello world HOW are You";
+            const string original = "Hello world  HOW are You";
             const string expected = "helloWorldHowAreYou";
 
             // Act
             string actual = original.ToCamelCase();
+
+            // Check
+            Assert.AreEqual( expected, actual );
+        }
+
+        [Test]
+        public void ToLowerKebabCaseTest()
+        {
+            // Setup
+            const string original = "Hello world  HOW are You";
+            const string expected = "hello-world-how-are-you";
+
+            // Act
+            string actual = original.ToLowerKebabCase();
+
+            // Check
+            Assert.AreEqual( expected, actual );
+        }
+
+        [Test]
+        public void ToUpperKebabCaseTest()
+        {
+            // Setup
+            const string original = "Hello world  HOW are You";
+            const string expected = "HELLO-WORLD-HOW-ARE-YOU";
+
+            // Act
+            string actual = original.ToUpperKebabCase();
 
             // Check
             Assert.AreEqual( expected, actual );

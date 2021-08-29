@@ -33,6 +33,11 @@ namespace SethCS.Extensions
         /// </example>
         public static string NormalizeWhiteSpace( this string str, char replaceCharacter = ' ' )
         {
+            if( str == null )
+            {
+                throw new ArgumentNullException( nameof( str ) );
+            }
+
             Regex regex = new Regex( @"\s+" );
             return regex.Replace( str, "" + replaceCharacter );
         }
@@ -129,18 +134,37 @@ namespace SethCS.Extensions
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Converts the given string to lower snake case by
+        /// replacing all whitespace with a since '_' character
+        /// and making the string lowercase.
+        /// 
+        /// So, "Hello world how are you" becomes "hello_world_how_are_you".
+        /// </summary>
         public static string ToSnakeCase( this string str )
         {
             return NormalizeWhiteSpace( str, '_' ).ToLower();
         }
 
+        /// <summary>
+        /// Converts the given string to macro/shout/upper snake case by
+        /// replacing all whitespace with a since '_' character
+        /// and making the string uppercase.
+        /// 
+        /// So, "Hello world how are you" becomes "HELLO_WORLD_HOW_ARE_YOU".
+        /// </summary>
+        public static string ToMacroCase( this string str )
+        {
+            return NormalizeWhiteSpace( str, '_' ).ToUpper();
+        }
+
+        /// <summary>
+        /// Converts the given string to Pascal case.
+        /// 
+        /// So, "Hello world how are you" becomes "HelloWorldHowAreYou".
+        /// </summary>
         public static string ToPascalCase( this string str )
         {
-            if( string.IsNullOrWhiteSpace( str ) )
-            {
-                return str;
-            }
-
             str = NormalizeWhiteSpace( str, ' ' ).ToLower();
 
             StringBuilder builder = new StringBuilder();
@@ -153,13 +177,13 @@ namespace SethCS.Extensions
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Converts the given string to Camel case.
+        ///
+        /// So, "Hello world how are you" becomes "helloWorldHowAreYou".
+        /// </summary>
         public static string ToCamelCase( this string str )
         {
-            if( string.IsNullOrWhiteSpace( str ) )
-            {
-                return str;
-            }
-
             str = NormalizeWhiteSpace( str, ' ' ).ToLower();
 
             StringBuilder builder = new StringBuilder();
@@ -179,6 +203,26 @@ namespace SethCS.Extensions
             }
 
             return builder.ToString();
+        }
+
+        /// <summary>
+        /// Converts the given string to lower-case Kebab/Spinal case.
+        /// 
+        /// So, "Hell world how are you" becomes "hello-world-how-are-you"
+        /// </summary>
+        public static string ToLowerKebabCase( this string str )
+        {
+            return NormalizeWhiteSpace( str, '-' ).ToLower();
+        }
+
+        /// <summary>
+        /// Converts the given string to upper-case Kebab/Spinal case.
+        /// 
+        /// So, "Hell world how are you" becomes "HELLO-WORLD-HOW-ARE-YOU"
+        /// </summary>
+        public static string ToUpperKebabCase( this string str )
+        {
+            return NormalizeWhiteSpace( str, '-' ).ToUpper();
         }
     }
 }
