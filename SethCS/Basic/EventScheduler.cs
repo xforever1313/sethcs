@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
+using System.Timers;
 using SethCS.Exceptions;
 
 namespace SethCS.Basic
@@ -21,59 +21,21 @@ namespace SethCS.Basic
     /// </summary>
     public class EventScheduler : IDisposable
     {
-        // -------- Fields --------
-
-        /// <summary>
-        /// Event that happens when a timer gets cleaned-up
-        /// The parameter is the event ID.
-        /// 
-        /// This event gets fired on the cleanup thread.
-        /// Non-trivial operations should probably happen in a separate thread
-        /// to prevent the cleanup thread from being blocked.
-        /// </summary>
-        public event Action<int> OnCleanup;
+        // ---------------- Fields ----------------
 
         /// <summary>
         /// Dictionary of the events.
         /// Key is the ID, value is the event info.
         /// </summary>
-        private Dictionary<int, Timer> events;
+        private readonly Dictionary<int, Timer> events;
 
-        /// <summary>
-        /// Whether or not this object is disposed.
-        /// </summary>
         private bool isDisposed;
 
-        /// <summary>
-        /// The next identifier.
-        /// </summary>
         private int nextId;
+        private readonly object nextIdLock;
 
-        /// <summary>
-        /// The next identifier lock.
-        /// </summary>
-        private object nextIdLock;
+        // ---------------- Constructor ----------------
 
-        /// <summary>
-        /// Thread that cleans up single events (but not repeating).
-        /// </summary>
-        private Thread cleanupThread;
-
-        /// <summary>
-        /// Queue of event IDs that need to be cleaned up.
-        /// </summary>
-        private BlockingCollection<int> cleanupQueue;
-
-        /// <summary>
-        /// The number that will cause the cleanup thread to exit gracefully.
-        /// </summary>
-        private const int cleanupThreadExitId = -1;
-
-        // -------- Constructor --------
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         public EventScheduler()
         {
             this.isDisposed = false;
@@ -81,13 +43,8 @@ namespace SethCS.Basic
 
             this.nextId = 1;
             this.nextIdLock = new object();
-
-            this.cleanupQueue = new BlockingCollection<int>();
         }
 
-        /// <summary>
-        /// Finalizer.
-        /// </summary>
         ~EventScheduler()
         {
             try
@@ -100,21 +57,17 @@ namespace SethCS.Basic
             }
         }
 
-        // --------- Properties --------
+        // ---------------- Properties ----------------
 
         /// <summary>
         /// Returns a Read-only list of of event IDs that are active.
         /// </summary>
-        public IList<int> ActiveTimers
+        public IEnumerable<int> ActiveEventIds
         {
             get
             {
-                List<int> eventIdList;
-                lock( this.events )
-                {
-                    eventIdList = new List<int>( this.events.Keys );
-                }
-                return eventIdList.AsReadOnly();
+                CheckDisposed();
+                return this.events.Keys;
             }
         }
 
@@ -132,24 +85,8 @@ namespace SethCS.Basic
             }
         }
 
-        // -------- Functions --------
+        // ---------------- Functions ----------------
 
-        public void Start()
-        {
-            this.CheckDisposed();
-
-            if( this.cleanupThread != null )
-            {
-                throw new InvalidOperationException( "Already started" );
-            }
-
-            this.cleanupThread = new Thread( this.CleanupThreadLoop );
-            this.cleanupThread.Start();
-        }
-
-        /// <summary>
-        /// Releases all resource used by the <see cref="SethCS.Basic.EventScheduler"/> object.
-        /// </summary>
         public void Dispose()
         {
             this.Dispose( true );
@@ -162,103 +99,58 @@ namespace SethCS.Basic
         /// <param name="disposing">True if called from Dispose, false is called from Finalizer.</param>
         protected void Dispose( bool disposing )
         {
-            if( this.isDisposed == false )
+            if( this.isDisposed )
             {
-                try
-                {
-                    if( this.cleanupThread != null )
-                    {
-                        this.cleanupQueue.Add( cleanupThreadExitId );
-                        bool joined = this.cleanupThread.Join( 3000 );
-                        if( joined == false )
-                        {
-                            this.cleanupThread.Abort();
-                            this.cleanupThread.Join( 3000 );
-                            this.cleanupThread = null;
-                        }
-                    }
+                return;
+            }
 
-                    if( disposing )
-                    {
-                        // Remove managed code here.
-                        this.cleanupQueue.Dispose();
-                        foreach( Timer timer in this.events.Values )
-                        {
-                            timer.Dispose();
-                        }
-                    }
-
-                    // Remove unmanaged code here.
-                }
-                finally
+            if( disposing )
+            {
+                // Remove unmanaged code here
+                foreach( Timer timer in this.events.Values )
                 {
-                    this.isDisposed = true;
+                    timer.Dispose();
                 }
             }
+
+            this.isDisposed = true;
         }
 
         /// <summary>
         /// Schedules a recurring event to be run.
         /// </summary>
-        /// <param name="delay">How long to wait until we fire the first event.  Set to TimerSpan.Zero to fire right away.</param>
         /// <param name="interval">The interval to fire the event at.</param>
         /// <param name="action">The action to perform after the delay.</param>
-        /// <returns>The id of the event which can be used to stop it</returns>
-        public int ScheduleRecurringEvent( TimeSpan delay, TimeSpan interval, Action action )
+        /// <param name="startRightAway">
+        /// If set to false, the event will not start executing until <see cref="StartEvent(int)"/> is called.
+        /// </param>
+        /// <returns>The id of the event which can be used to start or stop it</returns>
+        public int ScheduleRecurringEvent( TimeSpan interval, Action action, bool startRightAway = true )
         {
             CheckDisposed();
 
-            ArgumentChecker.IsNotNull( delay, nameof( delay ) );
             ArgumentChecker.IsNotNull( interval, nameof( interval ) );
             ArgumentChecker.IsNotNull( action, nameof( action ) );
 
             int id = this.NextId;
 
-            TimerCallback timerAction = new TimerCallback( 
-                delegate( object obj )
-                {
-                    action();
-                }
-            );
-
-            Timer timer = new Timer( timerAction, null, delay, interval );
-
-            lock( this.events )
+            void Timer_Elapsed( object sender, ElapsedEventArgs e )
             {
-                this.events.Add( id, timer );
+                action();
             }
 
-            return id;
-        }
+            var timer = new Timer( interval.TotalMilliseconds );
+            timer.Elapsed += Timer_Elapsed;
+            timer.AutoReset = true;
 
-        /// <summary>
-        /// Schedules a single event
-        /// </summary>
-        /// <returns>The event.</returns>
-        /// <param name="delay">How long to wait until we fire the first event.</param>
-        /// <param name="action">The action to perform after the delay.</param>
-        /// <returns>The id of the event which can be used to stop it</returns>
-        public int ScheduleEvent( TimeSpan delay, Action action )
-        {
-            CheckDisposed();
-
-            ArgumentChecker.IsNotNull( delay, nameof( delay ) );
-            ArgumentChecker.IsNotNull( action, nameof( action ) );
-
-            int id = this.NextId;
-
-            TimerCallback timerAction = new TimerCallback( 
-                delegate( object obj )
-                {
-                    action();
-
-                    // This timer has completed its single instance.  Tell the cleanup thread
-                    // to remove and dispose this timer.
-                    this.cleanupQueue.Add( id );
-                }
-            );
-
-            Timer timer = new Timer( timerAction, null, (int) delay.TotalMilliseconds, -1 );
+            if( startRightAway )
+            {
+                timer.Start();
+            }
+            else
+            {
+                timer.Stop();
+            }
 
             lock( this.events )
             {
@@ -284,9 +176,32 @@ namespace SethCS.Basic
         }
 
         /// <summary>
-        /// Stops the event from running.
-        /// No-Op if the event is not running.
+        /// Enables the given event.
         /// </summary>
+        /// <exception cref="ArgumentException">If the event does not exist.</exception>
+        /// <param name="id">ID of the event to stop.</param>
+        public void StartEvent( int id )
+        {
+            CheckDisposed();
+
+            lock( this.events )
+            {
+                if( this.events.ContainsKey( id ) == false )
+                {
+                    throw new ArgumentException(
+                        $"Event id {id} does not exist",
+                        nameof( id )
+                    );
+                }
+
+                this.events[id].Start();
+            }
+        }
+
+        /// <summary>
+        /// Stops the event from running.
+        /// </summary>
+        /// <exception cref="ArgumentException">If the event does not exist.</exception>
         /// <param name="id">ID of the event to stop.</param>
         public void StopEvent( int id )
         {
@@ -296,11 +211,27 @@ namespace SethCS.Basic
             {
                 if( this.events.ContainsKey( id ) == false )
                 {
-                    // Make this a no-op.  We don't want a race condition where someone
-                    // calls StopEvent(), but the cleanup thread already disposed of it.
+                    throw new ArgumentException(
+                        $"Event id {id} does not exist",
+                        nameof( id )
+                    );
+                }
+
+                this.events[id].Stop();
+            }
+        }
+
+        public void DisposeEvent( int id )
+        {
+            lock( this.events )
+            {
+                if( this.events.ContainsKey( id ) == false )
+                {
+                    // Make this a no-op.  They want it disposed anyways.
                     return;
                 }
 
+                this.events[id].Stop();
                 this.events[id].Dispose();
                 this.events.Remove( id );
             }
@@ -313,23 +244,5 @@ namespace SethCS.Basic
                 throw new ObjectDisposedException( nameof( EventScheduler ) );
             }
         }
-
-        private void CleanupThreadLoop()
-        {
-            int idToClean = this.cleanupQueue.Take();
-            while( idToClean != cleanupThreadExitId )
-            {
-                lock( this.events )
-                {
-                    this.events[idToClean].Dispose();
-                    this.events.Remove( idToClean );
-                }
-
-                this.OnCleanup?.Invoke( idToClean );
-
-                idToClean = this.cleanupQueue.Take();
-            }
-        }
     }
 }
-

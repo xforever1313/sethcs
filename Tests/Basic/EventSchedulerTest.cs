@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -6,46 +6,29 @@
 //
 
 using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 using SethCS.Basic;
 
-namespace Tests
+namespace Tests.Basic
 {
     [TestFixture]
-    public class EventSchedulerTest
+    public sealed class EventSchedulerTest
     {
-        // -------- Fields --------
+        // ---------------- Fields ----------------
 
-        /// <summary>
-        /// Default timeout in ms.
-        /// </summary>
-        private const int defaultTimeout = 2000;
+        private static readonly TimeSpan defaultTimeout = TimeSpan.FromSeconds( 2 );
 
-        /// <summary>
-        /// Unit under test.
-        /// </summary>
         private EventScheduler uut;
 
-        /// <summary>
-        /// IDs that were cleaned up.
-        /// </summary>
-        private BlockingCollection<int> cleanedUpQueue;
-
-        // -------- Setup / Teardown --------
+        // ---------------- Setup / Teardown ----------------
 
         [SetUp]
         public void TestSetup()
         {
-            this.cleanedUpQueue = new BlockingCollection<int>();
             this.uut = new EventScheduler();
-            this.uut.Start();
-            this.uut.OnCleanup += delegate( int id )
-            {
-                this.cleanedUpQueue.Add( id );
-            };
         }
 
         [TearDown]
@@ -54,78 +37,111 @@ namespace Tests
             this.uut?.Dispose();
         }
 
-        // -------- Tests --------
+        // ---------------- Tests ----------------
 
-        /// <summary>
-        /// Tests with just one signle recurring event with no delay.
-        /// </summary>
         [Test]
-        public void SingleNonRecurringEventTestWithNoDelay()
+        public void DisposeThrowsExceptionsTest()
         {
-            TimerEvent event1 = new TimerEvent();
+            this.uut.Dispose();
 
-            this.uut.ScheduleEvent( TimeSpan.Zero, event1.Post );
+            Assert.Throws<ObjectDisposedException>( () => this.uut.ActiveEventIds.ToList() );
+            Assert.Throws<ObjectDisposedException>( () => this.uut.ContainsEvent( 1 ) );
+            Assert.Throws<ObjectDisposedException>( () => this.uut.StartEvent( 1 ) );
+            Assert.Throws<ObjectDisposedException>( () => this.uut.StopEvent( 1 ) );
+            Assert.Throws<ObjectDisposedException>( () => this.uut.ScheduleRecurringEvent( defaultTimeout, null ) );
+        }
 
-            // Event should fire instantly.
-            Assert.IsTrue( event1.TryWait( defaultTimeout ) );
+        [Test]
+        public void IdDoesntExistTestTest()
+        {
+            const int fakeId = 1;
 
-            // Wait for our ID to get cleaned up.
-            int id;
-            Assert.IsTrue( this.cleanedUpQueue.TryTake( out id, defaultTimeout ) );
-
-            // The event we cleaned up is id 1.
-            Assert.AreEqual( 1, id );
-
-            // Ensure there are no timers left.
-            Assert.AreEqual( 0, this.uut.ActiveTimers.Count );
+            Assert.IsFalse( this.uut.ContainsEvent( fakeId ) );
+            Assert.Throws<ArgumentException>( () => this.uut.StartEvent( fakeId ) );
+            Assert.Throws<ArgumentException>( () => this.uut.StopEvent( fakeId ) );
+            Assert.DoesNotThrow( () => this.uut.DisposeEvent( fakeId ) ); // <- No-op if it does not exist.
         }
 
         /// <summary>
-        /// Tests with just one signle recurring event *with* delay.
+        /// Tests with just one signle recurring event delay that is
+        /// not started right-away.
         /// </summary>
         [Test]
-        public void SingleNonRecurringEventTestWithDelay()
+        public void SingleRecurringEventDontStartAtFirstTest()
+        {
+            TimerEvent event1 = new TimerEvent();
+
+            // Should not do anything if not started.
+            int id = this.uut.ScheduleRecurringEvent( defaultTimeout, event1.Post, false );
+            Assert.IsFalse( event1.TryWait( defaultTimeout * 2 ) );
+
+            // Now start it.
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            this.uut.StartEvent( id );
+
+            Assert.IsTrue( event1.TryWait( defaultTimeout * 2 ) );
+            stopWatch.Stop();
+            this.uut.StopEvent( id );
+
+            // The event should not have been fired at least until our delay happened.
+            Assert.GreaterOrEqual( stopWatch.Elapsed, defaultTimeout );
+
+            // The event should have been fired waaaayyy before double our timeout.
+            Assert.LessOrEqual( stopWatch.Elapsed, defaultTimeout * 2 );
+
+            // Now that we've stopped, we should return false.
+            Assert.IsFalse( event1.TryWait( defaultTimeout * 2 ) );
+
+            // Dispose.  Should remove timer.
+            Assert.IsTrue( uut.ContainsEvent( id ) );
+            this.uut.DisposeEvent( id );
+            Assert.AreEqual( 0, this.uut.ActiveEventIds.Count() );
+        }
+
+        /// <summary>
+        /// Tests with just one signle recurring event delay that is
+        /// not started right-away.
+        /// </summary>
+        [Test]
+        public void SingleRecurringEventStartRightAway()
         {
             TimerEvent event1 = new TimerEvent();
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-
-            this.uut.ScheduleEvent( new TimeSpan( 0, 0, 0, 0, defaultTimeout ), event1.Post );
+            int id = this.uut.ScheduleRecurringEvent( defaultTimeout, event1.Post, true );
+            Assert.IsTrue( event1.TryWait( defaultTimeout * 2 ) );
+            TimeSpan timeStamp1 = stopWatch.Elapsed;
 
             Assert.IsTrue( event1.TryWait( defaultTimeout * 2 ) );
+            TimeSpan timeStamp2 = stopWatch.Elapsed;
+
             stopWatch.Stop();
+            this.uut.StopEvent( id );
 
-            // The event should not have been fired at least until our delay happened.
-            Assert.GreaterOrEqual( stopWatch.ElapsedMilliseconds, defaultTimeout );
+            // The first event should not have been fired until first interval.
+            Assert.GreaterOrEqual( timeStamp1, defaultTimeout );
+            Assert.LessOrEqual( timeStamp1, defaultTimeout * 2 );
 
-            // The event should have been fired waaaayyy before double our timeout.
-            Assert.LessOrEqual( stopWatch.ElapsedMilliseconds, defaultTimeout * 2 );
-
-            // Wait for our ID to get cleaned up.
-            int id;
-            Assert.IsTrue( this.cleanedUpQueue.TryTake( out id, defaultTimeout ) );
-
-            // The event we cleaned up is id 1.
-            Assert.AreEqual( 1, id );
-
-            // Ensure there are no timers left.
-            Assert.AreEqual( 0, this.uut.ActiveTimers.Count );
+            // The second event should not have been fired until first interval.
+            Assert.GreaterOrEqual( timeStamp2, defaultTimeout * 2 );
+            Assert.LessOrEqual( timeStamp2, defaultTimeout * 3 );
         }
 
-        // -------- Helper Classes --------
+        // ---------------- Helper Classes ----------------
 
-        private class TimerEvent
+        private sealed class TimerEvent
         {
-            // -------- Fields --------
+            // ---------------- Fields ----------------
 
             /// <summary>
             /// Event that will get triggered when the timer
             /// expires.
             /// </summary>
-            private AutoResetEvent waitEvent;
+            private readonly AutoResetEvent waitEvent;
 
-            // -------- Constructor --------
+            // ---------------- Constructor ----------------
 
             /// <summary>
             /// Constructor.
@@ -134,8 +150,8 @@ namespace Tests
             {
                 this.waitEvent = new AutoResetEvent( false );
             }
-             
-            // -------- Functions --------
+
+            // ---------------- Functions ----------------
 
             /// <summary>
             /// Waits on the timeout for the specified time.
@@ -143,7 +159,7 @@ namespace Tests
             /// the timeout, else false.
             /// </summary>
             /// <returns>True if event gets triggered before the timeout, else false.</returns>
-            public bool TryWait( int timeout )
+            public bool TryWait( TimeSpan timeout )
             {
                 return this.waitEvent.WaitOne( timeout );
             }
