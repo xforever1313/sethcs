@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cake.Frosting" Version="1.3.0" />
-    <PackageReference Include="Cake.ArgumentBinder" Version="0.6.0" />
-    <PackageReference Include="Cake.LicenseHeaderUpdater" Version="0.2.0" />
+    <PackageReference Include="Cake.Frosting" />
+    <PackageReference Include="Cake.ArgumentBinder" />
+    <PackageReference Include="Cake.LicenseHeaderUpdater" />
   </ItemGroup>
 
   <ItemGroup>
