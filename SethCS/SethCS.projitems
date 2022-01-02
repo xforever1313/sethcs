@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Basic\WatchdogTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\CloningReadOnlyList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ListedValidationException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IEnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\ConsoleColorResetter.cs" />
