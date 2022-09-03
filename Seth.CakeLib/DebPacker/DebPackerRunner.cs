@@ -33,7 +33,10 @@ namespace Seth.CakeLib.DebPacker
         {
             bool canRun = context.IsRunningOnLinux();
 
-            context.Error( "Can only be run on Linux!" );
+            if( canRun == false )
+            {
+                context.Error( "Can only be run on Linux!" );
+            }
 
             return canRun;
         }
