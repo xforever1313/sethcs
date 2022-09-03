@@ -53,7 +53,7 @@ namespace Seth.CakeLib.DebPacker
         /// Where to put create the obj and bin folder
         /// when creating a deb package.
         /// </summary>
-        public DirectoryPath WorkingDirectory { get; }
+        public abstract DirectoryPath WorkingDirectory { get; }
 
         // ---------------- Functions ----------------
 

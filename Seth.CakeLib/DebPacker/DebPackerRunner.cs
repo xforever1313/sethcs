@@ -7,6 +7,7 @@
 
 using System;
 using Cake.Common;
+using Cake.Common.Diagnostics;
 using Cake.Common.IO;
 using Cake.Core;
 using Cake.Core.IO;
@@ -27,6 +28,15 @@ namespace Seth.CakeLib.DebPacker
         }
 
         // ---------------- Functions ----------------
+
+        public static bool CanRun( ICakeContext context )
+        {
+            bool canRun = context.IsRunningOnLinux();
+
+            context.Error( "Can only be run on Linux!" );
+
+            return canRun;
+        }
 
         public void DebianPack( DebPackageConfig config )
         {
