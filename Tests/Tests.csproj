@@ -17,6 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibSethCS\LibSethCS.csproj" />
+    <ProjectReference Include="..\Seth.CakeLib\Seth.CakeLib.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Update="..\Seth.Analyzer\Seth.Analyzer.csproj">
