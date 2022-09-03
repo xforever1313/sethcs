@@ -113,7 +113,13 @@ namespace Seth.CakeLib
         /// </remarks>
         public static string ToDebPackageArchitecture( this PlatformTarget target )
         {
-            if( target == PlatformTarget.x64 )
+            if( target == PlatformTarget.MSIL )
+            {
+                // MSIL is Any CPU, so it should
+                // target all architectures that support Dotnet.
+                return "all";
+            }
+            else if( target == PlatformTarget.x64 )
             {
                 return "amd64";
             }

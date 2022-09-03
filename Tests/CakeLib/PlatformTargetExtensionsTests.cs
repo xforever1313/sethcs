@@ -45,6 +45,7 @@ namespace Tests.CakeLib
         [Test]
         public void ToDebPackageArchitectureTests()
         {
+            Assert.AreEqual( "all", PlatformTarget.MSIL.ToDebPackageArchitecture() );
             Assert.AreEqual( "amd64", PlatformTarget.x64.ToDebPackageArchitecture() );
             Assert.AreEqual( "i386", PlatformTarget.x86.ToDebPackageArchitecture() );
             Assert.AreEqual( "armhf", PlatformTarget.ARM.ToDebPackageArchitecture() );
