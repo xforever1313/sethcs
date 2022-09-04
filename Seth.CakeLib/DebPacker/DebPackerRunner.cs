@@ -71,7 +71,7 @@ namespace Seth.CakeLib.DebPacker
 
             // Lastly, build the package.
             ProcessArgumentBuilder arguments = ProcessArgumentBuilder.FromString(
-                $"--root-owner-group --build . {outputLocation}"
+                $"--root-owner-group --build . \"{outputLocation}\""
             );
             ProcessSettings settings = new ProcessSettings
             {
