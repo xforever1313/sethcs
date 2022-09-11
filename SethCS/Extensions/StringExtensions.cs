@@ -7,8 +7,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SethCS.Extensions
 {
@@ -60,6 +62,21 @@ namespace SethCS.Extensions
         public static bool EndsWithIgnoreCase( this string str, string value  )
         {
             return str.EndsWith( value, StringComparison.OrdinalIgnoreCase );
+        }
+
+        public static IEnumerable<string> ReadLines( this string str )
+        {
+            List<string> lines = new List<string>();
+            using( var sr = new StringReader( str ) )
+            {
+                string line;
+                while( ( line = sr.ReadLine() ) != null )
+                {
+                    lines.Add( line );
+                }
+            }
+
+            return lines;
         }
 
         /// <summary>
