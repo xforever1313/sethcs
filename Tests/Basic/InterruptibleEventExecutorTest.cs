@@ -12,7 +12,8 @@ using SethCS.Basic;
 
 namespace Tests.Basic
 {
-    public class InterruptibleEventExecutorTest
+    [TestFixture]
+    public sealed class InterruptibleEventExecutorTest
     {
         // ---------------- Fields ----------------
 

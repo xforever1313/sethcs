@@ -11,7 +11,7 @@ using SethCS.Collections;
 
 namespace Tests.Collections
 {
-    public class CloneableClass
+    public sealed class CloneableClass
     {
         public CloneableClass( int value )
         {
@@ -27,7 +27,7 @@ namespace Tests.Collections
     }
 
     [TestFixture]
-    public class CloningReadOnlyListTests
+    public sealed class CloningReadOnlyListTests
     {
         // ---------------- Fields ----------------
 

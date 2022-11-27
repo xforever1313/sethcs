@@ -13,7 +13,7 @@ using SethCS.Basic;
 namespace Tests.Basic
 {
     [TestFixture]
-    public class WatchDogTimerTests
+    public sealed class WatchDogTimerTests
     {
         // ---------------- Tests ----------------
 

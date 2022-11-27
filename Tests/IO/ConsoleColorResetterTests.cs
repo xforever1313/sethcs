@@ -12,7 +12,7 @@ using SethCS.IO;
 namespace Tests.IO
 {
     [TestFixture]
-    public class ConsoleColorResetterTests
+    public sealed class ConsoleColorResetterTests
     {
         // ---------------- Fields ----------------
 

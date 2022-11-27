@@ -14,7 +14,7 @@ namespace Tests.Basic
     /// <summary>
     /// Event that is executed on the event executor
     /// </summary>
-    public class EventClass
+    public sealed class EventClass
     {
         // -------- Fields --------
 

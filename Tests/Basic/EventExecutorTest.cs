@@ -14,7 +14,7 @@ using SethCS.Basic;
 namespace Tests.Basic
 {
     [TestFixture]
-    public class EventExecutorTest
+    public sealed class EventExecutorTest
     {
         // -------- Fields --------
 

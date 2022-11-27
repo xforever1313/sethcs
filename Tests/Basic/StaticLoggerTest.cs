@@ -12,7 +12,8 @@ using SethCS.Basic;
 
 namespace Tests.Basic
 {
-    public class StaticLoggerTest
+    [TestFixture]
+    public sealed class StaticLoggerTest
     {
         // ---------------- Fields ----------------
 

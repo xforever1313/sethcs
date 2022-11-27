@@ -11,7 +11,7 @@ using SethCS.Extensions;
 namespace Tests.Extensions
 {
     [TestFixture]
-    public class PathTests
+    public sealed class PathTests
     {
         [Test]
         public void ToUriTests()

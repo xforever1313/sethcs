@@ -14,7 +14,7 @@ using SethCS.IO;
 namespace Tests.IO
 {
     [TestFixture]
-    public class ConsoleHelpersTest
+    public sealed class ConsoleHelpersTest
     {
         // -------- Fields --------
 

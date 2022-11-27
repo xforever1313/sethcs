@@ -12,7 +12,7 @@ using SethCS.Basic;
 namespace Tests.Basic
 {
     [TestFixture]
-    public class EqualsHelpersTest
+    public sealed class EqualsHelpersTest
     {
         // ---------------- Tests ----------------
 

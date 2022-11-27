@@ -13,7 +13,7 @@ using SethCS;
 namespace Tests
 {
     [TestFixture]
-    public class RAIITimerTest
+    public sealed class RAIITimerTest
     {
         // -------- Fields --------
 

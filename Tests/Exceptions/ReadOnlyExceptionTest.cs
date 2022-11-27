@@ -12,7 +12,7 @@ using SethCS.Exceptions;
 namespace Tests.Exceptions
 {
     [TestFixture]
-    public class ReadOnlyExceptionTest
+    public sealed class ReadOnlyExceptionTest
     {
         /// <summary>
         /// Ensures the exception gets constructed correctly.

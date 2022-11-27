@@ -12,7 +12,7 @@ using SethCS.Exceptions;
 namespace Tests.Exceptions
 {
     [TestFixture]
-    public class ValidationExceptionTest
+    public sealed class ValidationExceptionTest
     {
         /// <summary>
         /// Ensures the exception gets constructed correctly.

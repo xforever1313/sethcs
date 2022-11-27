@@ -12,7 +12,7 @@ using SethCS.Exceptions;
 namespace Tests.Exceptions
 {
     [TestFixture]
-    public class ArgumentCheckerTest
+    public sealed class ArgumentCheckerTest
     {
         // -------- Fields --------
 

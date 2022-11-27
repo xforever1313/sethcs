@@ -12,7 +12,7 @@ using SethCS.Extensions;
 namespace Tests.Extensions
 {
     [TestFixture]
-    public class IEnumerableExtensionsTests
+    public sealed class IEnumerableExtensionsTests
     {
         [Test]
         public void IsEmptyTest()
