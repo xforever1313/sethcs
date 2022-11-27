@@ -13,6 +13,7 @@ namespace SethCS.Basic
     /// A Thread-Safe generic logger that allows the user to add or remove events
     /// that should be logged somewhere.
     /// </summary>
+    [Obsolete( "Use ILogger in Serilog or Microsoft.Hosting.Extensions.Logging instead.")]
     public class GenericLogger
     {
         // ---------------- Fields ----------------

@@ -19,6 +19,7 @@ namespace SethCS.Basic
     /// This class is not guarenteed to be completely accurrate, but it should be
     /// close enough for most uses.
     /// </summary>
+   [Obsolete( "Use Quartz.net instead.  https://www.quartz-scheduler.net/" )]
     public class EventScheduler : IDisposable
     {
         // ---------------- Fields ----------------
