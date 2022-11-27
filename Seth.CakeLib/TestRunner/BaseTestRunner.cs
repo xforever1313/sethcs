@@ -7,8 +7,8 @@
 
 using Cake.Common.Diagnostics;
 using Cake.Common.IO;
-using Cake.Common.Tools.DotNetCore;
-using Cake.Common.Tools.DotNetCore.Test;
+using Cake.Common.Tools.DotNet;
+using Cake.Common.Tools.DotNet.Test;
 using Cake.Common.Tools.OpenCover;
 using Cake.Common.Tools.ReportGenerator;
 using Cake.Core;
@@ -53,24 +53,24 @@ namespace Seth.CakeLib.TestRunner
                 this.resultsDir.CombineWithFilePath( this.testConfig.TestCsProject.GetFilenameWithoutExtension() ).ToString() + ".xml"
             );
 
-            DotNetCoreTestSettings settings = new DotNetCoreTestSettings
+            var settings = new DotNetTestSettings
             {
                 NoBuild = true,
                 NoRestore = true,
                 Configuration = "Debug",
                 ResultsDirectory = this.resultsDir,
                 VSTestReportPath = resultFile,
-                Verbosity = DotNetCoreVerbosity.Normal
+                Verbosity = DotNetVerbosity.Normal
             };
 
             // Need to restore to download the TestHost, which is a NuGet package.
 
             context.Information( "Restoring..." );
-            context.DotNetCoreRestore( this.testConfig.TestCsProject.ToString() );
+            context.DotNetRestore( this.testConfig.TestCsProject.ToString() );
             context.Information( "Restoring... Done!" );
 
             context.Information( "Running Tests..." );
-            context.DotNetCoreTest( this.testConfig.TestCsProject.ToString(), settings );
+            context.DotNetTest( this.testConfig.TestCsProject.ToString(), settings );
             context.Information( "Running Tests... Done!" );
         }
 
@@ -89,10 +89,10 @@ namespace Seth.CakeLib.TestRunner
 
             OpenCoverSettings settings = new OpenCoverSettings
             {
-                Register = "user",
                 ReturnTargetCodeOffset = 0,
                 OldStyle = true // This is needed or MissingMethodExceptions get thrown everywhere for some reason.
             }
+            .WithRegisterUser()
             .WithFilter( filter );
 
             this.cakeContext.OpenCover(

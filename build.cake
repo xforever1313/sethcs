@@ -13,7 +13,7 @@ bool forceBuild = Argument<bool>( "force_build", false );
 
 string target = Argument( "target", buildTask );
 
-FilePath devopsExe = File( "./DevOps/bin/Debug/netcoreapp3.1/DevOps.dll" );
+FilePath devopsExe = File( "./DevOps/bin/Debug/net6.0/DevOps.dll" );
 
 FilePath sln = File( "./SethCS.sln" );
 
@@ -31,11 +31,11 @@ Task( buildTask )
             }
         }
 
-        DotNetCoreBuildSettings settings = new DotNetCoreBuildSettings
+        var settings = new DotNetBuildSettings
         {
         };
 
-        DotNetCoreBuild( sln.ToString(), settings );
+        DotNetBuild( sln.ToString(), settings );
     }
 );
 

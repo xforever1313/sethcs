@@ -10,7 +10,7 @@ using Cake.Frosting;
 namespace DevOps.AppVeyor
 {
     [TaskName( "appveyor" )]
-    [Dependency( typeof( UnitTests.RunUnitTestTask ) )]
+    [IsDependentOn( typeof( UnitTests.RunUnitTestTask ) )]
     public class AppVeyorTasks : DevOpsTask
     {
     }
