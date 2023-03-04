@@ -66,5 +66,10 @@ namespace SethCS.Grid
         /// "Bottom" means away from 0.
         /// </summary>
         public Cell<T> Bottom { get; internal set; }
+
+        public override int GetHashCode()
+        {
+            return this.X.GetHashCode() + this.Y.GetHashCode();
+        }
     }
 }
