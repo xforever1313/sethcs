@@ -69,7 +69,7 @@ namespace SethCS.Grid
 
         public override int GetHashCode()
         {
-            return this.X.GetHashCode() + this.Y.GetHashCode();
+            return this.X.GetHashCode() ^ this.Y.GetHashCode();
         }
     }
 }
