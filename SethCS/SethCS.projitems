@@ -16,7 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Basic\MustCallAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Basic\WatchdogTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\CloningReadOnlyList.cs" />
-    <Compile Include="..\SethCS\collections\SequentialOrderIgnoredHashSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\SequentialOrderIgnoredHashSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ListedValidationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FileInfoExtensions.cs" />
