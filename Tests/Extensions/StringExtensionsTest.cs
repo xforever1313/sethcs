@@ -6,17 +6,17 @@
 //
 
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Extensions;
 
 namespace Tests.Extensions
 {
-    [TestFixture]
+    [TestClass]
     public sealed class StringExtensionsTest
     {
         // ---------------- NormalizeWhiteSpace Tests ----------------
 
-        [Test]
+        [TestMethod]
         public void NormalizeWhiteSpaceTest()
         {
             string startString = "Hello\t  \nWorld, how\nare\tyou?I am fine!";
@@ -32,7 +32,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures we get argument exceptions if we get a length of 0 or 1.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_ArgumentCheck()
         {
             string str = "12345";
@@ -43,7 +43,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures that if we are an empty string, we get an array that is empty.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_EmptyString()
         {
             string str = string.Empty;
@@ -58,7 +58,7 @@ namespace Tests.Extensions
         /// Ensures if our string is one character, we'll only get that character
         /// back in the array.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_OneCharacterString()
         {
             string str = "1";
@@ -71,7 +71,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures we get an array of 1 if our size is one less than the length.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_OneLessThanLength()
         {
             string str = "12345";
@@ -84,7 +84,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures we get an array of 1 if our size is equal to the length.
         /// </summary>
-        [Test]    
+        [TestMethod]    
         public void SplitByLength_ExactLength()
         {
             string str = "12345";
@@ -97,7 +97,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures we get an array of 5 if our length is 1
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_1CharacterLength()
         {
             string str = "12345";
@@ -114,7 +114,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures we get an array of 3 if our length is 2
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_2CharacterLength_OddLength()
         {
             string str = "12345";
@@ -130,7 +130,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures we get an array of 2 if our length is 2
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_2CharacterLength_EvenLength()
         {
             string str = "1234";
@@ -145,7 +145,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures things are correct if our length is 3.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_3CharacterLength_10Characters()
         {
             string str = "1234567890";
@@ -162,7 +162,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures things are correct if our length is 3.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_3CharacterLength_9Characters()
         {
             string str = "123456789";
@@ -178,7 +178,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures things are correct if our length is 3.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_3CharacterLength_11Characters()
         {
             string str = "12345678901";
@@ -195,7 +195,7 @@ namespace Tests.Extensions
         /// <summary>
         /// Ensures we get an array of 2 if our size is one more than the length.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void SplitByLength_OneMoreThanTheLength()
         {
             string str = "12345";
@@ -206,7 +206,7 @@ namespace Tests.Extensions
             Assert.AreEqual( "5", array[1] );
         }
 
-        [Test]
+        [TestMethod]
         public void ToSnakeCaseTest()
         {
             // Setup
@@ -220,7 +220,7 @@ namespace Tests.Extensions
             Assert.AreEqual( expected, actual );
         }
 
-        [Test]
+        [TestMethod]
         public void ToMacroCaseTest()
         {
             // Setup
@@ -234,7 +234,7 @@ namespace Tests.Extensions
             Assert.AreEqual( expected, actual );
         }
 
-        [Test]
+        [TestMethod]
         public void ToPascalCaseTest()
         {
             // Setup
@@ -248,7 +248,7 @@ namespace Tests.Extensions
             Assert.AreEqual( expected, actual );
         }
 
-        [Test]
+        [TestMethod]
         public void ToCamelCaseTest()
         {
             // Setup
@@ -262,7 +262,7 @@ namespace Tests.Extensions
             Assert.AreEqual( expected, actual );
         }
 
-        [Test]
+        [TestMethod]
         public void ToLowerKebabCaseTest()
         {
             // Setup
@@ -276,7 +276,7 @@ namespace Tests.Extensions
             Assert.AreEqual( expected, actual );
         }
 
-        [Test]
+        [TestMethod]
         public void ToUpperKebabCaseTest()
         {
             // Setup

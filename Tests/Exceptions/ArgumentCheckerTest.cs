@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -6,12 +6,12 @@
 //
 
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Exceptions;
 
 namespace Tests.Exceptions
 {
-    [TestFixture]
+    [TestClass]
     public sealed class ArgumentCheckerTest
     {
         // -------- Fields --------
@@ -26,7 +26,7 @@ namespace Tests.Exceptions
         /// <summary>
         /// Ensures the IsNotNull function works correctly.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void IsNotNullTest()
         {
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>( () =>
@@ -35,15 +35,14 @@ namespace Tests.Exceptions
 
             Assert.AreEqual( argName, ex.ParamName );
 
-            Assert.DoesNotThrow( () =>
-                ArgumentChecker.IsNotNull( "Hello", argName )
-            );
+            // Should not throw.
+            ArgumentChecker.IsNotNull( "Hello", argName );
         }
 
         /// <summary>
         /// Ensures StringIsNotNullOrEmpty function works correctly.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void StringIsNotNullOrEmptyTest()
         {
             ArgumentNullException ex = Assert.Throws<ArgumentNullException>( () =>
@@ -56,9 +55,8 @@ namespace Tests.Exceptions
             );
             Assert.AreEqual( argName, ex.ParamName );
 
-            Assert.DoesNotThrow( () =>
-                ArgumentChecker.StringIsNotNullOrEmpty( "Hello", argName )
-            );
+            // Should not throw.
+            ArgumentChecker.StringIsNotNullOrEmpty( "Hello", argName );
         }
     }
 }

@@ -6,7 +6,7 @@
 //
 
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
     Seth.Analyzer.SethCodeAnalyzer,
     Seth.Analyzer.SethCodeFixProvider
@@ -15,10 +15,10 @@ using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
 
 namespace Tests.Analyzer
 {
-    [TestFixture]
+    [TestClass]
     public sealed class SethCodeAnalyzerTests
     {
-        [Test]
+        [TestMethod]
         public async Task NoDiasnosticTest()
         {
             string test = @"";

@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -6,7 +6,7 @@
 //
 
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Collections;
 
 namespace Tests.Collections
@@ -26,7 +26,7 @@ namespace Tests.Collections
         }
     }
 
-    [TestFixture]
+    [TestClass]
     public sealed class CloningReadOnlyListTests
     {
         // ---------------- Fields ----------------
@@ -41,42 +41,32 @@ namespace Tests.Collections
 
         // ---------------- Setup / Teardown ----------------
 
-        [OneTimeSetUp]
+        [TestInitialize]
         public void FixtureSetup()
         {
             this.obj1 = new CloneableClass( 1 );
             this.obj2 = new CloneableClass( 2 );
             this.obj3 = new CloneableClass( 3 );
 
-            this.originals = new CloneableClass[] { obj1, obj2, obj3 };
+            this.originals = [obj1, obj2, obj3];
 
             this.uut = new CloningReadOnlyList<CloneableClass>( c => { return c.Clone(); }, originals );
         }
 
-        [OneTimeTearDown]
+        [TestCleanup]
         public void FixtureTeardown()
-        {
-        }
-
-        [SetUp]
-        public void TestSetup()
-        {
-        }
-
-        [TearDown]
-        public void TestTeardown()
         {
         }
 
         // ---------------- Tests ----------------
 
-        [Test]
+        [TestMethod]
         public void CountTest()
         {
             Assert.AreEqual( 3, this.uut.Count );
         }
 
-        [Test]
+        [TestMethod]
         public void IndexTest()
         {
             Assert.Throws<ArgumentOutOfRangeException>( () => { int x = this.uut[-1].Value; } );
@@ -91,11 +81,11 @@ namespace Tests.Collections
             Assert.AreNotSame( this.obj3, this.uut[2] );
         }
 
-        [Test]
+        [TestMethod]
         public void ForEachTest()
         {
             int index = 0;
-            CloneableClass[] originals = new CloneableClass[] { obj1, obj2, obj3 };
+            CloneableClass[] originals = [obj1, obj2, obj3];
 
             foreach( CloneableClass c in this.uut )
             {
@@ -104,7 +94,5 @@ namespace Tests.Collections
                 ++index;    
             }
         }
-
-        // ---------------- Test Helpers ----------------
     }
 }

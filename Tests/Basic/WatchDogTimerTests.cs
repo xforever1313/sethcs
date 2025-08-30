@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -7,17 +7,17 @@
 
 using System;
 using System.Threading;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Basic;
 
 namespace Tests.Basic
 {
-    [TestFixture]
+    [TestClass]
     public sealed class WatchDogTimerTests
     {
         // ---------------- Tests ----------------
 
-        [Test]
+        [TestMethod]
         public void InvalidArgumentTest()
         {
             Assert.Throws<ArgumentException>( () => new WatchdogTimer( -1, string.Empty ) );
@@ -27,7 +27,7 @@ namespace Tests.Basic
         /// <summary>
         /// Ensures that we do things out-of-order we get Exceptions.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void InvalidOperationTests()
         {
             WatchdogTimer uut = new WatchdogTimer( int.MaxValue, "InvalidOperationTests" );
@@ -89,7 +89,7 @@ namespace Tests.Basic
         /// <summary>
         /// Do we timeout properly?
         /// </summary>
-        [Test]
+        [TestMethod]
         public void TimeoutEvent()
         {
             using( WatchdogTimer uut = new WatchdogTimer( 1000, "TimeoutEvent" ) )
@@ -112,7 +112,7 @@ namespace Tests.Basic
         /// <summary>
         /// Ensures we don't fire an event if we call "Stop".
         /// </summary>
-        [Test]
+        [TestMethod]
         public void StopEvent()
         {
             using( WatchdogTimer uut = new WatchdogTimer( 500, "StopEvent" ) )
@@ -143,7 +143,7 @@ namespace Tests.Basic
         /// <summary>
         /// Do we properly handle exceptions from TimeoutEvents?
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ExceptionThrownEvent()
         {
             using( WatchdogTimer uut = new WatchdogTimer( 500, "ExceptionThrownEvent" ) )
@@ -174,7 +174,7 @@ namespace Tests.Basic
         /// <summary>
         /// Ensures the Reset() function resets the timer.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ResetTest()
         {
             using( WatchdogTimer uut = new WatchdogTimer( 3000, "ResetTest" ) )
@@ -206,7 +206,7 @@ namespace Tests.Basic
         /// <summary>
         /// Ensures calling start and dispose won't cause any problems.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void StartDisposeTest()
         {
             WatchdogTimer uut = new WatchdogTimer( 1000, "StartDisposeTest" );

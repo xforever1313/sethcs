@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -7,12 +7,12 @@
 
 using System;
 using System.Threading;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Basic;
 
 namespace Tests.Basic
 {
-    [TestFixture]
+    [TestClass]
     public sealed class InterruptibleEventExecutorTest
     {
         // ---------------- Fields ----------------
@@ -25,7 +25,7 @@ namespace Tests.Basic
         /// Ensure if an event takes too long to execute,
         /// we interrupt it.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void InterruptTest()
         {
             EventClass longEvent = new EventClass();
@@ -72,7 +72,7 @@ namespace Tests.Basic
         /// Ensures if we don't have interrupts turned on,
         /// we don't interrupt the thread.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void NoInterruptTest()
         {
             EventClass longEvent = new EventClass();
@@ -116,7 +116,7 @@ namespace Tests.Basic
         /// Ensures that if no events have been added,
         /// we DON'T abort.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void NoEventsAddedTest()
         {
             Exception err = null;
@@ -139,7 +139,7 @@ namespace Tests.Basic
         /// <summary>
         /// Tests to ensure 1000 events are executed successfully.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ThousandEventTest()
         {
             using( InterruptibleEventExecutor executor = new InterruptibleEventExecutor( 5000 ) )

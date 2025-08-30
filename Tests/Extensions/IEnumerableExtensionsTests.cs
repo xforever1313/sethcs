@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -6,15 +6,15 @@
 //
 
 using System.Collections.Generic;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Extensions;
 
 namespace Tests.Extensions
 {
-    [TestFixture]
+    [TestClass]
     public sealed class IEnumerableExtensionsTests
     {
-        [Test]
+        [TestMethod]
         public void IsEmptyTest()
         {
             List<int> list = new List<int>();
@@ -24,7 +24,7 @@ namespace Tests.Extensions
             Assert.IsFalse( list.IsEmpty() );
         }
 
-        [Test]
+        [TestMethod]
         public void EqualsIgnoreOrderTest()
         {
             List<int> list1 = new List<int>();

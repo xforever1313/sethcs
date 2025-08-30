@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -6,12 +6,13 @@
 //
 
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.IO;
 
 namespace Tests.IO
 {
-    [TestFixture]
+    [TestClass]
+    [DoNotParallelize]
     public sealed class ConsoleColorResetterTests
     {
         // ---------------- Fields ----------------
@@ -22,21 +23,21 @@ namespace Tests.IO
 
         // ---------------- Setup / Teardown ----------------
 
-        [SetUp]
+        [TestInitialize]
         public void TestSetup()
         {
             this.originalBackground = Console.BackgroundColor;
             this.originalForeground = Console.ForegroundColor;
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TestTeardown()
         {
         }
 
         // ---------------- Tests ----------------
 
-        [Test]
+        [TestMethod]
         public void BackgroundOnlyTest()
         {
             const ConsoleColor newBgColor = ConsoleColor.DarkGreen;
@@ -51,7 +52,7 @@ namespace Tests.IO
             Assert.AreEqual( originalBackground, Console.BackgroundColor );
         }
 
-        [Test]
+        [TestMethod]
         public void ForegroundOnlyTest()
         {
             const ConsoleColor newFgColor = ConsoleColor.DarkGreen;
@@ -66,7 +67,7 @@ namespace Tests.IO
             Assert.AreEqual( originalBackground, Console.BackgroundColor );
         }
 
-        [Test]
+        [TestMethod]
         public void BackgroundAndForegroundTest()
         {
             const ConsoleColor newFgColor = ConsoleColor.DarkGreen;

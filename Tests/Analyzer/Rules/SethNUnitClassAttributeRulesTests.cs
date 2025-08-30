@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using Seth.Analyzer.Rules;
 using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
@@ -18,7 +19,7 @@ using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
 
 namespace Tests.Analyzer.Rules
 {
-    [TestFixture]
+    [TestClass]
     public sealed class SethNUnitClassAttributeRulesTests
     {
         // ---------------- Fields ----------------
@@ -33,7 +34,7 @@ namespace Tests.Analyzer.Rules
         /// <summary>
         /// If there are zero attributes, there should be no warnings.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task NoAttributesNoWarningsTest()
         {
             string test =
@@ -63,7 +64,7 @@ namespace TestNamespace
         /// <summary>
         /// NUnit class is fine!  No warnings should appear.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task NoWarningsTest()
         {
             string test =
@@ -95,7 +96,7 @@ namespace TestNamespace
         /// <summary>
         /// Fixture is missing sealed.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task MissingSealedTest()
         {
             string test =
@@ -131,7 +132,7 @@ namespace TestNamespace
         /// <summary>
         /// Fixture is internal, not public.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task InternalClassTest()
         {
             string test =
@@ -164,7 +165,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test, assemblies, expected );
         }
 
-        [Test]
+        [TestMethod]
         public async Task TestMethodHasNoModifierTest()
         {
             string test =
@@ -222,7 +223,7 @@ namespace TestNamespace
             await VerifyCS.VerifyCodeFixAsync( test, expected, fixTest, assemblies );
         }
 
-        [Test]
+        [TestMethod]
         public async Task TestMethodHasInternalModifierTest()
         {
             string test =
@@ -280,7 +281,7 @@ namespace TestNamespace
             await VerifyCS.VerifyCodeFixAsync( test, expected, fixTest, assemblies );
         }
 
-        [Test]
+        [TestMethod]
         public async Task TestMethodHasPrivateModifierTest()
         {
             string test =

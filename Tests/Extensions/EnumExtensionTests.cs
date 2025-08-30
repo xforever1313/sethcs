@@ -6,12 +6,12 @@
 //
 
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Extensions;
 
 namespace Tests.Extensions
 {
-    [TestFixture]
+    [TestClass]
     public sealed class EnumExtensionTests
     {
         // ---------------- Enums ----------------
@@ -36,7 +36,7 @@ namespace Tests.Extensions
 
         // ---------------- Tets ----------------
 
-        [Test]
+        [TestMethod]
         public void SortByNumber_OrderedEnumTest()
         {
             // Act
@@ -50,7 +50,7 @@ namespace Tests.Extensions
             Assert.AreEqual( OrderedEnum.Three, list[4] );
         }
 
-        [Test]
+        [TestMethod]
         public void SortByNumber_UnorderedEnumTest()
         {
             // Act
@@ -64,7 +64,7 @@ namespace Tests.Extensions
             Assert.AreEqual( UnorderedEnum.Three, list[4] );
         }
 
-        [Test]
+        [TestMethod]
         public void SortByNumberDecending_OrderedEnumTest()
         {
             // Act
@@ -78,7 +78,7 @@ namespace Tests.Extensions
             Assert.AreEqual( OrderedEnum.Three, list[0] );
         }
 
-        [Test]
+        [TestMethod]
         public void SortByNumberDecending_UnorderedEnumTest()
         {
             // Act

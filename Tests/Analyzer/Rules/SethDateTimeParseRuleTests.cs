@@ -7,7 +7,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Seth.Analyzer.Rules;
 using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
     Seth.Analyzer.SethCodeAnalyzer,
@@ -16,10 +16,10 @@ using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
 
 namespace Tests.Analyzer.Rules
 {
-    [TestFixture]
+    [TestClass]
     public sealed class SethDateTimeParseRuleTests
     {
-        [Test]
+        [TestMethod]
         public async Task DateTimeParseTest()
         {
             string test =
@@ -46,7 +46,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test, expected );
         }
 
-        [Test]
+        [TestMethod]
         public async Task DateTimeParse2MethodTest()
         {
             string test =
@@ -74,7 +74,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test, expected );
         }
 
-        [Test]
+        [TestMethod]
         public async Task DateTimeParse3MethodTest()
         {
             

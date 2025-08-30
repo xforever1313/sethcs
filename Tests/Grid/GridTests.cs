@@ -6,13 +6,13 @@
 
 using System;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Extensions;
 using SethCS.Grid;
 
 namespace Tests.Grid
 {
-    [TestFixture]
+    [TestClass]
     public sealed class GridTests
     {
         // ---------------- Fields ----------------
@@ -21,20 +21,20 @@ namespace Tests.Grid
 
         // ---------------- Setup / Teardown ----------------
 
-        [SetUp]
+        [TestInitialize]
         public void TestSetup()
         {
             this.currentIndex = 0;
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TestTeardown()
         {
         }
 
         // ---------------- Tests ----------------
 
-        [Test]
+        [TestMethod]
         public void InvalidConstructorTest()
         {
             Assert.Throws<ArgumentException>(
@@ -58,7 +58,7 @@ namespace Tests.Grid
             );
         }
 
-        [Test]
+        [TestMethod]
         public void OneByOneContructorTest()
         {
             // Act
@@ -79,7 +79,7 @@ namespace Tests.Grid
             Assert.IsNull( cell.Right );
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeByOneContructorTest()
         {
             // Act
@@ -119,7 +119,7 @@ namespace Tests.Grid
             }
         }
 
-        [Test]
+        [TestMethod]
         public void OneByThreeContructorTest()
         {
             // Act
@@ -159,7 +159,7 @@ namespace Tests.Grid
             }
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeByThreeContructorTest()
         {
             // Act
@@ -260,7 +260,7 @@ namespace Tests.Grid
             }
         }
 
-        [Test]
+        [TestMethod]
         public void EnumerableTest()
         {
             var grid = new Grid<int>( 2, 2, () => currentIndex++ );

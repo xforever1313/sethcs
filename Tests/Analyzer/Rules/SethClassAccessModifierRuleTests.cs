@@ -7,7 +7,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Seth.Analyzer.Rules;
 using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
     Seth.Analyzer.SethCodeAnalyzer,
@@ -16,7 +16,7 @@ using VerifyCS = Tests.Analyzer.CSharpCodeFixVerifier<
 
 namespace Tests.Analyzer.Rules
 {
-    [TestFixture]
+    [TestClass]
     public sealed class SethClassAccessModifierRuleTests
     {
         // ---------------- Tests ----------------
@@ -26,7 +26,7 @@ namespace Tests.Analyzer.Rules
         /// <summary>
         /// No access declaration, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task ClassNoAccessModifierDeclarationTest()
         {
             string test =
@@ -54,7 +54,7 @@ namespace TestNamespace
         /// <summary>
         /// No access declaration on inner class, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task InnerClassNoAccessModifierDeclarationTest()
         {
             string test =
@@ -85,7 +85,7 @@ namespace TestNamespace
         /// <summary>
         /// Has public access declaration, no warning expected.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task ClassPublicAccessModifierDeclarationTest()
         {
             string test =
@@ -105,7 +105,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task ClassProtectedAccessModifierDeclarationTest()
         {
             string test =
@@ -128,7 +128,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task ClassPrivateAccessModifierDeclarationTest()
         {
             string test =
@@ -151,7 +151,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task ClassInternalAccessModifierDeclarationTest()
         {
             string test =
@@ -171,7 +171,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task ClassProtectedInternalAccessModifierDeclarationTest()
         {
             string test =
@@ -193,7 +193,7 @@ namespace TestNamespace
 ";
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
-        [Test]
+        [TestMethod]
         public async Task ClassPrivateProtectedAccessModifierDeclarationTest()
         {
             string test =
@@ -221,7 +221,7 @@ namespace TestNamespace
         /// <summary>
         /// No access declaration, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task StaticClassNoAccessModifierDeclarationTest()
         {
             string test =
@@ -246,7 +246,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test, expected );
         }
 
-        [Test]
+        [TestMethod]
         public async Task StaticClassPublicAccessModifierDeclarationTest()
         {
             string test =
@@ -271,7 +271,7 @@ namespace TestNamespace
         /// <summary>
         /// No access declaration, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task SealedClassNoAccessModifierDeclarationTest()
         {
             string test =
@@ -296,7 +296,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test, expected );
         }
 
-        [Test]
+        [TestMethod]
         public async Task SealedClassPublicAccessModifierDeclarationTest()
         {
             string test =
@@ -321,7 +321,7 @@ namespace TestNamespace
         /// <summary>
         /// No access declaration, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task StructNoAccessModifierDeclarationTest()
         {
             string test =
@@ -348,7 +348,7 @@ namespace TestNamespace
         /// <summary>
         /// No access declaration on inner struct, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task InnerStructNoAccessModifierDeclarationTest()
         {
             string test =
@@ -378,7 +378,7 @@ namespace TestNamespace
         /// <summary>
         /// Has public access declaration, no warning expected.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task StructPublicAccessModifierDeclarationTest()
         {
             string test =
@@ -397,7 +397,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task StructProtectedAccessModifierDeclarationTest()
         {
             string test =
@@ -419,7 +419,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task StructPrivateAccessModifierDeclarationTest()
         {
             string test =
@@ -441,7 +441,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task StructInternalAccessModifierDeclarationTest()
         {
             string test =
@@ -460,7 +460,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task StructProtectedInternalAccessModifierDeclarationTest()
         {
             string test =
@@ -482,7 +482,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task StructPrivateProtectedAccessModifierDeclarationTest()
         {
             string test =
@@ -509,7 +509,7 @@ namespace TestNamespace
         /// <summary>
         /// No access declaration, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task InterfaceNoAccessModifierDeclarationTest()
         {
             string test =
@@ -535,7 +535,7 @@ namespace TestNamespace
         /// <summary>
         /// No access declaration on inner class, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task InnerInterfaceNoAccessModifierDeclarationTest()
         {
             string test =
@@ -564,7 +564,7 @@ namespace TestNamespace
         /// <summary>
         /// Has public access declaration, no warning expected.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task InterfacePublicAccessModifierDeclarationTest()
         {
             string test =
@@ -582,7 +582,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task InterfaceProtectedAccessModifierDeclarationTest()
         {
             string test =
@@ -603,7 +603,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task InterfacePrivateAccessModifierDeclarationTest()
         {
             string test =
@@ -624,7 +624,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task InterfaceInternalAccessModifierDeclarationTest()
         {
             string test =
@@ -642,7 +642,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task InterfaceProtectedInternalAccessModifierDeclarationTest()
         {
             string test =
@@ -662,7 +662,7 @@ namespace TestNamespace
 ";
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
-        [Test]
+        [TestMethod]
         public async Task InterfacePrivateProtectedAccessModifierDeclarationTest()
         {
             string test =
@@ -688,7 +688,7 @@ namespace TestNamespace
         /// <summary>
         /// No access declaration, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task EnumNoAccessModifierDeclarationTest()
         {
             string test =
@@ -715,7 +715,7 @@ namespace TestNamespace
         /// <summary>
         /// No access declaration on inner class, make warning.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task InnerEnumNoAccessModifierDeclarationTest()
         {
             string test =
@@ -745,7 +745,7 @@ namespace TestNamespace
         /// <summary>
         /// Has public access declaration, no warning expected.
         /// </summary>
-        [Test]
+        [TestMethod]
         public async Task EnumPublicAccessModifierDeclarationTest()
         {
             string test =
@@ -764,7 +764,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task EnumProtectedAccessModifierDeclarationTest()
         {
             string test =
@@ -786,7 +786,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task EnumPrivateAccessModifierDeclarationTest()
         {
             string test =
@@ -808,7 +808,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task EnumInternalAccessModifierDeclarationTest()
         {
             string test =
@@ -827,7 +827,7 @@ namespace TestNamespace
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
 
-        [Test]
+        [TestMethod]
         public async Task EnumProtectedInternalAccessModifierDeclarationTest()
         {
             string test =
@@ -848,7 +848,7 @@ namespace TestNamespace
 ";
             await VerifyCS.VerifyAnalyzerAsync( test );
         }
-        [Test]
+        [TestMethod]
         public async Task EnumPrivateProtectedAccessModifierDeclarationTest()
         {
             string test =

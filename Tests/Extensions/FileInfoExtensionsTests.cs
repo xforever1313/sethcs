@@ -5,17 +5,17 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Extensions;
 
 namespace Tests.Extensions
 {
-    [TestFixture]
+    [TestClass]
     public sealed class FileInfoExtensionsTests
     {
         // ---------------- Tests ----------------
 
-        [Test]
+        [TestMethod]
         public void GetMimeTypeWithStringTest()
         {
             DoMimeTypeTest( @"c:\somewhere\file.html", "text/html" );

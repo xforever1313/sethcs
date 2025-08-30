@@ -7,17 +7,17 @@
 
 using System;
 using Cake.Common.Tools.MSBuild;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Seth.CakeLib;
 
 namespace Tests.CakeLib
 {
-    [TestFixture]
+    [TestClass]
     public sealed class PlatformTargetExtensionsTests
     {
         // ---------------- Tests ----------------
 
-        [Test]
+        [TestMethod]
         public void ToDotnetWindowsRidTest()
         {
             // Setup
@@ -30,7 +30,7 @@ namespace Tests.CakeLib
             Assert.AreEqual( "win-arm64", PlatformTarget.ARM64.ToDotnetRid( platform ) );
         }
 
-        [Test]
+        [TestMethod]
         public void ToDotnetLinuxRidTest()
         {
             // Setup
@@ -42,7 +42,7 @@ namespace Tests.CakeLib
             Assert.AreEqual( "linux-arm64", PlatformTarget.ARM64.ToDotnetRid( platform ) );
         }
 
-        [Test]
+        [TestMethod]
         public void ToDebPackageArchitectureTests()
         {
             Assert.AreEqual( "all", PlatformTarget.MSIL.ToDebPackageArchitecture() );

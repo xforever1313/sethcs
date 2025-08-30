@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -7,12 +7,12 @@
 
 using System;
 using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Basic;
 
 namespace Tests.Basic
 {
-    [TestFixture]
+    [TestClass]
     public sealed class StaticLoggerTest
     {
         // ---------------- Fields ----------------
@@ -23,7 +23,7 @@ namespace Tests.Basic
 
         // ---------------- Setup / Teardown ----------------
 
-        [SetUp]
+        [TestInitialize]
         public void TestSetup()
         {
             this.writeLineLoggedMessages = new StringBuilder();
@@ -32,7 +32,7 @@ namespace Tests.Basic
             StaticLogger.Log.OnErrorWriteLine += StaticLogger_OnErrorWriteLine;
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TestTeardown()
         {
             StaticLogger.Log.OnWriteLine -= StaticLogger_OnWriteLine;
@@ -43,7 +43,7 @@ namespace Tests.Basic
 
         // -------- WriteLine Tests --------
 
-        [Test]
+        [TestMethod]
         public void WriteEmptyLineTest()
         {
             StaticLogger.Log.WriteLine();
@@ -51,7 +51,7 @@ namespace Tests.Basic
             Assert.AreEqual( string.Empty, this.errorWriteLineLoggedMessages.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void WriteLineTest()
         {
             const string expectedString = "Hello, World!";
@@ -60,7 +60,7 @@ namespace Tests.Basic
             Assert.AreEqual( string.Empty, this.errorWriteLineLoggedMessages.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void WriteLineFormatTest()
         {
             const string formatString = "{0} + {1} = {2}";
@@ -73,7 +73,7 @@ namespace Tests.Basic
 
         // -------- ErrorWriteLine Tests --------
 
-        [Test]
+        [TestMethod]
         public void ErrorWriteEmptyLineTest()
         {
             StaticLogger.Log.ErrorWriteLine();
@@ -81,7 +81,7 @@ namespace Tests.Basic
             Assert.AreEqual( string.Empty, this.writeLineLoggedMessages.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ErrorWriteLineTest()
         {
             const string expectedString = "Hello, World!";
@@ -90,7 +90,7 @@ namespace Tests.Basic
             Assert.AreEqual( string.Empty, this.writeLineLoggedMessages.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ErrorWriteLineFormatTest()
         {
             const string formatString = "{0} + {1} = {2}";

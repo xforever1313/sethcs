@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -7,12 +7,12 @@
 
 using System;
 using System.Threading;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS;
 
 namespace Tests
 {
-    [TestFixture]
+    [TestClass]
     public sealed class RAIITimerTest
     {
         // -------- Fields --------
@@ -26,13 +26,13 @@ namespace Tests
 
         // -------- Setup / Teardown --------
 
-        [SetUp]
+        [TestInitialize]
         public void TestSetup()
         {
             this.triggered = false;
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TearDown()
         {
         }
@@ -43,7 +43,7 @@ namespace Tests
         /// Tests to make sure our Expired function fires
         /// when our time goes over.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void OnExpiredTest()
         {
             using( RAIITimer timer = new RAIITimer( defaultTimeout, this.Trigger, null ) )
@@ -59,7 +59,7 @@ namespace Tests
         /// Tests to make sure our Not Expired function fires
         /// when our time DOES NOT go over.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void OnNotExpiredTest()
         {
             using( RAIITimer timer = new RAIITimer( defaultTimeout * 2, null, this.Trigger ) )

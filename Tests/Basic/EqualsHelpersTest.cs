@@ -6,17 +6,17 @@
 //
 
 using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Basic;
 
 namespace Tests.Basic
 {
-    [TestFixture]
+    [TestClass]
     public sealed class EqualsHelpersTest
     {
         // ---------------- Tests ----------------
 
-        [Test]
+        [TestMethod]
         public void AreEqualTest()
         {
             TestClass uut1 = new TestClass
@@ -45,7 +45,7 @@ namespace Tests.Basic
             uut2 = new TestClass( uut1 );
         }
 
-        [Test]
+        [TestMethod]
         public void NullParamTest()
         {
             TestClass uut = new TestClass
@@ -62,7 +62,7 @@ namespace Tests.Basic
             Assert.IsFalse( uut.Equals( null ) );
         }
 
-        [Test]
+        [TestMethod]
         public void SameReferenceTest()
         {
             TestClass uut = new TestClass
@@ -75,7 +75,7 @@ namespace Tests.Basic
             this.ExepctEquals( uut, uut );
         }
 
-        [Test]
+        [TestMethod]
         public void NullPropertyTest()
         {
             TestClass uut1 = new TestClass

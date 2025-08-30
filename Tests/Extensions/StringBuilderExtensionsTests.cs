@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -7,15 +7,15 @@
 
 using System;
 using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Extensions;
 
 namespace Tests.Extensions
 {
-    [TestFixture]
+    [TestClass]
     public sealed class StringBuilderExtensionsTests
     {
-        [Test]
+        [TestMethod]
         public void EmptyBuilderTest()
         {
             // Setup
@@ -29,7 +29,7 @@ namespace Tests.Extensions
             Assert.AreSame( uut, returnedBuilder );
         }
 
-        [Test]
+        [TestMethod]
         public void OneCharacterLongTest()
         {
             // Setup
@@ -44,7 +44,7 @@ namespace Tests.Extensions
             Assert.AreSame( uut, returnedBuilder );
         }
 
-        [Test]
+        [TestMethod]
         public void TwoCharactersLongTest()
         {
             // Setup
@@ -59,7 +59,7 @@ namespace Tests.Extensions
             Assert.AreSame( uut, returnedBuilder );
         }
 
-        [Test]
+        [TestMethod]
         public void ThreeCharactersLongTest()
         {
             // Setup

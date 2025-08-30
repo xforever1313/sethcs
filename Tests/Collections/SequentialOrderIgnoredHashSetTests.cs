@@ -5,17 +5,17 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Collections;
 
 namespace Tests.Collections
 {
-    [TestFixture]
+    [TestClass]
     public sealed class SequentialOrderIgnoredHashSetTests
     {
         // ---------------- Tests ----------------
 
-        [Test]
+        [TestMethod]
         public void EmptyIsEqualTest()
         {
             // Setup
@@ -30,7 +30,7 @@ namespace Tests.Collections
             Assert.AreEqual( uut1.GetHashCode(), uut2.GetHashCode() );
         }
 
-        [Test]
+        [TestMethod]
         public void EqualSameOrderTest()
         {
             // Setup
@@ -51,7 +51,7 @@ namespace Tests.Collections
             Assert.AreEqual( uut1.GetHashCode(), uut2.GetHashCode() );
         }
 
-        [Test]
+        [TestMethod]
         public void EqualDifferentOrderTest()
         {
             // Setup
@@ -72,7 +72,7 @@ namespace Tests.Collections
             Assert.AreEqual( uut1.GetHashCode(), uut2.GetHashCode() );
         }
 
-        [Test]
+        [TestMethod]
         public void EqualDuplicateEntriesTest()
         {
             // Setup

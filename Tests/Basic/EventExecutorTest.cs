@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -8,12 +8,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.Basic;
 
 namespace Tests.Basic
 {
-    [TestFixture]
+    [TestClass]
     public sealed class EventExecutorTest
     {
         // -------- Fields --------
@@ -25,7 +25,7 @@ namespace Tests.Basic
         /// <summary>
         /// Tests to ensure 10 events are executed successfully.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void TenEventTest()
         {
             using ( EventExecutor executor = new EventExecutor() )
@@ -52,7 +52,7 @@ namespace Tests.Basic
         /// <summary>
         /// Tests to ensure 1000 events are executed successfully.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void ThousandEventTest()
         {
             using ( EventExecutor executor = new EventExecutor() )
@@ -79,7 +79,7 @@ namespace Tests.Basic
         /// <summary>
         /// Tests to ensure 10 events NOT executed successfully after dispose
         /// </summary>
-        [Test]
+        [TestMethod]
         public void TenEventAfterDisposeDisabledTest()
         {
             EventClass[] events = new EventClass[10];
@@ -105,7 +105,7 @@ namespace Tests.Basic
         /// <summary>
         /// Tests to make sure unhandled exceptions in the executor behave correctly.
         /// </summary>
-        [Test]
+        [TestMethod]
         public void TenEventUnhandledExceptionTest()
         {
             EventClass[] events = new EventClass[10];
@@ -140,7 +140,7 @@ namespace Tests.Basic
         /// <summary>
         /// Tests to make sure our 
         /// </summary>
-        [Test]
+        [TestMethod]
         public void AsyncWaitTest()
         {
             EventClass e1 = new EventClass();
@@ -152,13 +152,15 @@ namespace Tests.Basic
 
             List<EventClass> completedEvents = new List<EventClass>();
 
+            bool threadNamesMatch = true;
+
             using( EventExecutor executor = new EventExecutor() )
             {
                 executor.Start();
                 executor.AddEvent(
                     async delegate ()
                     {
-                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
+                        threadNamesMatch &= EventExecutor.DefaultThreadName == Thread.CurrentThread.Name;
                         await e1.AsyncWaitAndExecute(
                             2 * 1000,
                             delegate()
@@ -169,15 +171,14 @@ namespace Tests.Basic
                                 }
                             }
                         );
-                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
-
+                        threadNamesMatch &= EventExecutor.DefaultThreadName == Thread.CurrentThread.Name;
                     }
                 );
 
                 executor.AddEvent(
                     async delegate ()
                     {
-                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
+                        threadNamesMatch &= EventExecutor.DefaultThreadName == Thread.CurrentThread.Name;
                         await e2.AsyncWaitAndExecute(
                             3 * 1000,
                             delegate()
@@ -188,7 +189,7 @@ namespace Tests.Basic
                                 }
                             }
                         );
-                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
+                        threadNamesMatch &= EventExecutor.DefaultThreadName == Thread.CurrentThread.Name;
                     }
                 );
 
@@ -196,7 +197,7 @@ namespace Tests.Basic
                 executor.AddEvent(
                     async delegate ()
                     {
-                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
+                        threadNamesMatch &= EventExecutor.DefaultThreadName == Thread.CurrentThread.Name;
                         await e3.AsyncWaitAndExecute(
                             4 * 1000,
                             delegate()
@@ -207,14 +208,14 @@ namespace Tests.Basic
                                 }
                             }
                         );
-                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
+                        threadNamesMatch &= EventExecutor.DefaultThreadName == Thread.CurrentThread.Name;
                     }
                 );
 
                 executor.AddEvent(
                     delegate ()
                     {
-                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
+                        threadNamesMatch &= EventExecutor.DefaultThreadName == Thread.CurrentThread.Name;
                         syncClass.WaitAndExecute(
                             10 * 1000,
                             delegate ()
@@ -225,7 +226,7 @@ namespace Tests.Basic
                                 }
                             }
                         );
-                        Assert.AreEqual( EventExecutor.DefaultThreadName, Thread.CurrentThread.Name );
+                        threadNamesMatch &= EventExecutor.DefaultThreadName == Thread.CurrentThread.Name;
                     }
                 );
 
@@ -237,6 +238,8 @@ namespace Tests.Basic
             }
 
             Assert.AreEqual( 4, completedEvents.Count );
+
+            Assert.IsTrue( threadNamesMatch );
         }
     }
 }

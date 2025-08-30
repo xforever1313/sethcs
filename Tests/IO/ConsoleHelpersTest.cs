@@ -8,12 +8,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SethCS.IO;
 
 namespace Tests.IO
 {
-    [TestFixture]
+    [TestClass]
     public sealed class ConsoleHelpersTest
     {
         // -------- Fields --------
@@ -30,14 +30,14 @@ namespace Tests.IO
 
         // -------- Setup / Teardown --------
 
-        [SetUp]
+        [TestInitialize]
         public void TestSetup()
         {
             // Cin needs a string, must be defined in the test.
             this.mockCout = new StringWriter();
         }
 
-        [TearDown]
+        [TestCleanup]
         public void TestTeardown()
         {
             this.mockCin = null;
@@ -48,7 +48,7 @@ namespace Tests.IO
 
         // ---- Number Conversion Tests ----
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetBoolTest()
         {
             string cin =
@@ -125,7 +125,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetShortTest()
         {
             string cin =
@@ -192,7 +192,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetUShortTest()
         {
             string cin =
@@ -259,7 +259,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetIntTest()
         {
             string cin =
@@ -326,7 +326,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetUIntTest()
         {
             string cin =
@@ -357,7 +357,7 @@ namespace Tests.IO
                     this.mockCin,
                     this.mockCout
                 );
-                Assert.AreEqual( 100, case2.Value );
+                Assert.AreEqual( 100u, case2.Value );
             }
 
             // Case 3 returns minValue.
@@ -393,7 +393,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetLongTest()
         {
             string cin =
@@ -460,7 +460,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetULongTest()
         {
             string cin =
@@ -491,7 +491,7 @@ namespace Tests.IO
                     this.mockCin,
                     this.mockCout
                 );
-                Assert.AreEqual( 100, case2.Value );
+                Assert.AreEqual( 100u, case2.Value );
             }
 
             // Case 3 returns minValue.
@@ -527,7 +527,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetFloatTest()
         {
             string cin =
@@ -605,7 +605,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetDoubleTest()
         {
             string cin =
@@ -683,7 +683,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void ConsoleHelpersGetDecimalTest()
         {
             string cin =
@@ -725,7 +725,7 @@ namespace Tests.IO
                     this.mockCout
                 );
 
-                Assert.AreEqual( -100.5, case3.Value );
+                Assert.AreEqual( -100.5m, case3.Value );
             }
 
             // Case 4 returns true.
@@ -735,7 +735,7 @@ namespace Tests.IO
                     this.mockCin,
                     this.mockCout
                 );
-                Assert.AreEqual( 100.5, case4.Value );
+                Assert.AreEqual( 100.5m, case4.Value );
             }
 
             // Case 5/6 we expect EOF
@@ -753,7 +753,7 @@ namespace Tests.IO
 
         // ---- ShowListPrompt Tests ----
 
-        [Test]
+        [TestMethod]
         public void ArgumentCheckTest()
         {
             // Ensure we get an exception if we pass in null
@@ -783,7 +783,7 @@ namespace Tests.IO
 
         // -- Start With 0 tests --
 
-        [Test]
+        [TestMethod]
         public void StartWithZeroOneOptionTest()
         {
             List<string> options = new List<string> { "Exit" };
@@ -848,7 +848,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void StartWithZero5OptionTest()
         {
             List<string> options = new List<string> {
@@ -941,7 +941,7 @@ namespace Tests.IO
 
         // -- End with zero tests --
 
-        [Test]
+        [TestMethod]
         public void EndWithZeroOneOptionTest()
         {
             List<string> options = new List<string> { "Exit" };
@@ -1006,7 +1006,7 @@ namespace Tests.IO
             Assert.AreEqual( expectedCout, this.mockCout.ToString() );
         }
 
-        [Test]
+        [TestMethod]
         public void EndWithZero5OptionTest()
         {
             List<string> options = new List<string> {
