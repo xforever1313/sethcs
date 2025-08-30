@@ -13,6 +13,7 @@ using SethCS.Basic;
 namespace Tests.Basic
 {
     [TestClass]
+    [Obsolete] // <- Just to get rid of the billion warnings.
     public sealed class StaticLoggerTest
     {
         // ---------------- Fields ----------------

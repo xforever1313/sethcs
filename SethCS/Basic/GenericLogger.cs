@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -334,6 +334,7 @@ namespace SethCS.Basic
     /// <summary>
     /// A single, global instance of <see cref="GenericLogger"/>
     /// </summary>
+    [Obsolete( "Use ILogger in Serilog or Microsoft.Hosting.Extensions.Logging instead." )]
     public static class StaticLogger
     {
         static StaticLogger()
