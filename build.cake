@@ -15,7 +15,7 @@ string target = Argument( "target", buildTask );
 
 FilePath devopsExe = File( "./DevOps/DevOps/bin/Debug/net8.0/DevOps.dll" );
 
-FilePath sln = File( "./SethCS.sln" );
+FilePath devopsProject = File( "./DevOps/DevOps/DevOps.csproj" );
 
 // ----------------- Build Targets ----------------
 
@@ -35,7 +35,7 @@ Task( buildTask )
         {
         };
 
-        DotNetBuild( sln.ToString(), settings );
+        DotNetBuild( devopsProject.ToString(), settings );
     }
 );
 

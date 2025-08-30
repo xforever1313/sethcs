@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Seth.CakeLib\Seth.CakeLib.csproj" />
+    <ProjectReference Include="..\..\Seth.CakeLib\Seth.CakeLib.csproj" />
   </ItemGroup>
 
 </Project>

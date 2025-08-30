@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -21,8 +21,8 @@ namespace SethCS.IO
     {
         // ---------------- Fields ----------------
 
-        private ConsoleColor? originalForeground;
-        private ConsoleColor? originalBackground;
+        private readonly ConsoleColor? originalForeground;
+        private readonly ConsoleColor? originalBackground;
 
         // ---------------- Constructor ----------------
 
@@ -33,13 +33,13 @@ namespace SethCS.IO
         /// <param name="newBackground">The new background color of the console.  Null to NOT change it.</param>
         public ConsoleColorResetter( ConsoleColor? newForeground, ConsoleColor? newBackground )
         {
-            if( newForeground != null )
+            if( newForeground is not null )
             {
                 this.originalForeground = Console.ForegroundColor;
                 Console.ForegroundColor = newForeground.Value;
             }
 
-            if( newBackground != null )
+            if( newBackground is not null )
             {
                 this.originalBackground = Console.BackgroundColor;
                 Console.BackgroundColor = newBackground.Value;
@@ -50,12 +50,12 @@ namespace SethCS.IO
 
         public void Dispose()
         {
-            if( this.originalBackground != null )
+            if( this.originalBackground is not null )
             {
                 Console.BackgroundColor = this.originalBackground.Value;
             }
 
-            if( this.originalForeground != null )
+            if( this.originalForeground is not null )
             {
                 Console.ForegroundColor = this.originalForeground.Value;
             }

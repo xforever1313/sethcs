@@ -17,70 +17,72 @@ namespace Tests.IO
     {
         // ---------------- Fields ----------------
 
-        private ConsoleColor originalForeground;
-
-        private ConsoleColor originalBackground;
-
-        // ---------------- Setup / Teardown ----------------
-
-        [TestInitialize]
-        public void TestSetup()
-        {
-            this.originalBackground = Console.BackgroundColor;
-            this.originalForeground = Console.ForegroundColor;
-        }
-
-        [TestCleanup]
-        public void TestTeardown()
-        {
-        }
+        private static readonly object theLock = new object();
 
         // ---------------- Tests ----------------
 
         [TestMethod]
         public void BackgroundOnlyTest()
         {
-            const ConsoleColor newBgColor = ConsoleColor.DarkGreen;
-            using( ConsoleColorResetter uut = new ConsoleColorResetter( null, newBgColor ) )
+            lock( theLock )
             {
-                Assert.AreEqual( originalForeground, Console.ForegroundColor );
-                Assert.AreEqual( newBgColor, Console.BackgroundColor );
-            }
+                ConsoleColor originalBackground = Console.BackgroundColor;
+                ConsoleColor originalForeground = Console.ForegroundColor;
 
-            // Should be restored after dispose is called.
-            Assert.AreEqual( originalForeground, Console.ForegroundColor );
-            Assert.AreEqual( originalBackground, Console.BackgroundColor );
+                const ConsoleColor newBgColor = ConsoleColor.DarkGreen;
+                using( ConsoleColorResetter uut = new ConsoleColorResetter( null, newBgColor ) )
+                {
+                    Assert.AreEqual( originalForeground, Console.ForegroundColor );
+                    Assert.AreEqual( newBgColor, Console.BackgroundColor );
+                }
+
+                // Should be restored after dispose is called.
+                Assert.AreEqual( originalForeground, Console.ForegroundColor );
+                Assert.AreEqual( originalBackground, Console.BackgroundColor );
+            }
         }
 
         [TestMethod]
         public void ForegroundOnlyTest()
         {
-            const ConsoleColor newFgColor = ConsoleColor.DarkGreen;
-            using( ConsoleColorResetter uut = new ConsoleColorResetter( newFgColor, null ) )
+            lock( theLock )
             {
-                Assert.AreEqual( newFgColor, Console.ForegroundColor );
+                ConsoleColor originalBackground = Console.BackgroundColor;
+                ConsoleColor originalForeground = Console.ForegroundColor;
+
+                const ConsoleColor newFgColor = ConsoleColor.DarkGreen;
+                using( ConsoleColorResetter uut = new ConsoleColorResetter( newFgColor, null ) )
+                {
+                    Assert.AreEqual( newFgColor, Console.ForegroundColor );
+                    Assert.AreEqual( originalBackground, Console.BackgroundColor );
+                }
+
+                // Should be restored after dispose is called.
+                Assert.AreEqual( originalForeground, Console.ForegroundColor );
                 Assert.AreEqual( originalBackground, Console.BackgroundColor );
             }
-
-            // Should be restored after dispose is called.
-            Assert.AreEqual( originalForeground, Console.ForegroundColor );
-            Assert.AreEqual( originalBackground, Console.BackgroundColor );
         }
 
         [TestMethod]
         public void BackgroundAndForegroundTest()
         {
-            const ConsoleColor newFgColor = ConsoleColor.DarkGreen;
-            const ConsoleColor newBgColor = ConsoleColor.DarkMagenta;
-            using( ConsoleColorResetter uut = new ConsoleColorResetter( newFgColor, newBgColor ) )
+            lock( theLock )
             {
-                Assert.AreEqual( newFgColor, Console.ForegroundColor );
-                Assert.AreEqual( newBgColor, Console.BackgroundColor );
-            }
+                ConsoleColor originalBackground = Console.BackgroundColor;
+                ConsoleColor originalForeground = Console.ForegroundColor;
 
-            // Should be restored after dispose is called.
-            Assert.AreEqual( originalForeground, Console.ForegroundColor );
-            Assert.AreEqual( originalBackground, Console.BackgroundColor );
+                const ConsoleColor newFgColor = ConsoleColor.DarkGreen;
+                const ConsoleColor newBgColor = ConsoleColor.DarkMagenta;
+                using( ConsoleColorResetter uut = new ConsoleColorResetter( newFgColor, newBgColor ) )
+                {
+                    Assert.AreEqual( newFgColor, Console.ForegroundColor );
+                    Assert.AreEqual( newBgColor, Console.BackgroundColor );
+                }
+
+                // Should be restored after dispose is called.
+                Assert.AreEqual( originalForeground, Console.ForegroundColor );
+                Assert.AreEqual( originalBackground, Console.BackgroundColor );
+            }
         }
     }
 }
