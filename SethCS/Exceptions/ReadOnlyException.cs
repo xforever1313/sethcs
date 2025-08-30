@@ -1,4 +1,4 @@
-//
+﻿//
 //          Copyright Seth Hendrick 2015-2021.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -30,16 +30,6 @@ namespace SethCS.Exceptions
         /// <param name="message">Message that describes the error.</param>
         public ReadOnlyException( string message ) :
             base( message )
-        {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
-        /// <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
-        public ReadOnlyException( SerializationInfo info, StreamingContext context )
-            : base( info, context )
         {
         }
 

@@ -27,7 +27,7 @@ namespace Seth.CakeLib.Git
         [CakeMethodAlias]
         [CakeAliasCategory( "Last Commit Date" )]
         [CakeNamespaceImport( "Seth.CakeLib.Git.QueryLastCommitDate" )]
-        public static DateTime GitQueryLastCommitDate(
+        public static DateTimeOffset GitQueryLastCommitDate(
             this ICakeContext context,
             DirectoryPath repoRoot,
             GitQueryLastCommitDateConfig config = null
@@ -52,7 +52,7 @@ namespace Seth.CakeLib.Git
         [CakeMethodAlias]
         [CakeAliasCategory( "Last Commit Date" )]
         [CakeNamespaceImport( "Seth.CakeLib.Git.QueryLastCommitDate" )]
-        public static DateTime GitQueryLastCommitDate(
+        public static DateTimeOffset GitQueryLastCommitDate(
             this ICakeContext context,
             GitToolSettings toolSettings,
             GitQueryLastCommitDateConfig config = null

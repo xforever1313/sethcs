@@ -6,6 +6,7 @@
 //
 
 using System;
+using System.Globalization;
 using Cake.ArgumentBinder;
 using Cake.Common.Diagnostics;
 using Cake.Core;
@@ -19,7 +20,9 @@ namespace Seth.CakeLib.Git.QueryLastCommitDate
 
         private readonly ICakeContext context;
         private readonly GitToolSettings toolSettings;
-        
+
+        internal const string dateTimeFormat = "yyyy-MM-dd'T'HH:mm:sszzz";
+
         // ---------------- Constructor ----------------
 
         public GitQueryLastCommitDateRunner(
@@ -31,31 +34,31 @@ namespace Seth.CakeLib.Git.QueryLastCommitDate
             this.toolSettings = toolSettings ?? new GitToolSettings();
         }
 
-        // ---------------- Functions ----------------
+        // ---------------- Methods ----------------
 
         /// <summary>
         /// Runs git on the local repository and returns
-        /// the <see cref="DateTime"/> of the last commit.
+        /// the <see cref="DateTimeOffset"/> of the last commit.
         /// </summary>
         /// <param name="config">
         /// Configuration.  If null, it grabs the configuration
         /// from the passed in command-line arguments.
         /// </param>
-        public DateTime Run( GitQueryLastCommitDateConfig config = null )
+        public DateTimeOffset Run( GitQueryLastCommitDateConfig config = null )
         {
             if( config == null )
             {
                 config = ArgumentBinder.FromArguments<GitQueryLastCommitDateConfig>( this.context );
             }
 
-            DateTime? timeStamp = null;
+            DateTimeOffset? timeStamp = null;
             string onStdOut( string line )
             {
                 if( string.IsNullOrWhiteSpace( line ) == false )
                 {
-                    if( DateTime.TryParse( line, out DateTime foundTimeStamp ) )
+                    if( timeStamp is not null )
                     {
-                        timeStamp = foundTimeStamp;
+                        timeStamp = TryParse( line );
                     }
                 }
 
@@ -99,6 +102,18 @@ namespace Seth.CakeLib.Git.QueryLastCommitDate
             }
 
             return timeStamp.Value;
+        }
+
+        internal static DateTimeOffset? TryParse( string input )
+        {
+            if( DateTimeOffset.TryParseExact( input, dateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTimeOffset foundTimeStamp ) )
+            {
+                return foundTimeStamp;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

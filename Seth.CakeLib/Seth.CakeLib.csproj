@@ -13,4 +13,8 @@
   <ItemGroup>
     <ProjectReference Include="..\LibSethCS\LibSethCS.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Tests"/>
+  </ItemGroup>
 </Project>

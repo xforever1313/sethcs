@@ -24,7 +24,4 @@
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Analyzer\Verifiers\" />
-  </ItemGroup>
 </Project>
