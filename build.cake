@@ -13,7 +13,7 @@ bool forceBuild = Argument<bool>( "force_build", false );
 
 string target = Argument( "target", buildTask );
 
-FilePath devopsExe = File( "./DevOps/bin/Debug/net6.0/DevOps.dll" );
+FilePath devopsExe = File( "./DevOps/DevOps/bin/Debug/net8.0/DevOps.dll" );
 
 FilePath sln = File( "./SethCS.sln" );
 

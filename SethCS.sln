@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Seth.CakeLib", "Seth.CakeLib\Seth.CakeLib.csproj", "{B3CBD7C7-33F1-49BC-9D1F-5E5AF3D86E1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOps", "DevOps\DevOps.csproj", "{866B141A-D934-4751-B999-9664EB6B9880}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{662FBD80-D694-443B-843B-714E1BDAD8D8}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -21,10 +19,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seth.Analyzer", "Seth.Analyzer\Seth.Analyzer.csproj", "{45B72AC3-5551-4AAA-88EA-3738CC71DFDD}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SethCS\SethCS.projitems*{296fe0a3-baea-4234-ae51-c01ec3f9c153}*SharedItemsImports = 5
-		SethCS\SethCS.projitems*{52089274-b9a2-4a47-a221-c321dee1ce7f}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -42,10 +36,6 @@ Global
 		{B3CBD7C7-33F1-49BC-9D1F-5E5AF3D86E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3CBD7C7-33F1-49BC-9D1F-5E5AF3D86E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3CBD7C7-33F1-49BC-9D1F-5E5AF3D86E1B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{866B141A-D934-4751-B999-9664EB6B9880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{866B141A-D934-4751-B999-9664EB6B9880}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{866B141A-D934-4751-B999-9664EB6B9880}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{866B141A-D934-4751-B999-9664EB6B9880}.Release|Any CPU.Build.0 = Release|Any CPU
 		{45B72AC3-5551-4AAA-88EA-3738CC71DFDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{45B72AC3-5551-4AAA-88EA-3738CC71DFDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45B72AC3-5551-4AAA-88EA-3738CC71DFDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,5 +46,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55FD1912-C907-4B1C-97B3-131A74F8BB44}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SethCS\SethCS.projitems*{296fe0a3-baea-4234-ae51-c01ec3f9c153}*SharedItemsImports = 5
+		SethCS\SethCS.projitems*{52089274-b9a2-4a47-a221-c321dee1ce7f}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

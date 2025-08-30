@@ -23,6 +23,7 @@ namespace DevOps
                 "..", // Debug
                 "..", // Bin
                 "..", // DevOps
+                "..", // DevOps sln
                 ".."  // Root
             );
 
